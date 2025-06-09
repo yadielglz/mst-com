@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AT&T Sales Tracker</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Customizing Tailwind with AT&T's color palette
+        tailwind.config = {
+            darkMode: 'class', // Enable dark mode
+            theme: {
+                extend: {
+                    colors: {
+                        'att-blue': '#067ab4',
+                        'att-blue-light': '#3aa5dc',
+                        'att-secondary': '#ff7200',
+                        'att-gray': '#505050',
+                        'att-light-gray': '#f5f5f5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e5e7eb; }
+        .dark ::-webkit-scrollbar-track { background: #374151; }
+        ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #6b7280; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); }
+        .modal-content, .welcome-content {
+            animation: slide-up 0.4s ease-out;
+        }
+        @keyframes slide-up {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .form-section { display: none; }
+        #app-container, #welcome-screen, #loading-indicator { display: none; } /* Hide all initially */
+    </style>
+</head>
+<body class="bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
+
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 z-50 flex items-center justify-center bg-att-light-gray dark:bg-slate-900">
+        <svg class="animate-spin h-10 w-10 text-att-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
+        <div class="w-full max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl text-center welcome-content">
+            <svg class="h-16 w-16 mx-auto mb-4" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M54 108C83.8234 108 108 83.8234 108 54C108 24.1766 83.8234 0 54 0C24.1766 0 0 24.1766 0 54C0 83.8234 24.1766 108 54 108ZM54.0044 14.7719C75.6322 14.7719 93.2281 32.3678 93.2281 53.9956C93.2281 75.6234 75.6322 93.2193 54.0044 93.2193C32.3766 93.2193 14.7807 75.6234 14.7807 53.9956C14.7807 32.3678 32.3766 14.7719 54.0044 14.7719Z" fill="#067AB4"/><path d="M54 82.2691C69.5891 82.2691 82.2646 69.5936 82.2646 54.0044C82.2646 38.4152 69.5891 25.7397 54 25.7397" stroke="white" stroke-width="6"/><path d="M53.9983 66.8281C60.913 66.8281 66.8228 60.9183 66.8228 54.0036C66.8228 47.0889 60.913 41.1791 53.9983 41.1791" stroke="#067AB4" stroke-width="6"/><path d="M53.9982 74.3312C65.2536 74.3312 74.3298 65.255 74.3298 54.0002C74.3298 42.7454 65.2536 33.6692 53.9982 33.6692" stroke="#3aa5dc" stroke-width="6"/></svg>
+            <h1 class="text-2xl font-bold text-att-gray mb-2">Welcome to the Sales Tracker</h1>
+            <p class="text-slate-500 mb-6">Let's get you set up.</p>
+            <form id="welcome-form" class="text-left space-y-4">
+                <div><label for="rep-name" class="block text-sm font-medium text-slate-600 mb-1">Representative Name</label><input type="text" id="rep-name" class="w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-lg focus:ring-att-blue focus:border-att-blue" required></div>
+                <div><label for="rep-uid" class="block text-sm font-medium text-slate-600 mb-1">Representative UID</label><input type="text" id="rep-uid" class="w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-lg focus:ring-att-blue focus:border-att-blue" required></div>
+                <div class="pt-4"><button type="submit" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300">Get Started</button></div>
+            </form>
+            <p class="text-xs text-slate-400 mt-6 text-center leading-relaxed"><strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.</p>
+        </div>
+    </div>
+
+    <div id="app-container" class="max-w-5xl mx-auto p-4 md:p-6">
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row justify-between items-start mb-6">
+            <div class="flex items-center gap-4">
+                <svg class="h-10 w-10" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M54 108C83.8234 108 108 83.8234 108 54C108 24.1766 83.8234 0 54 0C24.1766 0 0 24.1766 0 54C0 83.8234 24.1766 108 54 108ZM54.0044 14.7719C75.6322 14.7719 93.2281 32.3678 93.2281 53.9956C93.2281 75.6234 75.6322 93.2193 54.0044 93.2193C32.3766 93.2193 14.7807 75.6234 14.7807 53.9956C14.7807 32.3678 32.3766 14.7719 54.0044 14.7719Z" fill="#067AB4"/><path d="M54 82.2691C69.5891 82.2691 82.2646 69.5936 82.2646 54.0044C82.2646 38.4152 69.5891 25.7397 54 25.7397" stroke="white" stroke-width="6"/><path d="M53.9983 66.8281C60.913 66.8281 66.8228 60.9183 66.8228 54.0036C66.8228 47.0889 60.913 41.1791 53.9983 41.1791" stroke="#067AB4" stroke-width="6"/><path d="M53.9982 74.3312C65.2536 74.3312 74.3298 65.255 74.3298 54.0002C74.3298 42.7454 65.2536 33.6692 53.9982 33.6692" stroke="#3aa5dc" stroke-width="6"/></svg>
+                <div><h1 class="text-3xl font-bold text-slate-900 dark:text-white">Sales Tracker</h1><p id="welcome-message" class="text-slate-500 dark:text-slate-400">Welcome back!</p></div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div id="time-weather-widget" class="text-center md:text-right mt-4 md:mt-0">
+                    <p id="time-display" class="text-2xl font-semibold text-att-blue">--:-- --</p>
+                    <p id="date-display" class="text-sm text-att-gray dark:text-slate-400">---------- --, ----</p>
+                    <p id="weather-display" class="text-sm text-att-gray dark:text-slate-400">Loading weather...</p>
+                </div>
+                <div class="relative">
+                    <button id="settings-btn" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                         <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </button>
+                    <div id="settings-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-xl z-20">
+                        <div class="p-2 text-sm">
+                            <div class="flex items-center justify-between px-2 py-1.5"><label for="theme-toggle">Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
+                            <div class="flex items-center justify-between px-2 py-1.5"><label for="temp-toggle">Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
+                            <div class="border-t border-slate-200 dark:border-slate-700 my-1"></div>
+                            <button id="delete-profile-btn" class="w-full text-left text-red-500 px-2 py-1.5 rounded-md hover:bg-red-500 hover:text-white">Delete Profile</button>
+                            <button id="sign-out-btn" class="w-full text-left px-2 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+                <button id="add-sale-btn-header" class="hidden md:flex items-center bg-att-blue text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>
+                    Log New Sale
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Sales</h2><p id="total-sales" class="text-3xl font-bold text-att-blue">0</p></div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Commission</h2><p id="total-commission" class="text-3xl font-bold text-emerald-600">$0.00</p></div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Average Commission</h2><p id="avg-commission" class="text-3xl font-bold text-amber-600">$0.00</p></div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Performance Goals</h3>
+                    <button id="edit-goals-btn" class="text-att-blue hover:text-blue-800 dark:text-att-blue-light dark:hover:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="goals-container"></div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Sales Log</h3>
+                    <button id="add-sale-btn-main" class="md:hidden mt-4 w-full flex items-center justify-center bg-att-blue text-white font-semibold py-2 px-4 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>Log New Sale</button>
+                    <div class="flex items-center space-x-2 mt-3 md:mt-0"><select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select><select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select></div>
+                </div>
+                <div id="sales-list" class="divide-y divide-slate-200 dark:divide-slate-700">
+                     <div id="no-sales-message" class="text-center py-10 text-slate-500 dark:text-slate-400"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><p>No sales logged yet.</p></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals are here -->
+    <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
+    <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-4"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-3 gap-4"><label>Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label>Internet<input type="number" id="goal-weekly-internet" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label>TV<input type="number" id="goal-weekly-tv" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-3 gap-4"><label>Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label>Internet<input type="number" id="goal-monthly-internet" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label>TV<input type="number" id="goal-monthly-tv" class="w-full p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
+    <div id="confirm-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-sm m-4 modal-content"><h2 class="text-xl font-bold mb-4">Are you sure?</h2><p id="confirm-message" class="text-slate-600 dark:text-slate-400 mb-6">This action cannot be undone.</p><div class="flex justify-end space-x-3"><button id="confirm-cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button id="confirm-delete-btn" class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg">Confirm</button></div></div></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, doc, addDoc, getDoc, setDoc, onSnapshot, deleteDoc, query, writeBatch, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : 'null') || { apiKey: "YOUR_API_KEY", authDomain: "YOUR_AUTH_DOMAIN", projectId: "YOUR_PROJECT_ID", appId: "YOUR_APP_ID" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- App State & Data ---
+        let sales = [], currentUser = null, userId = null, unsubscribeSales, unsubscribeSettings;
+        let currentSaleServices = [], currentGoals = {}, userSettings = { theme: 'light', tempUnit: 'C' };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sales-tracker-app';
+        let salesCollectionRef, settingsDocRef, userProfileDocRef;
+        const productCatalog = { Mobile: { plans: {'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },}, addOns: {'AT&T Next Up': { commission: 10, combo: { 'AT&T Unlimited Starter': 40, 'AT&T Unlimited Extra': 60, 'AT&T Unlimited Premium': 70, 'AT&T Device Upgrade': 15 }},'AT&T Protect Advantage for 1 Tier 1': { commission: 14 }, 'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },'AT&T Protect Advantage for 4': { commission: 50 }, 'AT&T Turbo': { commission: 7 },}}, Internet: { plans: {'AT&T Fiber 1000': { baseCommission: 200.00 },'AT&T Fiber 500': { baseCommission: 150.00 },'AT&T Fiber 300': { baseCommission: 100.00 },'AT&T Fiber 100': { baseCommission: 100.00 },'AT&T Fiber <100': { baseCommission: 75.00 },}}, DirecTV: { plans: {'DirecTV Stream Premium': { baseCommission: 50.00 },'DirecTV Stream Basic': { baseCommission: 40.00 },'DirecTV Satellite Premium': { baseCommission: 50.00 },'DirecTV Satellite Basic': { baseCommission: 40.00 },}}};
+
+        // DOM Elements
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const welcomeScreen = document.getElementById('welcome-screen'), welcomeForm = document.getElementById('welcome-form');
+        const appContainer = document.getElementById('app-container'), welcomeMessageEl = document.getElementById('welcome-message');
+        const salesListEl = document.getElementById('sales-list'), noSalesMessage = document.getElementById('no-sales-message');
+        const addSaleBtnHeader = document.getElementById('add-sale-btn-header'), addSaleBtnMain = document.getElementById('add-sale-btn-main');
+        const saleModal = document.getElementById('sale-modal'), saleForm = document.getElementById('sale-form'), cancelBtn = document.getElementById('cancel-btn');
+        const totalSalesEl = document.getElementById('total-sales'), totalCommissionEl = document.getElementById('total-commission'), avgCommissionEl = document.getElementById('avg-commission');
+        const goalsContainer = document.getElementById('goals-container'), editGoalsBtn = document.getElementById('edit-goals-btn');
+        const filterProductEl = document.getElementById('filter-product'), sortSalesEl = document.getElementById('sort-sales');
+        const categorySelect = document.getElementById('category'), serviceOptionsContainer = document.getElementById('service-options-container');
+        const addServiceBtn = document.getElementById('add-service-btn'), currentSaleServicesEl = document.getElementById('current-sale-services');
+        const totalCommissionDisplay = document.getElementById('total-commission-display'), noServicesAddedEl = document.getElementById('no-services-added');
+        const timeDisplay = document.getElementById('time-display'), dateDisplay = document.getElementById('date-display'), weatherDisplay = document.getElementById('weather-display');
+        const goalsModal = document.getElementById('goals-modal'), goalsForm = document.getElementById('goals-form'), cancelGoalsBtn = document.getElementById('cancel-goals-btn');
+        const confirmModal = document.getElementById('confirm-modal'), confirmMessageEl = document.getElementById('confirm-message'), confirmCancelBtn = document.getElementById('confirm-cancel-btn'), confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        const settingsBtn = document.getElementById('settings-btn'), settingsMenu = document.getElementById('settings-menu');
+        const themeToggleBtn = document.getElementById('theme-toggle'), tempToggleBtn = document.getElementById('temp-toggle');
+        const deleteProfileBtn = document.getElementById('delete-profile-btn'), signOutBtn = document.getElementById('sign-out-btn');
+        
+        // --- UI & Logic Functions ---
+        const openModal = () => saleModal.classList.remove('hidden');
+        const closeModal = () => { saleModal.classList.add('hidden'); saleForm.reset(); currentSaleServices=[]; renderCurrentServices(); updateServiceBuilderUI(); };
+        const showGoalsModal = () => { 
+             if (currentGoals.weekly) {
+                document.getElementById('goal-weekly-mobile').value = currentGoals.weekly.mobile || 0;
+                document.getElementById('goal-weekly-internet').value = currentGoals.weekly.internet || 0;
+                document.getElementById('goal-weekly-tv').value = currentGoals.weekly.tv || 0;
+            }
+             if (currentGoals.monthly) {
+                document.getElementById('goal-monthly-mobile').value = currentGoals.monthly.mobile || 0;
+                document.getElementById('goal-monthly-internet').value = currentGoals.monthly.internet || 0;
+                document.getElementById('goal-monthly-tv').value = currentGoals.monthly.tv || 0;
+            }
+            goalsModal.classList.remove('hidden');
+        };
+        const hideGoalsModal = () => goalsModal.classList.add('hidden');
+        const showConfirmDialog = (onConfirm) => { confirmModal.classList.remove('hidden'); confirmDeleteBtn.onclick = () => { onConfirm(); hideConfirmDialog(); }; };
+        const hideConfirmDialog = () => { confirmModal.classList.add('hidden'); confirmDeleteBtn.onclick = null; };
+        
+        const renderFullUI = () => {
+            renderGoals();
+            updateDashboard();
+            renderSales();
+        };
+
+        const renderGoals = () => {
+            const { weeklyProgress, monthlyProgress } = calculateProgress();
+            const goalData = [
+                { title: 'This Week', progress: weeklyProgress, goals: currentGoals.weekly },
+                { title: 'This Month', progress: monthlyProgress, goals: currentGoals.monthly }
+            ];
+            goalsContainer.innerHTML = '';
+            goalData.forEach(period => {
+                const periodEl = document.createElement('div');
+                periodEl.innerHTML = `<h4 class="font-semibold text-lg mb-2">${period.title}</h4><div class="space-y-3"></div>`;
+                const container = periodEl.querySelector('.space-y-3');
+                ['Mobile', 'Internet', 'TV'].forEach(cat => {
+                    const target = period.goals?.[cat.toLowerCase()] || 0;
+                    const current = period.progress[cat];
+                    const percentage = target > 0 ? (current / target) * 100 : 0;
+                    const label = cat === 'Mobile' ? 'Lines' : 'Services';
+                    const goalItem = document.createElement('div');
+                    goalItem.innerHTML = `<div class="flex justify-between text-sm mb-1"><span class="font-medium">${cat} ${label}</span><span>${current} / ${target}</span></div><div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2"><div class="bg-att-blue h-2 rounded-full" style="width: ${Math.min(percentage, 100)}%"></div></div>`;
+                    container.appendChild(goalItem);
+                });
+                goalsContainer.appendChild(periodEl);
+            });
+        };
+        
+        const updateDashboard = () => {
+            const totalSalesCount = sales.length;
+            const totalCommission = sales.reduce((sum, sale) => sum + sale.totalCommission, 0);
+            const avgCommission = totalSalesCount > 0 ? totalCommission / totalSalesCount : 0;
+            totalSalesEl.textContent = totalSalesCount;
+            totalCommissionEl.textContent = `$${totalCommission.toFixed(2)}`;
+            avgCommissionEl.textContent = `$${avgCommission.toFixed(2)}`;
+        };
+
+        const renderSales = () => {
+            salesListEl.innerHTML = '';
+            const filteredSales = filterAndSortSales();
+            noSalesMessage.style.display = filteredSales.length === 0 ? 'block' : 'none';
+            filteredSales.forEach(sale => {
+                const saleEl = document.createElement('div');
+                saleEl.className = 'flex flex-col md:flex-row items-start md:items-center justify-between py-4';
+                saleEl.dataset.id = sale.id;
+                const mainCategory = sale.services[0]?.category || 'Misc';
+                const color = { Mobile: { bg: 'bg-blue-100 dark:bg-blue-900/50' }, Internet: { bg: 'bg-green-100 dark:bg-green-900/50' }, DirecTV: { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
+                const servicesHTML = sale.services.map(s => `<li class="text-sm text-slate-600 dark:text-slate-300 font-medium">${s.planName}${s.lines ? ` (${s.lines} lines)` : ''}</li>`).join('');
+                saleEl.innerHTML = `<div class="flex items-center gap-4 flex-1"><div class="p-3 rounded-full ${color.bg}"><!-- icon --></div><div><p class="font-semibold text-slate-800 dark:text-slate-100">${sale.customerName}</p><ul class="list-disc list-inside ml-4">${servicesHTML}</ul><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${new Date(sale.saleDate).toLocaleDateString()}</p>${sale.notes ? `<p class="text-xs text-slate-400 mt-1 italic">Note: ${sale.notes}</p>` : ''}</div></div><div class="flex items-center gap-4 mt-3 md:mt-0 w-full md:w-auto"><span class="font-semibold text-emerald-600 text-lg">$${sale.totalCommission.toFixed(2)}</span><button class="delete-btn p-2 text-slate-500 hover:text-red-600 dark:hover:text-red-400"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button></div>`;
+                salesListEl.appendChild(saleEl);
+            });
+        };
+        
+        const calculateProgress = () => {
+             const weeklyProgress = { Mobile: 0, Internet: 0, TV: 0 };
+             const monthlyProgress = { Mobile: 0, Internet: 0, TV: 0 };
+             const startOfWeek = getStartOfWeek();
+             const startOfMonth = getStartOfMonth();
+             sales.forEach(sale => {
+                // Correctly parse the date string to avoid timezone issues
+                const dateParts = sale.saleDate.split('-');
+                const saleDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                 
+                 sale.services.forEach(service => {
+                     const category = service.category;
+                     const units = category === 'Mobile' ? (service.lines || 1) : 1;
+                     if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
+                     if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
+                 });
+             });
+             return { weeklyProgress, monthlyProgress };
+        };
+        
+        const filterAndSortSales = () => {
+            const filterValue = filterProductEl.value;
+            const sortValue = sortSalesEl.value;
+            let processedSales = [...sales];
+            if (filterValue !== 'all') { processedSales = processedSales.filter(sale => sale.services.some(s => s.category === filterValue)); }
+            processedSales.sort((a, b) => {
+                switch(sortValue) {
+                    case 'date_asc': return new Date(a.saleDate) - new Date(b.saleDate);
+                    case 'commission_desc': return b.totalCommission - a.totalCommission;
+                    case 'commission_asc': return a.totalCommission - b.totalCommission;
+                    default: return new Date(b.saleDate) - new Date(a.saleDate);
+                }
+            });
+            return processedSales;
+        };
+
+        const updateServiceBuilderUI = () => {
+            const category = categorySelect.value;
+            serviceOptionsContainer.innerHTML = '';
+            if (!category) return;
+            const categoryData = productCatalog[category];
+            let optionsHTML = `<div><label for="service-plan" class="block text-sm font-medium mb-1">2. Configure Service</label><select id="service-plan" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select Plan --</option>`;
+            Object.keys(categoryData.plans).forEach(planName => optionsHTML += `<option value="${planName}">${planName}</option>`);
+            optionsHTML += `</select></div>`;
+            if (category === 'Mobile') {
+                optionsHTML += `<div id="lines-section" class="hidden"><label for="lines" class="block text-sm font-medium mb-1">Number of Lines</label><input type="number" id="lines" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border rounded-lg" min="1" value="1"></div>`;
+                optionsHTML += `<div><label class="block text-sm font-medium mb-2">Add-ons</label><div id="mobile-addons" class="space-y-2">`;
+                Object.keys(categoryData.addOns).forEach(addonName => optionsHTML += `<div class="flex items-center"><input type="checkbox" id="addon-${addonName.replace(/\s+/g, '-')}" name="${addonName}" class="h-4 w-4 text-att-blue rounded"><label for="addon-${addonName.replace(/\s+/g, '-')}" class="ml-2">${addonName}</label></div>`);
+                optionsHTML += `</div></div>`;
+            }
+            serviceOptionsContainer.innerHTML = optionsHTML;
+            const planSelect = document.getElementById('service-plan');
+            if (planSelect && category === 'Mobile') {
+                planSelect.addEventListener('change', () => {
+                    const plan = productCatalog.Mobile.plans[planSelect.value];
+                    document.getElementById('lines-section').style.display = plan && plan.hasLines ? 'block' : 'none';
+                });
+            }
+        };
+        
+        const renderCurrentServices = () => {
+            currentSaleServicesEl.innerHTML = '';
+            noServicesAddedEl.style.display = currentSaleServices.length === 0 ? 'block' : 'none';
+            currentSaleServices.forEach((service, index) => {
+                let title = `${service.planName}${service.lines ? ` (${service.lines} lines)` : ''}`;
+                const serviceEl = document.createElement('div');
+                serviceEl.className = 'bg-slate-100 dark:bg-slate-700/50 p-2 rounded-lg flex justify-between items-center';
+                serviceEl.innerHTML = `<div><p class="font-semibold">${title}</p><p class="text-sm text-slate-500">${service.category}</p></div><div class="flex items-center gap-4"><span class="font-medium text-emerald-500">$${service.commission.toFixed(2)}</span><button type="button" data-index="${index}" class="remove-service-btn p-1 text-red-500 hover:text-red-700">&times;</button></div>`;
+                currentSaleServicesEl.appendChild(serviceEl);
+            });
+            totalCommissionDisplay.textContent = `$${currentSaleServices.reduce((sum, s) => sum + s.commission, 0).toFixed(2)}`;
+        };
+        
+        const addServiceToSale = () => {
+            const category = categorySelect.value;
+            const planSelect = document.getElementById('service-plan');
+            if (!category || !planSelect || !planSelect.value) { console.warn("Please select a category and plan."); return; }
+            const planName = planSelect.value;
+            const categoryData = productCatalog[category];
+            const planData = categoryData.plans[planName];
+            const service = { category, planName, commission: 0, addOns: [], lines: null };
+            if (category === 'Mobile') {
+                let perLineCommission = 0;
+                const selectedAddons = Array.from(document.querySelectorAll('#mobile-addons input:checked')).map(cb => cb.name);
+                const hasNextUp = selectedAddons.includes('AT&T Next Up');
+                if (hasNextUp && planData.baseCommission > 0 && categoryData.addOns['AT&T Next Up'].combo[planName]) {
+                    perLineCommission = categoryData.addOns['AT&T Next Up'].combo[planName];
+                } else {
+                    perLineCommission = planData.baseCommission;
+                }
+                selectedAddons.forEach(addonName => {
+                    if (addonName === 'AT&T Next Up' && perLineCommission > planData.baseCommission) return;
+                    perLineCommission += categoryData.addOns[addonName].commission;
+                });
+                service.addOns = selectedAddons;
+                if (planData.hasLines) {
+                    const numberOfLines = parseInt(document.getElementById('lines').value, 10) || 1;
+                    service.commission = perLineCommission * numberOfLines;
+                    service.lines = numberOfLines;
+                } else {
+                    service.commission = perLineCommission;
+                }
+            } else {
+                service.commission = planData.baseCommission;
+            }
+            currentSaleServices.push(service);
+            renderCurrentServices();
+            planSelect.value = '';
+            planSelect.dispatchEvent(new Event('change'));
+            if (category === 'Mobile') {
+                document.querySelectorAll('#mobile-addons input:checked').forEach(cb => cb.checked = false);
+            }
+        };
+
+        const toggleTheme = () => {
+            userSettings.theme = userSettings.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
+            if(settingsDocRef) setDoc(settingsDocRef, { settings: userSettings }, { merge: true });
+        };
+        
+        const toggleTempUnit = () => {
+            userSettings.tempUnit = userSettings.tempUnit === 'C' ? 'F' : 'C';
+            updateTimeWeather();
+            if(settingsDocRef) setDoc(settingsDocRef, { settings: userSettings }, { merge: true });
+        };
+        
+        const updateTimeWeather = () => {
+            const now = new Date();
+            timeDisplay.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            dateDisplay.textContent = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
+                .then(res => res.json()).then(data => {
+                    if (data && data.current_weather) {
+                        const tempC = data.current_weather.temperature;
+                        const tempF = data.current_weather_temperature; // API returns fahrenheit directly
+                        const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
+                        const code = data.current_weather.weathercode;
+                        let emoji = '☀️';
+                        if (code > 70) emoji = '🌧️'; else if (code > 50) emoji = '🌦️'; else if (code > 2) emoji = '☁️';
+                        weatherDisplay.textContent = `${displayTemp}°${userSettings.tempUnit} ${emoji} in Haines City, FL`;
+                    } else { weatherDisplay.textContent = 'Weather unavailable'; }
+                }).catch(() => weatherDisplay.textContent = 'Weather unavailable');
+        };
+
+        async function deleteUserData() {
+            if (!userId) return;
+            const batch = writeBatch(db);
+            const salesSnapshot = await getDocs(salesCollectionRef);
+            salesSnapshot.forEach(doc => batch.delete(doc.ref));
+            batch.delete(settingsDocRef);
+            batch.delete(userProfileDocRef);
+            await batch.commit();
+            await signOut(auth);
+            window.location.reload();
+        }
+        
+        const getStartOfWeek = () => { const n=new Date(),d=n.getDay(),f=n.getDate()-d+(d==0?-6:1);return new Date(new Date(n.setDate(f)).setHours(0,0,0,0)); };
+        const getStartOfMonth = () => { const n=new Date();return new Date(n.getFullYear(),n.getMonth(),1); };
+        
+        // --- Auth & Init ---
+        const initAppForUser = async (user) => {
+            currentUser = user; userId = user.uid;
+            userProfileDocRef = doc(db, "artifacts", appId, "users", userId, "profile", "userProfile");
+            salesCollectionRef = collection(db, "artifacts", appId, "users", userId, "sales");
+            settingsDocRef = doc(db, "artifacts", appId, "users", userId, "settings", "userSettings");
+
+            try {
+                const profileSnap = await getDoc(userProfileDocRef);
+                const settingsSnap = await getDoc(settingsDocRef);
+                
+                if (settingsSnap.exists() && settingsSnap.data().settings) {
+                    userSettings = settingsSnap.data().settings;
+                    document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
+                }
+
+                if (profileSnap.exists() && profileSnap.data().setupComplete) {
+                    welcomeMessageEl.textContent = `Welcome back, ${profileSnap.data().repName}!`;
+                    
+                    if (unsubscribeSales) unsubscribeSales();
+                    if (unsubscribeSettings) unsubscribeSettings();
+                    
+                    unsubscribeSales = onSnapshot(query(salesCollectionRef), snapshot => { sales = snapshot.docs.map(d => ({ id: d.id, ...d.data() })); renderFullUI(); });
+                    unsubscribeSettings = onSnapshot(settingsDocRef, (doc) => {
+                        if (doc.exists()) {
+                            currentGoals = doc.data().goals || {};
+                            const today = new Date(); today.setHours(0,0,0,0);
+                            const lastReset = doc.data().lastWeeklyReset?.toDate();
+                            if (!lastReset || lastReset < getStartOfWeek()) {
+                                setDoc(settingsDocRef, { lastWeeklyReset: new Date() }, { merge: true });
+                            }
+                        }
+                        renderFullUI();
+                    });
+                    
+                    appContainer.style.display = 'block';
+                    welcomeScreen.style.display = 'none';
+
+                } else {
+                    appContainer.style.display = 'none';
+                    welcomeScreen.style.display = 'flex';
+                }
+            } catch (error) {
+                console.error("Error during init:", error);
+                welcomeScreen.style.display = 'flex';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        };
+        
+        const mainAuthFlow = () => {
+            loadingIndicator.style.display = 'flex';
+            onAuthStateChanged(auth, user => {
+                if (user) {
+                    initAppForUser(user);
+                } else {
+                    signInAnonymously(auth).catch(e => {
+                        console.error("Anon sign-in failed", e);
+                        loadingIndicator.style.display = 'none';
+                    });
+                }
+            });
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                signInWithCustomToken(auth, __initial_auth_token).catch(e => console.error("Custom token sign-in failed:", e));
+            }
+        };
+
+        // --- Setup All Event Listeners ---
+        addSaleBtnHeader.addEventListener('click', openModal);
+        addSaleBtnMain.addEventListener('click', openModal);
+        cancelBtn.addEventListener('click', closeModal);
+        editGoalsBtn.addEventListener('click', showGoalsModal);
+        cancelGoalsBtn.addEventListener('click', () => goalsModal.classList.add('hidden'));
+        filterProductEl.addEventListener('change', renderFullUI);
+        sortSalesEl.addEventListener('change', renderFullUI);
+        categorySelect.addEventListener('change', updateServiceBuilderUI);
+        welcomeForm.addEventListener('submit', async (e) => { e.preventDefault(); if (!userProfileDocRef) return; const repName = document.getElementById('rep-name').value; await setDoc(userProfileDocRef, { repName, repUID: document.getElementById('rep-uid').value, setupComplete: true }, { merge: true }); initAppForUser(currentUser); });
+        goalsForm.addEventListener('submit', async (e) => { e.preventDefault(); await setDoc(settingsDocRef, { goals: { weekly: { mobile: parseInt(document.getElementById('goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('goal-weekly-tv').value) || 0 }, monthly: { mobile: parseInt(document.getElementById('goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('goal-monthly-tv').value) || 0 } } }, { merge: true }); hideGoalsModal(); });
+        addServiceBtn.addEventListener('click', addServiceToSale);
+        currentSaleServicesEl.addEventListener('click', e => { if (e.target.closest('.remove-service-btn')) { currentSaleServices.splice(parseInt(e.target.closest('.remove-service-btn').dataset.index), 1); renderCurrentServices(); } });
+        saleForm.addEventListener('submit', async (e) => { e.preventDefault(); if (!userId || currentSaleServices.length === 0) return; const saleData = { customerName: document.getElementById('customer-name').value, saleDate: document.getElementById('sale-date').value, services: currentSaleServices, totalCommission: currentSaleServices.reduce((sum, s) => sum + s.commission, 0), notes: document.getElementById('notes').value, userId: userId }; await addDoc(salesCollectionRef, saleData); closeModal(); });
+        salesListEl.addEventListener('click', (e) => { const delBtn = e.target.closest('.delete-btn'); if (delBtn) { const saleId = delBtn.closest('[data-id]').dataset.id; showConfirmDialog(() => deleteDoc(doc(salesCollectionRef, saleId))); } });
+        settingsBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsMenu.classList.toggle('hidden');});
+        document.addEventListener('click', (e) => { if (!settingsMenu.contains(e.target) && !settingsBtn.contains(e.target)) { settingsMenu.classList.add('hidden'); } });
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        tempToggleBtn.addEventListener('click', toggleTempUnit);
+        signOutBtn.addEventListener('click', () => { signOut(auth).then(() => window.location.reload()); });
+        deleteProfileBtn.addEventListener('click', () => { confirmMessageEl.textContent = "This will permanently delete all your sales, goals, and profile data. This cannot be undone."; showConfirmDialog(deleteUserData); });
+        
+        // --- Start App ---
+        updateTimeWeather();
+        setInterval(updateTimeWeather, 60000);
+        mainAuthFlow();
+    </script>
+</body>
+</html>
