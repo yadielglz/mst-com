@@ -258,7 +258,30 @@
 
         // --- Firebase & Auth Logic ---
         
-        // CORRECTED: This function is now wrapped in a try...catch to handle initialization errors.
+        // NEW: A helper function to display an error state within the app
+        function showFatalError(error) {
+            console.error("A fatal error occurred:", error);
+            splashScreen.style.display = 'none';
+            appContainer.style.display = 'block';
+            const errorMessage = `
+                <div class="text-center py-10 px-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold text-red-600 mb-2">Could Not Load Your Data</h3>
+                    <p class="text-slate-500 dark:text-slate-400">
+                        There was a problem retrieving your information from the server. 
+                        Please try refreshing the page.
+                    </p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-4">
+                        If the problem persists, your account data may be misconfigured or network rules may be preventing access.
+                    </p>
+                </div>
+            `;
+            const mainContentArea = document.querySelector('#app-container main');
+            if (mainContentArea) {
+                mainContentArea.innerHTML = errorMessage;
+            }
+        }
+
+        // CORRECTED: The main auth handler now uses the new error handling strategy
         onAuthStateChanged(auth, async (user) => {
             splashScreen.style.display = 'flex';
 
@@ -266,12 +289,12 @@
                 try {
                     if (user) {
                         currentUser = user;
-                        
                         loginModal.style.display = 'none';
                         signupModal.style.display = 'none';
-                        splashScreen.style.display = 'none';
                         
                         await fetchData();
+                        
+                        splashScreen.style.display = 'none';
 
                         if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
                             oobeGoalsScreen.style.display = 'flex';
@@ -289,13 +312,7 @@
                         loginModal.style.display = 'flex';
                     }
                 } catch (error) {
-                    console.error("Failed to initialize app state:", error);
-                    await signOut(auth);
-                    
-                    splashScreen.style.display = 'none';
-                    appContainer.style.display = 'none';
-                    oobeGoalsScreen.style.display = 'none';
-                    loginModal.style.display = 'flex';
+                    showFatalError(error);
                 }
             }, 2000);
         });
@@ -328,6 +345,8 @@
 
         async function handleLogout() {
             await signOut(auth);
+            // Reload the page to ensure a clean state
+            window.location.reload();
         }
         
         // --- Firestore Data Functions ---
@@ -416,7 +435,9 @@
         
         function applySettings() {
             document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
-            welcomeMessageEl.textContent = `Welcome, ${userSettings.name || currentUser.displayName}!`;
+            if (currentUser) {
+                welcomeMessageEl.textContent = `Welcome, ${userSettings.name || currentUser.displayName}!`;
+            }
             updateWeather();
         }
 
