@@ -263,44 +263,35 @@
 
         // --- Firebase & Auth Logic ---
         
-        // This is the main controller for the app's view state
         onAuthStateChanged(auth, async (user) => {
-            splashScreen.style.display = 'flex'; // Show splash while we figure things out
+            splashScreen.style.display = 'flex'; 
 
             setTimeout(async () => {
                 if (user) {
-                    // User is signed in
                     currentUser = user;
                     
-                    // Hide auth modals and splash
                     loginModal.style.display = 'none';
                     signupModal.style.display = 'none';
                     splashScreen.style.display = 'none';
                     
-                    // Fetch all user data from Firestore
                     await fetchData();
 
-                    // Check if user has set their initial goals
                     if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
-                        // First-time login after signup, show OOBE
                         oobeGoalsScreen.style.display = 'flex';
                     } else {
-                        // Returning user, show the main app
                         appContainer.style.display = 'block';
                         renderFullUI();
                     }
                 } else {
-                    // User is signed out
                     currentUser = null;
                     resetLocalData();
                     
-                    // Hide app and splash, show login
                     splashScreen.style.display = 'none';
                     appContainer.style.display = 'none';
                     oobeGoalsScreen.style.display = 'none';
                     loginModal.style.display = 'flex';
                 }
-            }, 2000); // 2 second splash screen
+            }, 2000); 
         });
         
         async function handleSignup(e) {
@@ -312,7 +303,6 @@
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: name });
-                // onAuthStateChanged will handle the rest
             } catch (error) {
                 signupErrorEl.textContent = error.message;
             }
@@ -325,7 +315,6 @@
             loginErrorEl.textContent = '';
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle the rest
             } catch (error) {
                 loginErrorEl.textContent = 'Invalid email or password.';
             }
@@ -333,7 +322,6 @@
 
         async function handleLogout() {
             await signOut(auth);
-            // onAuthStateChanged will handle the rest
         }
         
         // --- Firestore Data Functions ---
@@ -342,7 +330,6 @@
             if (!currentUser) return;
             const uid = currentUser.uid;
 
-            // Fetch settings
             const settingsDocRef = doc(db, 'users', uid, 'user-data', 'settings');
             const settingsDocSnap = await getDoc(settingsDocRef);
             if (settingsDocSnap.exists()) {
@@ -352,7 +339,6 @@
             }
             applySettings();
 
-            // Fetch goals
             const goalsDocRef = doc(db, 'users', uid, 'user-data', 'goals');
             const goalsDocSnap = await getDoc(goalsDocRef);
             if (goalsDocSnap.exists()) {
@@ -361,7 +347,6 @@
                 currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
             }
 
-            // Fetch sales
             const salesCollectionRef = collection(db, 'users', uid, 'sales');
             const q = query(salesCollectionRef);
             const querySnapshot = await getDocs(q);
@@ -376,8 +361,8 @@
             const uid = currentUser.uid;
             try {
                 const docRef = await addDoc(collection(db, 'users', uid, 'sales'), saleData);
-                sales.push({ id: docRef.id, ...saleData }); // Add to local state
-                renderFullUI(); // Re-render
+                sales.push({ id: docRef.id, ...saleData });
+                renderFullUI();
             } catch (error) {
                 console.error("Error adding document: ", error);
                 alert("Could not save sale. Please try again.");
@@ -389,8 +374,8 @@
             const uid = currentUser.uid;
             try {
                 await deleteDoc(doc(db, 'users', uid, 'sales', saleId));
-                sales = sales.filter(sale => sale.id !== saleId); // Remove from local state
-                renderFullUI(); // Re-render
+                sales = sales.filter(sale => sale.id !== saleId);
+                renderFullUI();
             } catch (error) {
                 console.error("Error deleting document: ", error);
                 alert("Could not delete sale. Please try again.");
@@ -436,7 +421,7 @@
             currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
         }
         
-        // --- UI & Logic Functions (largely unchanged, but now use Firestore functions) ---
+        // --- UI & Logic Functions ---
         const openModal = () => saleModal.classList.remove('hidden');
         const closeModal = () => { saleModal.classList.add('hidden'); saleForm.reset(); currentSaleServices=[]; renderCurrentServices(); updateServiceBuilderUI(); };
         const showGoalsModal = () => { 
@@ -499,7 +484,7 @@
             filteredSales.forEach((sale) => {
                 const saleEl = document.createElement('div');
                 saleEl.className = 'flex flex-col md:flex-row items-start md:items-center justify-between py-4';
-                saleEl.dataset.id = sale.id; // Use Firestore document ID
+                saleEl.dataset.id = sale.id; 
                 const mainCategory = sale.services[0]?.category || 'Misc';
                 const color = { Mobile: { bg: 'bg-blue-100 dark:bg-blue-900/50' }, Internet: { bg: 'bg-green-100 dark:bg-green-900/50' }, DirecTV: { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
                 const servicesHTML = sale.services.map(s => `<li class="text-sm text-slate-600 dark:text-slate-300 font-medium">${s.planName}${s.lines ? ` (${s.lines} lines)` : ''}</li>`).join('');
@@ -662,7 +647,8 @@
                 };
                 await saveGoalsToFirestore(newGoals);
                 oobeGoalsScreen.style.display = 'none';
-                appContainer.style.display = 'block';
+                // --- THIS IS THE FIX ---
+                appContainer.style.display = 'block'; 
                 renderFullUI();
             });
 
@@ -720,7 +706,7 @@
         setupEventListeners();
         updateTime();
         setInterval(updateTime, 1000);
-        setInterval(updateWeather, 60000); // Weather updates less frequently
+        setInterval(updateWeather, 60000);
     </script>
 </body>
 </html>
