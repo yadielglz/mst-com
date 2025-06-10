@@ -82,22 +82,10 @@
                 <div><h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Commission Tracker</h1><p id="welcome-message" class="text-slate-500 dark:text-slate-400">Welcome!</p></div>
             </div>
              <div class="w-full md:w-auto flex items-center justify-center md:justify-end gap-4">
-                <div id="time-weather-widget" class="text-center md:text-right order-last md:order-first">
+                <div id="time-weather-widget" class="text-center md:text-right">
                     <p id="time-display" class="text-xl sm:text-2xl font-semibold text-att-blue">--:-- --</p>
                     <p id="date-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">---------- --, ----</p>
                     <p id="weather-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">Loading weather...</p>
-                </div>
-                <div class="relative order-first md:order-last">
-                    <button id="settings-btn" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
-                         <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </button>
-                    <div id="settings-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-xl z-20">
-                        <div class="p-2 text-sm">
-                            <button id="set-profile-btn" class="w-full text-left px-2 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Set Profile Name</button>
-                            <div class="flex items-center justify-between px-2 py-1.5"><label for="theme-toggle">Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
-                            <div class="flex items-center justify-between px-2 py-1.5"><label for="temp-toggle">Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </header>
@@ -147,6 +135,20 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-1"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                             Log New Sale
                         </button>
+                        
+                        <div class="relative">
+                            <button id="settings-btn" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                                 <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                            </button>
+                            <div id="settings-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-xl z-20">
+                                <div class="p-2 text-sm">
+                                    <button id="set-profile-btn" class="w-full text-left px-2 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Set Profile Name</button>
+                                    <div class="flex items-center justify-between px-2 py-1.5"><label for="theme-toggle">Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
+                                    <div class="flex items-center justify-between px-2 py-1.5"><label for="temp-toggle">Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <span class="border-l h-6 border-slate-300 dark:border-slate-600"></span>
                         <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select>
                         <select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select>
