@@ -1,198 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT&T Commission Tracker</title>
-    <link rel="icon" href="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        // Customizing Tailwind with AT&T's color palette
-        tailwind.config = {
-            darkMode: 'class', // Enable dark mode
-            theme: {
-                extend: {
-                    colors: {
-                        'att-blue': '#067ab4',
-                        'att-blue-light': '#3aa5dc',
-                        'att-secondary': '#ff7200',
-                        'att-gray': '#505050',
-                        'att-light-gray': '#f5f5f5',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #e5e7eb; }
-        .dark ::-webkit-scrollbar-track { background: #374151; }
-        ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #6b7280; }
-        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-        .dark ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); }
-        .modal-content, .splash-content, .oobe-content {
-            animation: slide-up 0.4s ease-out;
-        }
-        @keyframes slide-up {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        #app-container, #splash-screen, #oobe-goals-screen, #login-modal, #signup-modal { display: none; } /* Hide all initially */
-    </style>
-</head>
-<body class="bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
-
-    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center splash-content">
-            <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" class="h-12 mx-auto mb-4">
-            <h1 class="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
-            <p class="text-xs text-slate-400 mt-6 text-center leading-relaxed">
-                <strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.
-            </p>
-        </div>
-    </div>
-
-    <div id="login-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-sm mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl modal-content">
-            <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-            <form id="login-form">
-                <div class="mb-4"><label for="login-email" class="block mb-1">Email</label><input type="email" id="login-email" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-6"><label for="login-password" class="block mb-1">Password</label><input type="password" id="login-password" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <button type="submit" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg">Login</button>
-                <p id="login-error" class="text-red-500 text-sm text-center mt-2"></p>
-                <p class="text-center mt-4 text-sm">Don't have an account? <a href="#" id="show-signup" class="text-att-blue font-semibold">Sign Up</a></p>
-            </form>
-        </div>
-    </div>
-    <div id="signup-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-sm mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl modal-content">
-            <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
-            <form id="signup-form">
-                <div class="mb-4"><label for="signup-name" class="block mb-1">Your Name</label><input type="text" id="signup-name" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-4"><label for="signup-email" class="block mb-1">Email</label><input type="email" id="signup-email" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-6"><label for="signup-password" class="block mb-1">Password</label><input type="password" id="signup-password" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <button type="submit" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg">Sign Up</button>
-                <p id="signup-error" class="text-red-500 text-sm text-center mt-2"></p>
-                <p class="text-center mt-4 text-sm">Already have an account? <a href="#" id="show-login" class="text-att-blue font-semibold">Login</a></p>
-            </form>
-        </div>
-    </div>
-    
-    <div id="oobe-goals-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-lg mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl oobe-content max-h-[90vh] overflow-y-auto">
-            <h2 class="text-2xl font-bold mb-2 text-center">Set Your Initial Goals</h2>
-            <p class="text-center text-slate-500 mb-6">You can change these later in the settings.</p>
-            <form id="oobe-goals-form" class="space-y-6">
-                <fieldset class="border-t pt-4 dark:border-slate-700"><legend class="font-semibold text-lg mb-2 px-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="oobe-goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="10"></label><label class="block">Internet<input type="number" id="oobe-goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="5"></label><label class="block">TV<input type="number" id="oobe-goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="5"></label></div></fieldset>
-                <fieldset class="border-t pt-4 dark:border-slate-700"><legend class="font-semibold text-lg mb-2 px-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="oobe-goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="40"></label><label>Internet<input type="number" id="oobe-goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="20"></label><label>TV<input type="number" id="oobe-goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0" value="20"></label></div></fieldset>
-                <div class="flex justify-end pt-4"><button type="submit" class="px-6 py-2 bg-att-blue text-white font-semibold rounded-lg">Start Tracking</button></div>
-            </form>
-        </div>
-    </div>
-
-    <div id="app-container" class="max-w-5xl mx-auto p-4 md:p-6">
-        <header class="flex flex-wrap md:flex-nowrap justify-between items-center mb-6 gap-4">
-            <div class="flex items-center gap-4">
-                <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Logo" class="h-10">
-                <div><h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Commission Tracker</h1><p id="welcome-message" class="text-slate-500 dark:text-slate-400">Welcome!</p></div>
-            </div>
-             <div class="w-full md:w-auto flex items-center justify-center md:justify-end gap-4">
-                <div id="time-weather-widget" class="text-center md:text-right">
-                    <p id="time-display" class="text-xl sm:text-2xl font-semibold text-att-blue">--:-- --</p>
-                    <p id="date-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">---------- --, ----</p>
-                    <p id="weather-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">Loading weather...</p>
-                </div>
-            </div>
-        </header>
-
-        <main>
-            <div class="md:hidden mb-4">
-                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <a href="https://mst.att.com" target="_blank" class="flex items-center justify-center gap-2 w-full bg-white dark:bg-slate-800 text-att-blue dark:text-att-blue-light font-semibold py-3 px-4 rounded-lg shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        Open MST
-                    </a>
-                    <button id="add-sale-btn-main" class="flex items-center justify-center gap-2 w-full bg-att-blue text-white font-semibold py-3 px-4 rounded-lg shadow-sm hover:bg-blue-800 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>
-                        Log New Sale
-                    </button>
-                </div>
-                <div class="grid grid-cols-3 gap-2 text-center">
-                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Sales</h3><p id="total-sales-mobile" class="font-bold text-lg text-att-blue">0</p></div>
-                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Commission</h3><p id="total-commission-mobile" class="font-bold text-lg text-emerald-600">$0</p></div>
-                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Avg Comm.</h3><p id="avg-commission-mobile" class="font-bold text-lg text-amber-600">$0</p></div>
-                </div>
-            </div>
-
-            <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Sales</h2><p id="total-sales" class="text-3xl font-bold text-att-blue">0</p></div>
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Commission</h2><p id="total-commission" class="text-3xl font-bold text-emerald-600">$0.00</p></div>
-                <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Average Commission</h2><p id="avg-commission" class="text-3xl font-bold text-amber-600">$0.00</p></div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200">Performance Goals</h3>
-                    <button id="edit-goals-btn" class="text-att-blue hover:text-blue-800 dark:text-att-blue-light dark:hover:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="goals-container"></div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Sales Log</h3>
-                    <div class="hidden md:flex items-center space-x-4 mt-3 md:mt-0">
-                        <a href="https://mst.att.com" target="_blank" class="flex items-center justify-center gap-2 text-sm bg-white dark:bg-slate-700 text-att-blue dark:text-att-blue-light font-semibold py-2 px-3 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            Open MST
-                        </a>
-                        <button id="add-sale-btn-desktop" class="flex items-center justify-center gap-2 text-sm bg-att-blue text-white font-semibold py-2 px-3 rounded-lg shadow-sm hover:bg-blue-800 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-1"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                            Log New Sale
-                        </button>
-                        
-                        <div class="relative">
-                            <button id="settings-btn" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
-                                 <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                            </button>
-                            <div id="settings-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-xl z-20">
-                                <div class="p-2 text-sm divide-y dark:divide-slate-700">
-                                    <div class="py-1">
-                                        <div class="flex items-center justify-between px-2 py-1.5"><label>Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
-                                        <div class="flex items-center justify-between px-2 py-1.5"><label>Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
-                                    </div>
-                                    <div class="py-1">
-                                        <button id="logout-btn" class="w-full text-left px-2 py-1.5 rounded-md text-red-600 hover:bg-red-50 dark:hover:bg-red-900/50">Logout</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <span class="border-l h-6 border-slate-300 dark:border-slate-600"></span>
-                        
-                        <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select>
-                        <select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select>
-                    </div>
-                </div>
-                <div id="sales-list" class="divide-y divide-slate-200 dark:divide-slate-700">
-                     <div id="no-sales-message" class="text-center py-10 text-slate-500 dark:text-slate-400"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><p>No sales logged yet.</p></div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
-    <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content max-h-[90vh] overflow-y-auto"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-6"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
-
-    <script type="module">
+<script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -223,7 +29,9 @@
             weekly: { mobile: 0, internet: 0, tv: 0 },
             monthly: { mobile: 0, internet: 0, tv: 0 }
         };
-        const productCatalog = { Mobile: { plans: {'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },}, addOns: {'AT&T Next Up': { commission: 10, combo: { 'AT&T Unlimited Starter': 40, 'AT&T Unlimited Extra': 60, 'AT&T Unlimited Premium': 70, 'AT&T Device Upgrade': 15 }},'AT&T Protect Advantage for 1 Tier 1': { commission: 14 }, 'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },'AT&T Protect Advantage for 4': { commission: 50 }, 'AT&T Turbo': { commission: 7 },}}, Internet: { plans: {'AT&T Fiber 1000': { baseCommission: 200.00 },'AT&T Fiber 500': { baseCommission: 150.00 },'AT&T Fiber 300': { baseCommission: 100.00 },'AT&T Fiber 100': { baseCommission: 100.00 },'AT&T Fiber <100': { baseCommission: 75.00 },}}, DirecTV: { plans: {'DirecTV Stream Premium': { baseCommission: 50.00 },'DirecTV Stream Basic': { baseCommission: 40.00 },'DirecTV Satellite Premium': { baseCommission: 50.00 },'DirecTV Satellite Basic': { baseCommission: 40.00 },}}};
+        // DELETED: The hardcoded product catalog is gone.
+        // NEW: This will be populated from Firestore.
+        let productCatalog = {};
 
         // --- DOM Elements ---
         const loginModal = document.getElementById('login-modal');
@@ -258,20 +66,32 @@
 
         // --- Firebase & Auth Logic ---
         
-        // NEW: A helper function to display an error state within the app
+        // NEW: Function to fetch the product catalog from Firestore.
+        async function fetchProductCatalog() {
+            const docRef = doc(db, "app_config", "product_catalog");
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                productCatalog = docSnap.data();
+                console.log("Successfully fetched product catalog.");
+            } else {
+                // This is a fatal error, the app cannot work without the catalog.
+                throw new Error("Product Catalog could not be found in the database.");
+            }
+        }
+
         function showFatalError(error) {
             console.error("A fatal error occurred:", error);
             splashScreen.style.display = 'none';
             appContainer.style.display = 'block';
             const errorMessage = `
                 <div class="text-center py-10 px-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                    <h3 class="text-xl font-bold text-red-600 mb-2">Could Not Load Your Data</h3>
+                    <h3 class="text-xl font-bold text-red-600 mb-2">Application Error</h3>
                     <p class="text-slate-500 dark:text-slate-400">
-                        There was a problem retrieving your information from the server. 
-                        Please try refreshing the page.
+                        Could not load essential application configuration.
                     </p>
                     <p class="text-xs text-slate-400 dark:text-slate-500 mt-4">
-                        If the problem persists, your account data may be misconfigured or network rules may be preventing access.
+                        Details: ${error.message}. Please contact support.
                     </p>
                 </div>
             `;
@@ -281,7 +101,6 @@
             }
         }
 
-        // CORRECTED: The main auth handler now uses the new error handling strategy
         onAuthStateChanged(auth, async (user) => {
             splashScreen.style.display = 'flex';
 
@@ -292,6 +111,8 @@
                         loginModal.style.display = 'none';
                         signupModal.style.display = 'none';
                         
+                        // UPDATED: Fetch catalog first, as it's essential for everything else.
+                        await fetchProductCatalog();
                         await fetchData();
                         
                         splashScreen.style.display = 'none';
@@ -345,7 +166,6 @@
 
         async function handleLogout() {
             await signOut(auth);
-            // Reload the page to ensure a clean state
             window.location.reload();
         }
         
@@ -445,6 +265,7 @@
             sales = [];
             userSettings = { name: '', theme: 'light', tempUnit: 'C' };
             currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
+            productCatalog = {}; // Also reset catalog on logout
         }
         
         // --- UI & Logic Functions ---
@@ -557,7 +378,7 @@
         const updateServiceBuilderUI = () => {
             const category = categorySelect.value;
             serviceOptionsContainer.innerHTML = '';
-            if (!category) return;
+            if (!category || !productCatalog[category]) return;
             const categoryData = productCatalog[category];
             let optionsHTML = `<div><label for="service-plan" class="block text-sm font-medium mb-1">2. Configure Service</label><select id="service-plan" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select Plan --</option>`;
             Object.keys(categoryData.plans).forEach(planName => optionsHTML += `<option value="${planName}">${planName}</option>`);
@@ -734,5 +555,3 @@
         setInterval(updateTime, 1000);
         setInterval(updateWeather, 60000);
     </script>
-</body>
-</html>
