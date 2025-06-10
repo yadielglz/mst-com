@@ -654,7 +654,9 @@
             
             if (!planData) { alert('Selected plan could not be found in the catalog!'); return; }
             
-            const baseCommission = planData.baseCommission ?? 0;
+            // CORRECTED: This line is now robust and checks for multiple typo variations.
+            const baseCommission = planData.baseCommission ?? planData.baseCommision ?? planData.baseCommisssion ?? 0;
+            
             const service = { category, planName, commission: 0, addOns: [], lines: null };
             
             if (category === 'AT&T Wireless') {
