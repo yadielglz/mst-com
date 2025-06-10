@@ -138,7 +138,19 @@
             <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Sales Log</h3>
-                    <div class="hidden md:flex items-center space-x-2 mt-3 md:mt-0"><select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select><select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select></div>
+                    <div class="hidden md:flex items-center space-x-4 mt-3 md:mt-0">
+                        <a href="https://mst.att.com" target="_blank" class="flex items-center justify-center gap-2 text-sm bg-white dark:bg-slate-700 text-att-blue dark:text-att-blue-light font-semibold py-2 px-3 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            Open MST
+                        </a>
+                        <button id="add-sale-btn-desktop" class="flex items-center justify-center gap-2 text-sm bg-att-blue text-white font-semibold py-2 px-3 rounded-lg shadow-sm hover:bg-blue-800 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-1"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                            Log New Sale
+                        </button>
+                        <span class="border-l h-6 border-slate-300 dark:border-slate-600"></span>
+                        <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select>
+                        <select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select>
+                    </div>
                 </div>
                 <div id="sales-list" class="divide-y divide-slate-200 dark:divide-slate-700">
                      <div id="no-sales-message" class="text-center py-10 text-slate-500 dark:text-slate-400"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><p>No sales logged yet.</p></div>
@@ -170,6 +182,7 @@
         const welcomeMessageEl = document.getElementById('welcome-message');
         const salesListEl = document.getElementById('sales-list'), noSalesMessage = document.getElementById('no-sales-message');
         const addSaleBtnMain = document.getElementById('add-sale-btn-main');
+        const addSaleBtnDesktop = document.getElementById('add-sale-btn-desktop');
         const saleModal = document.getElementById('sale-modal'), saleForm = document.getElementById('sale-form'), cancelBtn = document.getElementById('cancel-btn');
         const totalSalesEl = document.getElementById('total-sales'), totalCommissionEl = document.getElementById('total-commission'), avgCommissionEl = document.getElementById('avg-commission');
         const totalSalesMobileEl = document.getElementById('total-sales-mobile'), totalCommissionMobileEl = document.getElementById('total-commission-mobile'), avgCommissionMobileEl = document.getElementById('avg-commission-mobile');
@@ -461,8 +474,9 @@
                 renderFullUI();
             });
 
-            // This button is for mobile view
-            addSaleBtnMain.addEventListener('click', openModal);
+            // Button listeners
+            addSaleBtnMain.addEventListener('click', openModal); // Mobile button
+            addSaleBtnDesktop.addEventListener('click', openModal); // Desktop button
 
             cancelBtn.addEventListener('click', closeModal);
             editGoalsBtn.addEventListener('click', showGoalsModal);
