@@ -203,7 +203,7 @@
             apiKey: "AIzaSyD5dFgt8ND020zkaR8VjlvPrYWcPtBkJJA",
             authDomain: "commst-c7bd2.firebaseapp.com",
             projectId: "commst-c7bd2",
-            storageBucket: "commst-c7bd2.firebasestorage.app",
+            storageBucket: "commst-c7bd2.appspot.com",
             messagingSenderId: "606435543669",
             appId: "1:606435543669:web:6019e989a1d776f5a2c63c",
             measurementId: "G-RG8XNF865Q"
@@ -382,6 +382,7 @@
             }
         }
 
+        // CORRECTED: This function no longer calls renderFullUI() itself.
         async function saveGoalsToFirestore(newGoals) {
             if (!currentUser) return;
             const uid = currentUser.uid;
@@ -389,7 +390,6 @@
                 const goalsDocRef = doc(db, 'users', uid, 'user-data', 'goals');
                 await setDoc(goalsDocRef, newGoals, { merge: true });
                 currentGoals = newGoals;
-                renderFullUI();
             } catch (error) {
                 console.error("Error saving goals: ", error);
                 alert("Could not save goals. Please try again.");
@@ -504,8 +504,8 @@
                      const category = service.category === 'DirecTV' ? 'TV' : service.category;
                      const units = category === 'Mobile' ? (service.lines || 0) : 1;
                      if (monthlyProgress.hasOwnProperty(category)) {
-                        if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
-                        if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
+                         if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
+                         if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
                      }
                  });
              });
@@ -639,16 +639,21 @@
             showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); loginModal.style.display = 'none'; signupModal.style.display = 'flex'; });
             showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); signupModal.style.display = 'none'; loginModal.style.display = 'flex'; });
             
+            // CORRECTED: This listener now has the proper logic sequence to transition UI states.
             oobeGoalsForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const newGoals = { 
                     weekly: { mobile: parseInt(document.getElementById('oobe-goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-weekly-tv').value) || 0 },
                     monthly: { mobile: parseInt(document.getElementById('oobe-goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-monthly-tv').value) || 0 } 
                 };
+                
+                // 1. Save data
                 await saveGoalsToFirestore(newGoals);
+                // 2. Hide OOBE screen
                 oobeGoalsScreen.style.display = 'none';
-                // --- THIS IS THE FIX ---
+                // 3. Show main app screen
                 appContainer.style.display = 'block'; 
+                // 4. Render the UI
                 renderFullUI();
             });
 
@@ -665,6 +670,7 @@
                 e.preventDefault(); 
                 const newGoals = { weekly: { mobile: parseInt(document.getElementById('goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('goal-weekly-tv').value) || 0 }, monthly: { mobile: parseInt(document.getElementById('goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('goal-monthly-tv').value) || 0 } };
                 await saveGoalsToFirestore(newGoals);
+                renderFullUI(); // Re-render goals after saving
                 hideGoalsModal(); 
             });
             addServiceBtn.addEventListener('click', addServiceToSale);
