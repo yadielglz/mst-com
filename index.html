@@ -617,8 +617,11 @@
             const planSelect = document.getElementById('service-plan');
             if (planSelect && category === 'AT&T Wireless') {
                 planSelect.addEventListener('change', () => {
-                    const planInfo = productCatalog['AT&T Wireless'].plans[planSelect.value];
-                    document.getElementById('lines-section').style.display = planInfo && planInfo.hasLines ? 'block' : 'none';
+                    const planInfo = productCatalog['AT&T Wireless']?.plans?.[planSelect.value];
+                    const linesSection = document.getElementById('lines-section');
+                    if (linesSection) {
+                         linesSection.style.display = planInfo?.hasLines ? 'block' : 'none';
+                    }
                 });
             }
         };
@@ -652,11 +655,12 @@
                 planData = productCatalog[category]?.plans?.[planName];
             }
             
-            if (!planData) { alert('Selected plan could not be found in the catalog!'); return; }
+            if (!planData) { 
+                alert('Selected plan could not be found in the catalog! Please check the data in Firestore.'); 
+                return; 
+            }
             
-            // CORRECTED: This line is now robust and checks for multiple typo variations.
             const baseCommission = planData.baseCommission ?? planData.baseCommision ?? planData.baseCommisssion ?? 0;
-            
             const service = { category, planName, commission: 0, addOns: [], lines: null };
             
             if (category === 'AT&T Wireless') {
@@ -665,7 +669,7 @@
                 const hasNextUp = selectedAddons.includes('AT&T Next Up');
                 const categoryData = productCatalog[category];
                 
-                if (hasNextUp && baseCommission > 0 && categoryData.addOns['AT&T Next Up']?.combo[planName]) {
+                if (hasNextUp && baseCommission > 0 && categoryData.addOns?.['AT&T Next Up']?.combo?.[planName]) {
                     perLineCommission = categoryData.addOns['AT&T Next Up'].combo[planName];
                 } else {
                     perLineCommission = baseCommission;
@@ -673,7 +677,7 @@
                 
                 selectedAddons.forEach(addonName => {
                     if (addonName === 'AT&T Next Up' && perLineCommission > baseCommission) return;
-                    if (categoryData.addOns[addonName]) {
+                    if (categoryData.addOns?.[addonName]) {
                         perLineCommission += categoryData.addOns[addonName].commission || 0;
                     }
                 });
@@ -703,19 +707,23 @@
         const updateTime = () => timeDisplay.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
         const updateWeather = () => {
-            dateDisplay.textContent = new Date().toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
-                .then(res => res.json()).then(data => {
-                    if (data && data.current_weather) {
-                        const tempF = data.current_weather.temperature; 
-                        const tempC = (tempF - 32) * 5/9;
-                        const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
-                        const code = data.current_weather.weathercode;
-                        let emoji = '☀️';
-                        if (code > 70) emoji = '🌧️'; else if (code > 50) emoji = '🌦️'; else if (code > 2) emoji = '☁️';
-                        weatherDisplay.textContent = `${displayTemp}°${userSettings.tempUnit} ${emoji} in Haines City, FL`;
-                    } else { weatherDisplay.textContent = 'Weather unavailable'; }
-                }).catch(() => weatherDisplay.textContent = 'Weather unavailable');
+            const now = new Date();
+            dateDisplay.textContent = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // Only fetch weather if the element exists on the page
+            if(document.getElementById('weather-display')) {
+                fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
+                    .then(res => res.json()).then(data => {
+                        if (data && data.current_weather) {
+                            const tempF = data.current_weather.temperature; 
+                            const tempC = (tempF - 32) * 5/9;
+                            const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
+                            const code = data.current_weather.weathercode;
+                            let emoji = '☀️';
+                            if (code > 70) emoji = '🌧️'; else if (code > 50) emoji = '🌦️'; else if (code > 2) emoji = '☁️';
+                            weatherDisplay.textContent = `${displayTemp}°${userSettings.tempUnit} ${emoji} in Haines City, FL`;
+                        } else { weatherDisplay.textContent = 'Weather unavailable'; }
+                    }).catch(() => weatherDisplay.textContent = 'Weather unavailable');
+            }
         };
         
         const getStartOfWeek = () => { const n=new Date(),d=n.getDay(),f=n.getDate()-d+(d==0?-6:1);return new Date(new Date(n.setDate(f)).setHours(0,0,0,0)); };
