@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AT&T Commission Tracker</title>
-    <!-- Tailwind CSS for styling -->
+    <link rel="icon" href="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Custom Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
         // Customizing Tailwind with AT&T's color palette
@@ -28,6 +27,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
@@ -50,7 +50,6 @@
 </head>
 <body class="bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
 
-    <!-- Splash Screen -->
     <div id="splash-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
         <div class="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center splash-content">
             <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" class="h-12 mx-auto mb-4">
@@ -64,9 +63,8 @@
         </div>
     </div>
 
-    <!-- OOBE Goals Screen -->
     <div id="oobe-goals-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-lg mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl oobe-content">
+        <div class="w-full max-w-lg mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl oobe-content max-h-[90vh] overflow-y-auto">
             <h2 class="text-2xl font-bold mb-2 text-center">Set Your Initial Goals</h2>
             <p class="text-center text-slate-500 mb-6">You can change these later in the settings.</p>
             <form id="oobe-goals-form" class="space-y-6">
@@ -78,19 +76,18 @@
     </div>
 
     <div id="app-container" class="max-w-5xl mx-auto p-4 md:p-6">
-        <!-- Header Section -->
-        <header class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <header class="flex flex-wrap md:flex-nowrap justify-between items-center mb-6 gap-4">
             <div class="flex items-center gap-4">
-                <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Logo" class="h-12">
-                <div><h1 class="text-3xl font-bold text-slate-900 dark:text-white">Commission Tracker</h1><p id="welcome-message" class="text-slate-500 dark:text-slate-400">Welcome!</p></div>
+                <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Logo" class="h-10">
+                <div><h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Commission Tracker</h1><p id="welcome-message" class="text-slate-500 dark:text-slate-400">Welcome!</p></div>
             </div>
-            <div class="w-full md:w-auto flex items-center justify-center md:justify-end gap-4">
-                <div id="time-weather-widget" class="text-center md:text-right">
-                    <p id="time-display" class="text-2xl font-semibold text-att-blue">--:-- --</p>
-                    <p id="date-display" class="text-sm text-att-gray dark:text-slate-400">---------- --, ----</p>
-                    <p id="weather-display" class="text-sm text-att-gray dark:text-slate-400">Loading weather...</p>
+             <div class="w-full md:w-auto flex items-center justify-center md:justify-end gap-4">
+                <div id="time-weather-widget" class="text-center md:text-right order-last md:order-first">
+                    <p id="time-display" class="text-xl sm:text-2xl font-semibold text-att-blue">--:-- --</p>
+                    <p id="date-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">---------- --, ----</p>
+                    <p id="weather-display" class="text-xs sm:text-sm text-att-gray dark:text-slate-400">Loading weather...</p>
                 </div>
-                <div class="relative">
+                <div class="relative order-first md:order-last">
                     <button id="settings-btn" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
                          <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </button>
@@ -102,15 +99,29 @@
                         </div>
                     </div>
                 </div>
-                <button id="add-sale-btn-header" class="hidden md:flex items-center bg-att-blue text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>
-                    Log New Sale
-                </button>
             </div>
         </header>
 
         <main>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="md:hidden mb-4">
+                 <div class="grid grid-cols-2 gap-4 mb-4">
+                    <a href="https://mst.att.com" target="_blank" class="flex items-center justify-center gap-2 w-full bg-white dark:bg-slate-800 text-att-blue dark:text-att-blue-light font-semibold py-3 px-4 rounded-lg shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Open MST
+                    </a>
+                    <button id="add-sale-btn-main" class="flex items-center justify-center gap-2 w-full bg-att-blue text-white font-semibold py-3 px-4 rounded-lg shadow-sm hover:bg-blue-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>
+                        Log New Sale
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Sales</h3><p id="total-sales-mobile" class="font-bold text-lg text-att-blue">0</p></div>
+                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Commission</h3><p id="total-commission-mobile" class="font-bold text-lg text-emerald-600">$0</p></div>
+                    <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-sm"><h3 class="text-xs text-att-gray dark:text-slate-400">Avg Comm.</h3><p id="avg-commission-mobile" class="font-bold text-lg text-amber-600">$0</p></div>
+                </div>
+            </div>
+
+            <div class="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Sales</h2><p id="total-sales" class="text-3xl font-bold text-att-blue">0</p></div>
                 <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Total Commission</h2><p id="total-commission" class="text-3xl font-bold text-emerald-600">$0.00</p></div>
                 <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm"><h2 class="text-att-gray dark:text-slate-400 text-sm font-medium">Average Commission</h2><p id="avg-commission" class="text-3xl font-bold text-amber-600">$0.00</p></div>
@@ -127,8 +138,7 @@
             <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">Sales Log</h3>
-                    <button id="add-sale-btn-main" class="md:hidden mt-4 w-full flex items-center justify-center bg-att-blue text-white font-semibold py-2 px-4 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12"x2="16" y2="12"/></svg>Log New Sale</button>
-                    <div class="flex items-center space-x-2 mt-3 md:mt-0"><select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select><select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select></div>
+                    <div class="hidden md:flex items-center space-x-2 mt-3 md:mt-0"><select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select><select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select></div>
                 </div>
                 <div id="sales-list" class="divide-y divide-slate-200 dark:divide-slate-700">
                      <div id="no-sales-message" class="text-center py-10 text-slate-500 dark:text-slate-400"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><p>No sales logged yet.</p></div>
@@ -137,9 +147,8 @@
         </main>
     </div>
 
-    <!-- Modals are here -->
     <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
-    <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-4"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 space-y-4 sm:space-y-0"><label class="block">Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 space-y-4 sm:space-y-0"><label class="block">Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
+    <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content max-h-[90vh] overflow-y-auto"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-6"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
     <div id="profile-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-sm m-4 modal-content"><h2 class="text-2xl font-bold mb-4">Set Profile Name</h2><form id="profile-form"><label for="profile-name-input" class="block text-sm font-medium mb-1">Your Name</label><input type="text" id="profile-name-input" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-profile-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Name</button></div></form></div></div>
 
     <script type="module">
@@ -160,9 +169,10 @@
         const appContainer = document.getElementById('app-container');
         const welcomeMessageEl = document.getElementById('welcome-message');
         const salesListEl = document.getElementById('sales-list'), noSalesMessage = document.getElementById('no-sales-message');
-        const addSaleBtnHeader = document.getElementById('add-sale-btn-header'), addSaleBtnMain = document.getElementById('add-sale-btn-main');
+        const addSaleBtnMain = document.getElementById('add-sale-btn-main');
         const saleModal = document.getElementById('sale-modal'), saleForm = document.getElementById('sale-form'), cancelBtn = document.getElementById('cancel-btn');
         const totalSalesEl = document.getElementById('total-sales'), totalCommissionEl = document.getElementById('total-commission'), avgCommissionEl = document.getElementById('avg-commission');
+        const totalSalesMobileEl = document.getElementById('total-sales-mobile'), totalCommissionMobileEl = document.getElementById('total-commission-mobile'), avgCommissionMobileEl = document.getElementById('avg-commission-mobile');
         const goalsContainer = document.getElementById('goals-container'), editGoalsBtn = document.getElementById('edit-goals-btn');
         const filterProductEl = document.getElementById('filter-product'), sortSalesEl = document.getElementById('sort-sales');
         const categorySelect = document.getElementById('category'), serviceOptionsContainer = document.getElementById('service-options-container');
@@ -180,12 +190,12 @@
         const openModal = () => saleModal.classList.remove('hidden');
         const closeModal = () => { saleModal.classList.add('hidden'); saleForm.reset(); currentSaleServices=[]; renderCurrentServices(); updateServiceBuilderUI(); };
         const showGoalsModal = () => { 
-             document.getElementById('goal-weekly-mobile').value = currentGoals.weekly.mobile || 0;
-             document.getElementById('goal-weekly-internet').value = currentGoals.weekly.internet || 0;
-             document.getElementById('goal-weekly-tv').value = currentGoals.weekly.tv || 0;
-             document.getElementById('goal-monthly-mobile').value = currentGoals.monthly.mobile || 0;
-             document.getElementById('goal-monthly-internet').value = currentGoals.monthly.internet || 0;
-             document.getElementById('goal-monthly-tv').value = currentGoals.monthly.tv || 0;
+            document.getElementById('goal-weekly-mobile').value = currentGoals.weekly.mobile || 0;
+            document.getElementById('goal-weekly-internet').value = currentGoals.weekly.internet || 0;
+            document.getElementById('goal-weekly-tv').value = currentGoals.weekly.tv || 0;
+            document.getElementById('goal-monthly-mobile').value = currentGoals.monthly.mobile || 0;
+            document.getElementById('goal-monthly-internet').value = currentGoals.monthly.internet || 0;
+            document.getElementById('goal-monthly-tv').value = currentGoals.monthly.tv || 0;
             goalsModal.classList.remove('hidden');
         };
         const hideGoalsModal = () => goalsModal.classList.add('hidden');
@@ -232,20 +242,26 @@
             totalSalesEl.textContent = totalSalesCount;
             totalCommissionEl.textContent = `$${totalCommission.toFixed(2)}`;
             avgCommissionEl.textContent = `$${avgCommission.toFixed(2)}`;
+            // Mobile dashboard
+            totalSalesMobileEl.textContent = totalSalesCount;
+            totalCommissionMobileEl.textContent = `$${totalCommission.toFixed(0)}`;
+            avgCommissionMobileEl.textContent = `$${avgCommission.toFixed(0)}`;
         };
 
         const renderSales = () => {
             salesListEl.innerHTML = '';
             const filteredSales = filterAndSortSales();
             noSalesMessage.style.display = filteredSales.length === 0 ? 'block' : 'none';
-            filteredSales.forEach((sale, index) => {
+            filteredSales.forEach((sale) => {
+                // Find the original index before filtering/sorting to use as a stable ID
+                const originalIndex = sales.indexOf(sale);
                 const saleEl = document.createElement('div');
                 saleEl.className = 'flex flex-col md:flex-row items-start md:items-center justify-between py-4';
-                saleEl.dataset.id = index; // Use index as ID for local data
+                saleEl.dataset.id = originalIndex; // Use original index as stable ID
                 const mainCategory = sale.services[0]?.category || 'Misc';
                 const color = { Mobile: { bg: 'bg-blue-100 dark:bg-blue-900/50' }, Internet: { bg: 'bg-green-100 dark:bg-green-900/50' }, DirecTV: { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
                 const servicesHTML = sale.services.map(s => `<li class="text-sm text-slate-600 dark:text-slate-300 font-medium">${s.planName}${s.lines ? ` (${s.lines} lines)` : ''}</li>`).join('');
-                saleEl.innerHTML = `<div class="flex items-center gap-4 flex-1"><div class="p-3 rounded-full ${color.bg}"><!-- icon --></div><div><p class="font-semibold text-slate-800 dark:text-slate-100">${sale.customerName}</p><ul class="list-disc list-inside ml-4">${servicesHTML}</ul><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${new Date(sale.saleDate + 'T00:00:00').toLocaleDateString()}</p>${sale.notes ? `<p class="text-xs text-slate-400 mt-1 italic">Note: ${sale.notes}</p>` : ''}</div></div><div class="flex items-center gap-4 mt-3 md:mt-0 w-full md:w-auto"><span class="font-semibold text-emerald-600 text-lg">$${sale.totalCommission.toFixed(2)}</span><button class="delete-btn p-2 text-slate-500 hover:text-red-600 dark:hover:text-red-400"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button></div>`;
+                saleEl.innerHTML = `<div class="flex items-center gap-4 flex-1"><div class="p-3 rounded-full ${color.bg}"></div><div><p class="font-semibold text-slate-800 dark:text-slate-100">${sale.customerName}</p><ul class="list-disc list-inside ml-4">${servicesHTML}</ul><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${new Date(sale.saleDate + 'T00:00:00').toLocaleDateString()}</p>${sale.notes ? `<p class="text-xs text-slate-400 mt-1 italic">Note: ${sale.notes}</p>` : ''}</div></div><div class="flex items-center gap-4 mt-3 md:mt-0 w-full md:w-auto"><span class="font-semibold text-emerald-600 text-lg">$${sale.totalCommission.toFixed(2)}</span><button class="delete-btn p-2 text-slate-500 hover:text-red-600 dark:hover:text-red-400"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button></div>`;
                 salesListEl.appendChild(saleEl);
             });
         };
@@ -258,10 +274,12 @@
              sales.forEach(sale => {
                  const saleDate = new Date(sale.saleDate + 'T00:00:00'); // Prevent timezone shift by specifying time
                  sale.services.forEach(service => {
-                     const category = service.category;
+                     const category = service.category === 'DirecTV' ? 'TV' : service.category;
                      const units = category === 'Mobile' ? (service.lines || 0) : 1;
-                     if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
-                     if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
+                     if (monthlyProgress.hasOwnProperty(category)) {
+                        if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
+                        if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
+                     }
                  });
              });
              return { weeklyProgress, monthlyProgress };
@@ -369,18 +387,23 @@
         
         const toggleTempUnit = () => {
             userSettings.tempUnit = userSettings.tempUnit === 'C' ? 'F' : 'C';
-            updateTimeWeather();
+            updateWeather(); // Just update weather display, not the whole time
             localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
         };
         
-        const updateTimeWeather = () => {
+        const updateTime = () => {
             const now = new Date();
             timeDisplay.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        const updateWeather = () => {
+            const now = new Date();
             dateDisplay.textContent = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // Using a static location for this tool.
             fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
                 .then(res => res.json()).then(data => {
                     if (data && data.current_weather) {
-                        const tempF = data.current_weather.temperature; // API returns fahrenheit directly now
+                        const tempF = data.current_weather.temperature; 
                         const tempC = (tempF - 32) * 5/9;
                         const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
                         const code = data.current_weather.weathercode;
@@ -437,8 +460,10 @@
                 appContainer.style.display = 'block';
                 renderFullUI();
             });
-            addSaleBtnHeader.addEventListener('click', openModal);
+
+            // This button is for mobile view
             addSaleBtnMain.addEventListener('click', openModal);
+
             cancelBtn.addEventListener('click', closeModal);
             editGoalsBtn.addEventListener('click', showGoalsModal);
             cancelGoalsBtn.addEventListener('click', hideGoalsModal);
@@ -455,9 +480,14 @@
             addServiceBtn.addEventListener('click', addServiceToSale);
             currentSaleServicesEl.addEventListener('click', e => { if (e.target.closest('.remove-service-btn')) { currentSaleServices.splice(parseInt(e.target.closest('.remove-service-btn').dataset.index), 1); renderCurrentServices(); } });
             saleForm.addEventListener('submit', (e) => { e.preventDefault(); if (currentSaleServices.length === 0) return; const saleData = { customerName: document.getElementById('customer-name').value, saleDate: document.getElementById('sale-date').value, services: currentSaleServices, totalCommission: currentSaleServices.reduce((sum, s) => sum + s.commission, 0), notes: document.getElementById('notes').value }; sales.push(saleData); closeModal(); renderFullUI(); });
-            salesListEl.addEventListener('click', (e) => { const delBtn = e.target.closest('.delete-btn'); if (delBtn) { const saleIndex = parseInt(delBtn.closest('[data-id]').dataset.id); sales.splice(saleIndex, 1); renderFullUI(); } });
-            settingsBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsMenu.classList.toggle('hidden');});
+            salesListEl.addEventListener('click', (e) => { const delBtn = e.target.closest('.delete-btn'); if (delBtn) { const saleIndex = parseInt(delBtn.closest('[data-id]').dataset.id); if (!isNaN(saleIndex)) { sales.splice(saleIndex, 1); renderFullUI(); } } });
+            
+            settingsBtn.addEventListener('click', (e) => { 
+                e.stopPropagation(); 
+                settingsMenu.classList.toggle('hidden');
+            });
             document.addEventListener('click', (e) => { if (!settingsMenu.contains(e.target) && !settingsBtn.contains(e.target)) { settingsMenu.classList.add('hidden'); } });
+            
             themeToggleBtn.addEventListener('click', toggleTheme);
             tempToggleBtn.addEventListener('click', toggleTempUnit);
             setProfileBtn.addEventListener('click', showProfileModal);
@@ -477,8 +507,10 @@
         // --- Start App ---
         initializeApp();
         setupEventListeners();
-        updateTimeWeather();
-        setInterval(updateTimeWeather, 60000);
+        updateTime(); // Initial call for time
+        updateWeather(); // Initial call for date and weather
+        setInterval(updateTime, 1000); // Update time every second
+        setInterval(updateWeather, 60000); // Update date and weather every minute
     </script>
 </body>
 </html>
