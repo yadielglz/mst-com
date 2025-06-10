@@ -178,7 +178,7 @@
 
                         <span class="border-l h-6 border-slate-300 dark:border-slate-600"></span>
                         
-                        <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="AT&T Wireless">AT&T Wireless</option><option value="AT&T Fiber">AT&T Fiber</option><option value="DirecTV">TV</option></select>
+                        <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select>
                         <select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
         </main>
     </div>
 
-    <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="AT&T Wireless">AT&T Wireless</option><option value="AT&T Fiber">AT&T Fiber</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
+    <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
     <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content max-h-[90vh] overflow-y-auto"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-6"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
 
     <script type="module">
@@ -223,7 +223,7 @@
             weekly: { mobile: 0, internet: 0, tv: 0 },
             monthly: { mobile: 0, internet: 0, tv: 0 }
         };
-        let productCatalog = {};
+        const productCatalog = { Mobile: { plans: {'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },}, addOns: {'AT&T Next Up': { commission: 10, combo: { 'AT&T Unlimited Starter': 40, 'AT&T Unlimited Extra': 60, 'AT&T Unlimited Premium': 70, 'AT&T Device Upgrade': 15 }},'AT&T Protect Advantage for 1 Tier 1': { commission: 14 }, 'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },'AT&T Protect Advantage for 4': { commission: 50 }, 'AT&T Turbo': { commission: 7 },}}, Internet: { plans: {'AT&T Fiber 1000': { baseCommission: 200.00 },'AT&T Fiber 500': { baseCommission: 150.00 },'AT&T Fiber 300': { baseCommission: 100.00 },'AT&T Fiber 100': { baseCommission: 100.00 },'AT&T Fiber <100': { baseCommission: 75.00 },}}, DirecTV: { plans: {'DirecTV Stream Premium': { baseCommission: 50.00 },'DirecTV Stream Basic': { baseCommission: 40.00 },'DirecTV Satellite Premium': { baseCommission: 50.00 },'DirecTV Satellite Basic': { baseCommission: 40.00 },}}};
 
         // --- DOM Elements ---
         const loginModal = document.getElementById('login-modal');
@@ -258,28 +258,20 @@
 
         // --- Firebase & Auth Logic ---
         
-        async function fetchProductCatalog() {
-            const docRef = doc(db, "app_config", "product_catalog");
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                productCatalog = docSnap.data();
-            } else {
-                throw new Error("Product Catalog could not be found in the database. Please ensure it exists in the 'app_config' collection.");
-            }
-        }
-
+        // NEW: A helper function to display an error state within the app
         function showFatalError(error) {
-            console.error("A fatal error occurred during startup:", error);
+            console.error("A fatal error occurred:", error);
             splashScreen.style.display = 'none';
             appContainer.style.display = 'block';
             const errorMessage = `
                 <div class="text-center py-10 px-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                    <h3 class="text-xl font-bold text-red-600 mb-2">Application Error</h3>
+                    <h3 class="text-xl font-bold text-red-600 mb-2">Could Not Load Your Data</h3>
                     <p class="text-slate-500 dark:text-slate-400">
-                        Could not load essential application configuration.
+                        There was a problem retrieving your information from the server. 
+                        Please try refreshing the page.
                     </p>
                     <p class="text-xs text-slate-400 dark:text-slate-500 mt-4">
-                        Details: ${error.message}
+                        If the problem persists, your account data may be misconfigured or network rules may be preventing access.
                     </p>
                 </div>
             `;
@@ -289,8 +281,10 @@
             }
         }
 
+        // CORRECTED: The main auth handler now uses the new error handling strategy
         onAuthStateChanged(auth, async (user) => {
             splashScreen.style.display = 'flex';
+
             setTimeout(async () => {
                 try {
                     if (user) {
@@ -298,11 +292,11 @@
                         loginModal.style.display = 'none';
                         signupModal.style.display = 'none';
                         
-                        await fetchProductCatalog();
                         await fetchData();
                         
                         splashScreen.style.display = 'none';
-                        if (Object.keys(currentGoals).length === 0 || (currentGoals.weekly?.mobile === 0 && currentGoals.monthly?.mobile === 0)) {
+
+                        if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
                             oobeGoalsScreen.style.display = 'flex';
                         } else {
                             appContainer.style.display = 'block';
@@ -311,6 +305,7 @@
                     } else {
                         currentUser = null;
                         resetLocalData();
+                        
                         splashScreen.style.display = 'none';
                         appContainer.style.display = 'none';
                         oobeGoalsScreen.style.display = 'none';
@@ -350,12 +345,16 @@
 
         async function handleLogout() {
             await signOut(auth);
+            // Reload the page to ensure a clean state
             window.location.reload();
         }
         
+        // --- Firestore Data Functions ---
+
         async function fetchData() {
             if (!currentUser) return;
             const uid = currentUser.uid;
+
             const settingsDocRef = doc(db, 'users', uid, 'user-data', 'settings');
             const settingsDocSnap = await getDoc(settingsDocRef);
             if (settingsDocSnap.exists()) {
@@ -364,6 +363,7 @@
                 userSettings = { name: currentUser.displayName, theme: 'light', tempUnit: 'C' };
             }
             applySettings();
+
             const goalsDocRef = doc(db, 'users', uid, 'user-data', 'goals');
             const goalsDocSnap = await getDoc(goalsDocRef);
             if (goalsDocSnap.exists()) {
@@ -371,6 +371,7 @@
             } else {
                 currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
             }
+
             const salesCollectionRef = collection(db, 'users', uid, 'sales');
             const q = query(salesCollectionRef);
             const querySnapshot = await getDocs(q);
@@ -443,19 +444,19 @@
         function resetLocalData() {
             sales = [];
             userSettings = { name: '', theme: 'light', tempUnit: 'C' };
-            currentGoals = {};
-            productCatalog = {};
+            currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
         }
         
+        // --- UI & Logic Functions ---
         const openModal = () => saleModal.classList.remove('hidden');
         const closeModal = () => { saleModal.classList.add('hidden'); saleForm.reset(); currentSaleServices=[]; renderCurrentServices(); updateServiceBuilderUI(); };
         const showGoalsModal = () => { 
-            document.getElementById('goal-weekly-mobile').value = currentGoals.weekly?.mobile || 0;
-            document.getElementById('goal-weekly-internet').value = currentGoals.weekly?.internet || 0;
-            document.getElementById('goal-weekly-tv').value = currentGoals.weekly?.tv || 0;
-            document.getElementById('goal-monthly-mobile').value = currentGoals.monthly?.mobile || 0;
-            document.getElementById('goal-monthly-internet').value = currentGoals.monthly?.internet || 0;
-            document.getElementById('goal-monthly-tv').value = currentGoals.monthly?.tv || 0;
+            document.getElementById('goal-weekly-mobile').value = currentGoals.weekly.mobile || 0;
+            document.getElementById('goal-weekly-internet').value = currentGoals.weekly.internet || 0;
+            document.getElementById('goal-weekly-tv').value = currentGoals.weekly.tv || 0;
+            document.getElementById('goal-monthly-mobile').value = currentGoals.monthly.mobile || 0;
+            document.getElementById('goal-monthly-internet').value = currentGoals.monthly.internet || 0;
+            document.getElementById('goal-monthly-tv').value = currentGoals.monthly.tv || 0;
             goalsModal.classList.remove('hidden');
         };
         const hideGoalsModal = () => goalsModal.classList.add('hidden');
@@ -474,18 +475,16 @@
             ];
             goalsContainer.innerHTML = '';
             goalData.forEach(period => {
-                if (!period.goals) return;
                 const periodEl = document.createElement('div');
                 periodEl.innerHTML = `<h4 class="font-semibold text-lg mb-2">${period.title}</h4><div class="space-y-3"></div>`;
                 const container = periodEl.querySelector('.space-y-3');
-                Object.keys(productCatalog).forEach(catKey => {
-                    const catName = catKey === 'AT&T Fiber' ? 'internet' : catKey === 'AT&T Wireless' ? 'mobile' : catKey.toLowerCase();
-                    const target = period.goals?.[catName] || 0;
-                    const current = period.progress[catKey] || 0;
+                ['Mobile', 'Internet', 'TV'].forEach(cat => {
+                    const target = period.goals?.[cat.toLowerCase()] || 0;
+                    const current = period.progress[cat];
                     const percentage = target > 0 ? (current / target) * 100 : 0;
-                    const label = catKey === 'AT&T Wireless' ? 'Lines' : 'Services';
+                    const label = cat === 'Mobile' ? 'Lines' : 'Services';
                     const goalItem = document.createElement('div');
-                    goalItem.innerHTML = `<div class="flex justify-between text-sm mb-1"><span class="font-medium">${catKey} ${label}</span><span>${current} / ${target}</span></div><div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2"><div class="bg-att-blue h-2 rounded-full" style="width: ${Math.min(percentage, 100)}%"></div></div>`;
+                    goalItem.innerHTML = `<div class="flex justify-between text-sm mb-1"><span class="font-medium">${cat} ${label}</span><span>${current} / ${target}</span></div><div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2"><div class="bg-att-blue h-2 rounded-full" style="width: ${Math.min(percentage, 100)}%"></div></div>`;
                     container.appendChild(goalItem);
                 });
                 goalsContainer.appendChild(periodEl);
@@ -513,7 +512,7 @@
                 saleEl.className = 'flex flex-col md:flex-row items-start md:items-center justify-between py-4';
                 saleEl.dataset.id = sale.id; 
                 const mainCategory = sale.services[0]?.category || 'Misc';
-                const color = { 'AT&T Wireless': { bg: 'bg-blue-100 dark:bg-blue-900/50' }, 'AT&T Fiber': { bg: 'bg-green-100 dark:bg-green-900/50' }, 'DirecTV': { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
+                const color = { Mobile: { bg: 'bg-blue-100 dark:bg-blue-900/50' }, Internet: { bg: 'bg-green-100 dark:bg-green-900/50' }, DirecTV: { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
                 const servicesHTML = sale.services.map(s => `<li class="text-sm text-slate-600 dark:text-slate-300 font-medium">${s.planName}${s.lines ? ` (${s.lines} lines)` : ''}</li>`).join('');
                 saleEl.innerHTML = `<div class="flex items-center gap-4 flex-1"><div class="p-3 rounded-full ${color.bg}"></div><div><p class="font-semibold text-slate-800 dark:text-slate-100">${sale.customerName}</p><ul class="list-disc list-inside ml-4">${servicesHTML}</ul><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${new Date(sale.saleDate + 'T00:00:00').toLocaleDateString()}</p>${sale.notes ? `<p class="text-xs text-slate-400 mt-1 italic">Note: ${sale.notes}</p>` : ''}</div></div><div class="flex items-center gap-4 mt-3 md:mt-0 w-full md:w-auto"><span class="font-semibold text-emerald-600 text-lg">$${sale.totalCommission.toFixed(2)}</span><button class="delete-btn p-2 text-slate-500 hover:text-red-600 dark:hover:text-red-400"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button></div>`;
                 salesListEl.appendChild(saleEl);
@@ -521,15 +520,15 @@
         };
         
         const calculateProgress = () => {
-             const weeklyProgress = { 'AT&T Wireless': 0, 'AT&T Fiber': 0, 'DirecTV': 0 };
-             const monthlyProgress = { 'AT&T Wireless': 0, 'AT&T Fiber': 0, 'DirecTV': 0 };
+             const weeklyProgress = { Mobile: 0, Internet: 0, TV: 0 };
+             const monthlyProgress = { Mobile: 0, Internet: 0, TV: 0 };
              const startOfWeek = getStartOfWeek();
              const startOfMonth = getStartOfMonth();
              sales.forEach(sale => {
                  const saleDate = new Date(sale.saleDate + 'T00:00:00');
                  sale.services.forEach(service => {
-                     const category = service.category;
-                     const units = category === 'AT&T Wireless' ? (service.lines || 0) : 1;
+                     const category = service.category === 'DirecTV' ? 'TV' : service.category;
+                     const units = category === 'Mobile' ? (service.lines || 0) : 1;
                      if (monthlyProgress.hasOwnProperty(category)) {
                          if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
                          if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
@@ -543,10 +542,7 @@
             const filterValue = filterProductEl.value;
             const sortValue = sortSalesEl.value;
             let processedSales = [...sales];
-            if (filterValue !== 'all') { 
-                const targetCategory = filterValue === 'TV' ? 'DirecTV' : filterValue;
-                processedSales = processedSales.filter(sale => sale.services.some(s => s.category === targetCategory)); 
-            }
+            if (filterValue !== 'all') { processedSales = processedSales.filter(sale => sale.services.some(s => s.category === filterValue)); }
             processedSales.sort((a, b) => {
                 switch(sortValue) {
                     case 'date_asc': return new Date(a.saleDate) - new Date(b.saleDate);
@@ -558,70 +554,26 @@
             return processedSales;
         };
 
-        const mobilePlanSortOrder = [
-            "AT&T Unlimited Starter",
-            "AT&T Unlimited Extra",
-            "AT&T Unlimited Premium",
-            "BYOD w/ AT&T Starter",
-            "BYOD w/ AT&T Extra",
-            "BYOD w/ AT&T Premium",
-            "Wearable/Tablet/Watch",
-            "AT&T Device Upgrade"
-        ];
-        
         const updateServiceBuilderUI = () => {
             const category = categorySelect.value;
             serviceOptionsContainer.innerHTML = '';
-            if (!category || !productCatalog[category]) return;
+            if (!category) return;
             const categoryData = productCatalog[category];
-            const plans = categoryData.plans || {};
             let optionsHTML = `<div><label for="service-plan" class="block text-sm font-medium mb-1">2. Configure Service</label><select id="service-plan" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select Plan --</option>`;
-            
-            let planNames = Object.keys(plans);
-            
-            if (category === 'AT&T Wireless') {
-                planNames.sort((a, b) => {
-                    const indexA = mobilePlanSortOrder.indexOf(a);
-                    const indexB = mobilePlanSortOrder.indexOf(b);
-                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                    if (indexA !== -1) return -1;
-                    if (indexB !== -1) return 1;
-                    return a.localeCompare(b);
-                });
-            }
-            
-            if (category === 'DirecTV') {
-                for (const groupName in plans) {
-                    optionsHTML += `<optgroup label="${groupName}">`;
-                    for (const planName in plans[groupName]) {
-                        const planValue = `${groupName}.${planName}`;
-                        optionsHTML += `<option value="${planValue}">${planName}</option>`;
-                    }
-                    optionsHTML += `</optgroup>`;
-                }
-            } else {
-                planNames.forEach(planName => {
-                    optionsHTML += `<option value="${planName}">${planName}</option>`;
-                });
-            }
+            Object.keys(categoryData.plans).forEach(planName => optionsHTML += `<option value="${planName}">${planName}</option>`);
             optionsHTML += `</select></div>`;
-            
-            if (category === 'AT&T Wireless' && categoryData.addOns) {
-                optionsHTML += `<div id="lines-section" class="hidden mt-4"><label for="lines" class="block text-sm font-medium mb-1">Number of Lines</label><input type="number" id="lines" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border rounded-lg" min="1" value="1"></div>`;
-                optionsHTML += `<div class="mt-4"><label class="block text-sm font-medium mb-2">Add-ons</label><div id="mobile-addons" class="space-y-2">`;
+            if (category === 'Mobile') {
+                optionsHTML += `<div id="lines-section" class="hidden"><label for="lines" class="block text-sm font-medium mb-1">Number of Lines</label><input type="number" id="lines" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border rounded-lg" min="1" value="1"></div>`;
+                optionsHTML += `<div><label class="block text-sm font-medium mb-2">Add-ons</label><div id="mobile-addons" class="space-y-2">`;
                 Object.keys(categoryData.addOns).forEach(addonName => optionsHTML += `<div class="flex items-center"><input type="checkbox" id="addon-${addonName.replace(/\s+/g, '-')}" name="${addonName}" class="h-4 w-4 text-att-blue rounded"><label for="addon-${addonName.replace(/\s+/g, '-')}" class="ml-2">${addonName}</label></div>`);
                 optionsHTML += `</div></div>`;
             }
             serviceOptionsContainer.innerHTML = optionsHTML;
-            
             const planSelect = document.getElementById('service-plan');
-            if (planSelect && category === 'AT&T Wireless') {
+            if (planSelect && category === 'Mobile') {
                 planSelect.addEventListener('change', () => {
-                    const planInfo = productCatalog['AT&T Wireless']?.plans?.[planSelect.value];
-                    const linesSection = document.getElementById('lines-section');
-                    if (linesSection) {
-                         linesSection.style.display = planInfo?.hasLines ? 'block' : 'none';
-                    }
+                    const plan = productCatalog.Mobile.plans[planSelect.value];
+                    document.getElementById('lines-section').style.display = plan && plan.hasLines ? 'block' : 'none';
                 });
             }
         };
@@ -642,44 +594,23 @@
         const addServiceToSale = () => {
             const category = categorySelect.value;
             const planSelect = document.getElementById('service-plan');
-            if (!category || !planSelect || !planSelect.value) return;
-            const selectedValue = planSelect.value;
-            let planName = selectedValue;
-            let planData;
-            
-            if (category === 'DirecTV' && selectedValue.includes('.')) {
-                const [group, name] = selectedValue.split('.');
-                planName = name;
-                planData = productCatalog[category]?.plans?.[group]?.[name];
-            } else {
-                planData = productCatalog[category]?.plans?.[planName];
-            }
-            
-            if (!planData) { 
-                alert('Selected plan could not be found in the catalog! Please check the data in Firestore.'); 
-                return; 
-            }
-            
-            const baseCommission = planData.baseCommission ?? planData.baseCommision ?? planData.baseCommisssion ?? 0;
+            if (!category || !planSelect || !planSelect.value) { return; }
+            const planName = planSelect.value;
+            const categoryData = productCatalog[category];
+            const planData = categoryData.plans[planName];
             const service = { category, planName, commission: 0, addOns: [], lines: null };
-            
-            if (category === 'AT&T Wireless') {
+            if (category === 'Mobile') {
                 let perLineCommission = 0;
                 const selectedAddons = Array.from(document.querySelectorAll('#mobile-addons input:checked')).map(cb => cb.name);
                 const hasNextUp = selectedAddons.includes('AT&T Next Up');
-                const categoryData = productCatalog[category];
-                
-                if (hasNextUp && baseCommission > 0 && categoryData.addOns?.['AT&T Next Up']?.combo?.[planName]) {
+                if (hasNextUp && planData.baseCommission > 0 && categoryData.addOns['AT&T Next Up'].combo[planName]) {
                     perLineCommission = categoryData.addOns['AT&T Next Up'].combo[planName];
                 } else {
-                    perLineCommission = baseCommission;
+                    perLineCommission = planData.baseCommission;
                 }
-                
                 selectedAddons.forEach(addonName => {
-                    if (addonName === 'AT&T Next Up' && perLineCommission > baseCommission) return;
-                    if (categoryData.addOns?.[addonName]) {
-                        perLineCommission += categoryData.addOns[addonName].commission || 0;
-                    }
+                    if (addonName === 'AT&T Next Up' && perLineCommission > planData.baseCommission) return;
+                    perLineCommission += categoryData.addOns[addonName].commission;
                 });
                 service.addOns = selectedAddons;
                 if (planData.hasLines) {
@@ -690,13 +621,13 @@
                     service.commission = perLineCommission;
                 }
             } else {
-                service.commission = baseCommission;
+                service.commission = planData.baseCommission;
             }
             currentSaleServices.push(service);
             renderCurrentServices();
             planSelect.value = '';
             planSelect.dispatchEvent(new Event('change'));
-            if (category === 'AT&T Wireless') {
+            if (category === 'Mobile') {
                 document.querySelectorAll('#mobile-addons input:checked').forEach(cb => cb.checked = false);
             }
         };
@@ -707,34 +638,33 @@
         const updateTime = () => timeDisplay.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
         const updateWeather = () => {
-            const now = new Date();
-            dateDisplay.textContent = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            // Only fetch weather if the element exists on the page
-            if(document.getElementById('weather-display')) {
-                fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
-                    .then(res => res.json()).then(data => {
-                        if (data && data.current_weather) {
-                            const tempF = data.current_weather.temperature; 
-                            const tempC = (tempF - 32) * 5/9;
-                            const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
-                            const code = data.current_weather.weathercode;
-                            let emoji = '☀️';
-                            if (code > 70) emoji = '🌧️'; else if (code > 50) emoji = '🌦️'; else if (code > 2) emoji = '☁️';
-                            weatherDisplay.textContent = `${displayTemp}°${userSettings.tempUnit} ${emoji} in Haines City, FL`;
-                        } else { weatherDisplay.textContent = 'Weather unavailable'; }
-                    }).catch(() => weatherDisplay.textContent = 'Weather unavailable');
-            }
+            dateDisplay.textContent = new Date().toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
+                .then(res => res.json()).then(data => {
+                    if (data && data.current_weather) {
+                        const tempF = data.current_weather.temperature; 
+                        const tempC = (tempF - 32) * 5/9;
+                        const displayTemp = userSettings.tempUnit === 'F' ? tempF.toFixed(0) : tempC.toFixed(0);
+                        const code = data.current_weather.weathercode;
+                        let emoji = '☀️';
+                        if (code > 70) emoji = '🌧️'; else if (code > 50) emoji = '🌦️'; else if (code > 2) emoji = '☁️';
+                        weatherDisplay.textContent = `${displayTemp}°${userSettings.tempUnit} ${emoji} in Haines City, FL`;
+                    } else { weatherDisplay.textContent = 'Weather unavailable'; }
+                }).catch(() => weatherDisplay.textContent = 'Weather unavailable');
         };
         
         const getStartOfWeek = () => { const n=new Date(),d=n.getDay(),f=n.getDate()-d+(d==0?-6:1);return new Date(new Date(n.setDate(f)).setHours(0,0,0,0)); };
         const getStartOfMonth = () => { const n=new Date();return new Date(n.getFullYear(),n.getMonth(),1); };
         
+        // --- Event Listeners ---
         function setupEventListeners() {
+            // Auth Listeners
             loginForm.addEventListener('submit', handleLogin);
             signupForm.addEventListener('submit', handleSignup);
             logoutBtn.addEventListener('click', handleLogout);
             showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); loginModal.style.display = 'none'; signupModal.style.display = 'flex'; });
             showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); signupModal.style.display = 'none'; loginModal.style.display = 'flex'; });
+            
             oobeGoalsForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const newGoals = { 
@@ -746,6 +676,8 @@
                 appContainer.style.display = 'block'; 
                 renderFullUI();
             });
+
+            // App Listeners
             addSaleBtnMain.addEventListener('click', openModal);
             addSaleBtnDesktop.addEventListener('click', openModal);
             cancelBtn.addEventListener('click', closeModal);
@@ -785,11 +717,13 @@
                     }
                 } 
             });
+            
             settingsBtn.addEventListener('click', (e) => { 
                 e.stopPropagation(); 
                 settingsMenu.classList.toggle('hidden');
             });
             document.addEventListener('click', (e) => { if (!settingsMenu.contains(e.target) && !settingsBtn.contains(e.target)) { settingsMenu.classList.add('hidden'); } });
+            
             themeToggleBtn.addEventListener('click', toggleTheme);
             tempToggleBtn.addEventListener('click', toggleTempUnit);
         }
