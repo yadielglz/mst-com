@@ -45,47 +45,21 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        #app-container, #splash-screen, #oobe-goals-screen, #login-modal, #signup-modal { display: none; } /* Hide all initially */
+        #app-container, #splash-screen, #oobe-goals-screen { display: none; } /* Hide all initially */
     </style>
 </head>
 <body class="bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
 
-    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-att-light-gray p-4">
+    <div id="splash-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
         <div class="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center splash-content">
             <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" class="h-12 mx-auto mb-4">
             <h1 class="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
             <p class="text-xs text-slate-400 mt-6 text-center leading-relaxed">
-                <strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.
+                <strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. No information is transmitted over the internet. All data is stored locally in your browser and will be lost if the page is refreshed or closed. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.
             </p>
         </div>
     </div>
 
-    <div id="login-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-sm mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl modal-content">
-            <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-            <form id="login-form">
-                <div class="mb-4"><label for="login-email" class="block mb-1">Email</label><input type="email" id="login-email" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-6"><label for="login-password" class="block mb-1">Password</label><input type="password" id="login-password" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <button type="submit" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg">Login</button>
-                <p id="login-error" class="text-red-500 text-sm text-center mt-2"></p>
-                <p class="text-center mt-4 text-sm">Don't have an account? <a href="#" id="show-signup" class="text-att-blue font-semibold">Sign Up</a></p>
-            </form>
-        </div>
-    </div>
-    <div id="signup-modal" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
-        <div class="w-full max-w-sm mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl modal-content">
-            <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
-            <form id="signup-form">
-                <div class="mb-4"><label for="signup-name" class="block mb-1">Your Name</label><input type="text" id="signup-name" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-4"><label for="signup-email" class="block mb-1">Email</label><input type="email" id="signup-email" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <div class="mb-6"><label for="signup-password" class="block mb-1">Password</label><input type="password" id="signup-password" class="w-full p-2 bg-slate-50 dark:bg-slate-700 rounded-lg" required></div>
-                <button type="submit" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg">Sign Up</button>
-                <p id="signup-error" class="text-red-500 text-sm text-center mt-2"></p>
-                <p class="text-center mt-4 text-sm">Already have an account? <a href="#" id="show-login" class="text-att-blue font-semibold">Login</a></p>
-            </form>
-        </div>
-    </div>
-    
     <div id="oobe-goals-screen" class="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
         <div class="w-full max-w-lg mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl oobe-content max-h-[90vh] overflow-y-auto">
             <h2 class="text-2xl font-bold mb-2 text-center">Set Your Initial Goals</h2>
@@ -164,20 +138,15 @@
                                  <svg class="h-6 w-6 text-att-gray dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                             </button>
                             <div id="settings-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-xl z-20">
-                                <div class="p-2 text-sm divide-y dark:divide-slate-700">
-                                    <div class="py-1">
-                                        <div class="flex items-center justify-between px-2 py-1.5"><label>Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
-                                        <div class="flex items-center justify-between px-2 py-1.5"><label>Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
-                                    </div>
-                                    <div class="py-1">
-                                        <button id="logout-btn" class="w-full text-left px-2 py-1.5 rounded-md text-red-600 hover:bg-red-50 dark:hover:bg-red-900/50">Logout</button>
-                                    </div>
+                                <div class="p-2 text-sm">
+                                    <button id="set-profile-btn" class="w-full text-left px-2 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700">Set Profile Name</button>
+                                    <div class="flex items-center justify-between px-2 py-1.5"><label for="theme-toggle">Dark Mode</label><button id="theme-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">Toggle</button></div>
+                                    <div class="flex items-center justify-between px-2 py-1.5"><label for="temp-toggle">Temp Unit</label><button id="temp-toggle" class="px-2 rounded-md bg-slate-200 dark:bg-slate-700">°C / °F</button></div>
                                 </div>
                             </div>
                         </div>
 
                         <span class="border-l h-6 border-slate-300 dark:border-slate-600"></span>
-                        
                         <select id="filter-product" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="all">All</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">TV</option></select>
                         <select id="sort-sales" class="w-full md:w-auto bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-sm rounded-lg p-2"><option value="date_desc">Newest</option><option value="date_asc">Oldest</option><option value="commission_desc">High Comm.</option><option value="commission_asc">Low Comm.</option></select>
                     </div>
@@ -191,50 +160,20 @@
 
     <div id="sale-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content overflow-y-auto max-h-[90vh]"><h2 class="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Log New Sale</h2><form id="sale-form"><div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"><div><label for="customer-name" class="block text-sm font-medium mb-1">Customer Name</label><input type="text" id="customer-name" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div><div><label for="sale-date" class="block text-sm font-medium mb-1">Sale Date</label><input type="date" id="sale-date" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required></div></div><hr class="my-4 dark:border-slate-700"><div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg"><h3 class="font-semibold text-lg mb-2">Add Service(s)</h3><div class="mb-4"><label for="category" class="block text-sm font-medium mb-1">1. Select Category</label><select id="category" class="w-full px-3 py-2 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"><option value="">-- Select --</option><option value="Mobile">Mobile</option><option value="Internet">Internet</option><option value="DirecTV">DirecTV</option></select></div><div id="service-options-container" class="space-y-4"></div><button type="button" id="add-service-btn" class="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg">Add Service</button></div><hr class="my-4 dark:border-slate-700"><div><h3 class="font-semibold text-lg mb-2">Services in this Sale</h3><div id="current-sale-services" class="space-y-2"><p id="no-services-added" class="text-sm text-center py-4">No services added yet.</p></div></div><div class="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center"><span class="text-lg font-bold">Total Commission:</span><span id="total-commission-display" class="text-2xl font-bold text-emerald-500">$0.00</span></div><div class="mt-4"><label for="notes" class="block text-sm font-medium mb-1">Notes</label><textarea id="notes" rows="3" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg"></textarea></div><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" id="save-sale-btn" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Sale</button></div></form></div></div>
     <div id="goals-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg m-4 modal-content max-h-[90vh] overflow-y-auto"><h2 class="text-2xl font-bold mb-4">Set Performance Goals</h2><form id="goals-form" class="space-y-6"><fieldset><legend class="font-semibold text-lg mb-2">Weekly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-weekly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-weekly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-weekly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><fieldset><legend class="font-semibold text-lg mb-2">Monthly Goals</legend><div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><label class="block">Mobile Lines<input type="number" id="goal-monthly-mobile" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">Internet<input type="number" id="goal-monthly-internet" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label><label class="block">TV<input type="number" id="goal-monthly-tv" class="w-full mt-1 p-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" min="0"></label></div></fieldset><div class="flex justify-end space-x-3 pt-4"><button type="button" id="cancel-goals-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Goals</button></div></form></div></div>
+    <div id="profile-modal" class="fixed inset-0 z-50 items-center justify-center flex modal-backdrop hidden"><div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-sm m-4 modal-content"><h2 class="text-2xl font-bold mb-4">Set Profile Name</h2><form id="profile-form"><label for="profile-name-input" class="block text-sm font-medium mb-1">Your Name</label><input type="text" id="profile-name-input" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-lg" required><div class="flex justify-end space-x-3 mt-6"><button type="button" id="cancel-profile-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-600 rounded-lg">Cancel</button><button type="submit" class="px-4 py-2 bg-att-blue text-white font-semibold rounded-lg">Save Name</button></div></form></div></div>
 
     <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD5dFgt8ND020zkaR8VjlvPrYWcPtBkJJA",
-            authDomain: "commst-c7bd2.firebaseapp.com",
-            projectId: "commst-c7bd2",
-            storageBucket: "commst-c7bd2.appspot.com",
-            messagingSenderId: "606435543669",
-            appId: "1:606435543669:web:6019e989a1d776f5a2c63c",
-            measurementId: "G-RG8XNF865Q"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- App State ---
-        let currentUser = null;
+        // App State & Data
         let sales = [];
         let currentSaleServices = [];
-        let userSettings = { name: '', theme: 'light', tempUnit: 'C' };
+        let userSettings = { name: '', theme: 'light', tempUnit: 'C', initialSetupComplete: false };
         let currentGoals = {
             weekly: { mobile: 0, internet: 0, tv: 0 },
             monthly: { mobile: 0, internet: 0, tv: 0 }
         };
         const productCatalog = { Mobile: { plans: {'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },}, addOns: {'AT&T Next Up': { commission: 10, combo: { 'AT&T Unlimited Starter': 40, 'AT&T Unlimited Extra': 60, 'AT&T Unlimited Premium': 70, 'AT&T Device Upgrade': 15 }},'AT&T Protect Advantage for 1 Tier 1': { commission: 14 }, 'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },'AT&T Protect Advantage for 4': { commission: 50 }, 'AT&T Turbo': { commission: 7 },}}, Internet: { plans: {'AT&T Fiber 1000': { baseCommission: 200.00 },'AT&T Fiber 500': { baseCommission: 150.00 },'AT&T Fiber 300': { baseCommission: 100.00 },'AT&T Fiber 100': { baseCommission: 100.00 },'AT&T Fiber <100': { baseCommission: 75.00 },}}, DirecTV: { plans: {'DirecTV Stream Premium': { baseCommission: 50.00 },'DirecTV Stream Basic': { baseCommission: 40.00 },'DirecTV Satellite Premium': { baseCommission: 50.00 },'DirecTV Satellite Basic': { baseCommission: 40.00 },}}};
 
-        // --- DOM Elements ---
-        const loginModal = document.getElementById('login-modal');
-        const signupModal = document.getElementById('signup-modal');
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const loginErrorEl = document.getElementById('login-error');
-        const signupErrorEl = document.getElementById('signup-error');
-        const showSignupBtn = document.getElementById('show-signup');
-        const showLoginBtn = document.getElementById('show-login');
-        const logoutBtn = document.getElementById('logout-btn');
+        // DOM Elements
         const splashScreen = document.getElementById('splash-screen');
         const oobeGoalsScreen = document.getElementById('oobe-goals-screen');
         const oobeGoalsForm = document.getElementById('oobe-goals-form');
@@ -253,199 +192,10 @@
         const totalCommissionDisplay = document.getElementById('total-commission-display'), noServicesAddedEl = document.getElementById('no-services-added');
         const timeDisplay = document.getElementById('time-display'), dateDisplay = document.getElementById('date-display'), weatherDisplay = document.getElementById('weather-display');
         const goalsModal = document.getElementById('goals-modal'), goalsForm = document.getElementById('goals-form'), cancelGoalsBtn = document.getElementById('cancel-goals-btn');
+        const profileModal = document.getElementById('profile-modal'), profileForm = document.getElementById('profile-form'), cancelProfileBtn = document.getElementById('cancel-profile-btn');
         const settingsBtn = document.getElementById('settings-btn'), settingsMenu = document.getElementById('settings-menu');
         const themeToggleBtn = document.getElementById('theme-toggle'), tempToggleBtn = document.getElementById('temp-toggle');
-
-        // --- Firebase & Auth Logic ---
-        
-        // NEW: A helper function to display an error state within the app
-        function showFatalError(error) {
-            console.error("A fatal error occurred:", error);
-            splashScreen.style.display = 'none';
-            appContainer.style.display = 'block';
-            const errorMessage = `
-                <div class="text-center py-10 px-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                    <h3 class="text-xl font-bold text-red-600 mb-2">Could Not Load Your Data</h3>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        There was a problem retrieving your information from the server. 
-                        Please try refreshing the page.
-                    </p>
-                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-4">
-                        If the problem persists, your account data may be misconfigured or network rules may be preventing access.
-                    </p>
-                </div>
-            `;
-            const mainContentArea = document.querySelector('#app-container main');
-            if (mainContentArea) {
-                mainContentArea.innerHTML = errorMessage;
-            }
-        }
-
-        // CORRECTED: The main auth handler now uses the new error handling strategy
-        onAuthStateChanged(auth, async (user) => {
-            splashScreen.style.display = 'flex';
-
-            setTimeout(async () => {
-                try {
-                    if (user) {
-                        currentUser = user;
-                        loginModal.style.display = 'none';
-                        signupModal.style.display = 'none';
-                        
-                        await fetchData();
-                        
-                        splashScreen.style.display = 'none';
-
-                        if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
-                            oobeGoalsScreen.style.display = 'flex';
-                        } else {
-                            appContainer.style.display = 'block';
-                            renderFullUI();
-                        }
-                    } else {
-                        currentUser = null;
-                        resetLocalData();
-                        
-                        splashScreen.style.display = 'none';
-                        appContainer.style.display = 'none';
-                        oobeGoalsScreen.style.display = 'none';
-                        loginModal.style.display = 'flex';
-                    }
-                } catch (error) {
-                    showFatalError(error);
-                }
-            }, 2000);
-        });
-        
-        async function handleSignup(e) {
-            e.preventDefault();
-            const name = signupForm['signup-name'].value;
-            const email = signupForm['signup-email'].value;
-            const password = signupForm['signup-password'].value;
-            signupErrorEl.textContent = '';
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
-            } catch (error) {
-                signupErrorEl.textContent = error.message;
-            }
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const email = loginForm['login-email'].value;
-            const password = loginForm['login-password'].value;
-            loginErrorEl.textContent = '';
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                loginErrorEl.textContent = 'Invalid email or password.';
-            }
-        }
-
-        async function handleLogout() {
-            await signOut(auth);
-            // Reload the page to ensure a clean state
-            window.location.reload();
-        }
-        
-        // --- Firestore Data Functions ---
-
-        async function fetchData() {
-            if (!currentUser) return;
-            const uid = currentUser.uid;
-
-            const settingsDocRef = doc(db, 'users', uid, 'user-data', 'settings');
-            const settingsDocSnap = await getDoc(settingsDocRef);
-            if (settingsDocSnap.exists()) {
-                userSettings = settingsDocSnap.data();
-            } else {
-                userSettings = { name: currentUser.displayName, theme: 'light', tempUnit: 'C' };
-            }
-            applySettings();
-
-            const goalsDocRef = doc(db, 'users', uid, 'user-data', 'goals');
-            const goalsDocSnap = await getDoc(goalsDocRef);
-            if (goalsDocSnap.exists()) {
-                currentGoals = goalsDocSnap.data();
-            } else {
-                currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
-            }
-
-            const salesCollectionRef = collection(db, 'users', uid, 'sales');
-            const q = query(salesCollectionRef);
-            const querySnapshot = await getDocs(q);
-            sales = [];
-            querySnapshot.forEach((doc) => {
-                sales.push({ id: doc.id, ...doc.data() });
-            });
-        }
-        
-        async function saveSaleToFirestore(saleData) {
-            if (!currentUser) return;
-            const uid = currentUser.uid;
-            try {
-                const docRef = await addDoc(collection(db, 'users', uid, 'sales'), saleData);
-                sales.push({ id: docRef.id, ...saleData });
-                renderFullUI();
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                alert("Could not save sale. Please try again.");
-            }
-        }
-
-        async function deleteSaleFromFirestore(saleId) {
-            if (!currentUser) return;
-            const uid = currentUser.uid;
-            try {
-                await deleteDoc(doc(db, 'users', uid, 'sales', saleId));
-                sales = sales.filter(sale => sale.id !== saleId);
-                renderFullUI();
-            } catch (error) {
-                console.error("Error deleting document: ", error);
-                alert("Could not delete sale. Please try again.");
-            }
-        }
-        
-        async function saveGoalsToFirestore(newGoals) {
-            if (!currentUser) return;
-            const uid = currentUser.uid;
-            try {
-                const goalsDocRef = doc(db, 'users', uid, 'user-data', 'goals');
-                await setDoc(goalsDocRef, newGoals, { merge: true });
-                currentGoals = newGoals;
-            } catch (error) {
-                console.error("Error saving goals: ", error);
-                alert("Could not save goals. Please try again.");
-            }
-        }
-
-        async function saveSettingsToFirestore(newSettings) {
-            if (!currentUser) return;
-            const uid = currentUser.uid;
-            try {
-                const settingsDocRef = doc(db, 'users', uid, 'user-data', 'settings');
-                await setDoc(settingsDocRef, newSettings, { merge: true });
-                userSettings = { ...userSettings, ...newSettings };
-                applySettings();
-            } catch (error) {
-                console.error("Error saving settings: ", error);
-            }
-        }
-        
-        function applySettings() {
-            document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
-            if (currentUser) {
-                welcomeMessageEl.textContent = `Welcome, ${userSettings.name || currentUser.displayName}!`;
-            }
-            updateWeather();
-        }
-
-        function resetLocalData() {
-            sales = [];
-            userSettings = { name: '', theme: 'light', tempUnit: 'C' };
-            currentGoals = { weekly: { mobile: 0, internet: 0, tv: 0 }, monthly: { mobile: 0, internet: 0, tv: 0 } };
-        }
+        const setProfileBtn = document.getElementById('set-profile-btn');
         
         // --- UI & Logic Functions ---
         const openModal = () => saleModal.classList.remove('hidden');
@@ -460,6 +210,11 @@
             goalsModal.classList.remove('hidden');
         };
         const hideGoalsModal = () => goalsModal.classList.add('hidden');
+        const showProfileModal = () => {
+            document.getElementById('profile-name-input').value = userSettings.name || '';
+            profileModal.classList.remove('hidden');
+        };
+        const hideProfileModal = () => profileModal.classList.add('hidden');
         
         const renderFullUI = () => {
             renderGoals();
@@ -498,6 +253,7 @@
             totalSalesEl.textContent = totalSalesCount;
             totalCommissionEl.textContent = `$${totalCommission.toFixed(2)}`;
             avgCommissionEl.textContent = `$${avgCommission.toFixed(2)}`;
+            // Mobile dashboard
             totalSalesMobileEl.textContent = totalSalesCount;
             totalCommissionMobileEl.textContent = `$${totalCommission.toFixed(0)}`;
             avgCommissionMobileEl.textContent = `$${avgCommission.toFixed(0)}`;
@@ -508,9 +264,11 @@
             const filteredSales = filterAndSortSales();
             noSalesMessage.style.display = filteredSales.length === 0 ? 'block' : 'none';
             filteredSales.forEach((sale) => {
+                // Find the original index before filtering/sorting to use as a stable ID
+                const originalIndex = sales.indexOf(sale);
                 const saleEl = document.createElement('div');
                 saleEl.className = 'flex flex-col md:flex-row items-start md:items-center justify-between py-4';
-                saleEl.dataset.id = sale.id; 
+                saleEl.dataset.id = originalIndex; // Use original index as stable ID
                 const mainCategory = sale.services[0]?.category || 'Misc';
                 const color = { Mobile: { bg: 'bg-blue-100 dark:bg-blue-900/50' }, Internet: { bg: 'bg-green-100 dark:bg-green-900/50' }, DirecTV: { bg: 'bg-purple-100 dark:bg-purple-900/50' }}[mainCategory] || {bg:'bg-slate-100 dark:bg-slate-700'};
                 const servicesHTML = sale.services.map(s => `<li class="text-sm text-slate-600 dark:text-slate-300 font-medium">${s.planName}${s.lines ? ` (${s.lines} lines)` : ''}</li>`).join('');
@@ -525,13 +283,13 @@
              const startOfWeek = getStartOfWeek();
              const startOfMonth = getStartOfMonth();
              sales.forEach(sale => {
-                 const saleDate = new Date(sale.saleDate + 'T00:00:00');
+                 const saleDate = new Date(sale.saleDate + 'T00:00:00'); // Prevent timezone shift by specifying time
                  sale.services.forEach(service => {
                      const category = service.category === 'DirecTV' ? 'TV' : service.category;
                      const units = category === 'Mobile' ? (service.lines || 0) : 1;
                      if (monthlyProgress.hasOwnProperty(category)) {
-                         if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
-                         if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
+                        if (saleDate >= startOfMonth) { monthlyProgress[category] += units; }
+                        if (saleDate >= startOfWeek) { weeklyProgress[category] += units; }
                      }
                  });
              });
@@ -594,7 +352,7 @@
         const addServiceToSale = () => {
             const category = categorySelect.value;
             const planSelect = document.getElementById('service-plan');
-            if (!category || !planSelect || !planSelect.value) { return; }
+            if (!category || !planSelect || !planSelect.value) { console.warn("Please select a category and plan."); return; }
             const planName = planSelect.value;
             const categoryData = productCatalog[category];
             const planData = categoryData.plans[planName];
@@ -632,13 +390,27 @@
             }
         };
 
-        const toggleTheme = () => saveSettingsToFirestore({ theme: userSettings.theme === 'light' ? 'dark' : 'light' });
-        const toggleTempUnit = () => saveSettingsToFirestore({ tempUnit: userSettings.tempUnit === 'C' ? 'F' : 'C' });
+        const toggleTheme = () => {
+            userSettings.theme = userSettings.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
+            localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
+        };
         
-        const updateTime = () => timeDisplay.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const toggleTempUnit = () => {
+            userSettings.tempUnit = userSettings.tempUnit === 'C' ? 'F' : 'C';
+            updateWeather(); // Just update weather display, not the whole time
+            localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
+        };
+        
+        const updateTime = () => {
+            const now = new Date();
+            timeDisplay.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
         
         const updateWeather = () => {
-            dateDisplay.textContent = new Date().toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const now = new Date();
+            dateDisplay.textContent = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // Using a static location for this tool.
             fetch('https://api.open-meteo.com/v1/forecast?latitude=28.11&longitude=-81.62&current_weather=true&temperature_unit=fahrenheit')
                 .then(res => res.json()).then(data => {
                     if (data && data.current_weather) {
@@ -656,67 +428,75 @@
         const getStartOfWeek = () => { const n=new Date(),d=n.getDay(),f=n.getDate()-d+(d==0?-6:1);return new Date(new Date(n.setDate(f)).setHours(0,0,0,0)); };
         const getStartOfMonth = () => { const n=new Date();return new Date(n.getFullYear(),n.getMonth(),1); };
         
-        // --- Event Listeners ---
+        // --- Init & Event Listeners ---
+        function initializeApp() {
+            // Load settings from localStorage first
+            const savedSettings = localStorage.getItem('salesTrackerSettings');
+            if (savedSettings) {
+                userSettings = JSON.parse(savedSettings);
+                document.documentElement.classList.toggle('dark', userSettings.theme === 'dark');
+                if (userSettings.name) {
+                    welcomeMessageEl.textContent = `Welcome, ${userSettings.name}!`;
+                }
+                const savedGoals = localStorage.getItem('salesTrackerGoals');
+                if (savedGoals) {
+                    currentGoals = JSON.parse(savedGoals);
+                }
+            }
+
+            // Always show splash screen on startup
+            splashScreen.style.display = 'flex';
+
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                
+                // Then, decide what to show next
+                if (userSettings.initialSetupComplete) {
+                    appContainer.style.display = 'block';
+                    renderFullUI();
+                } else {
+                    // This is the first run, show the goals setup screen
+                    oobeGoalsScreen.style.display = 'flex';
+                }
+            }, 2500); // 2.5 second delay
+        }
+
         function setupEventListeners() {
-            // Auth Listeners
-            loginForm.addEventListener('submit', handleLogin);
-            signupForm.addEventListener('submit', handleSignup);
-            logoutBtn.addEventListener('click', handleLogout);
-            showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); loginModal.style.display = 'none'; signupModal.style.display = 'flex'; });
-            showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); signupModal.style.display = 'none'; loginModal.style.display = 'flex'; });
-            
-            oobeGoalsForm.addEventListener('submit', async (e) => {
+            oobeGoalsForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const newGoals = { 
+                currentGoals = { 
                     weekly: { mobile: parseInt(document.getElementById('oobe-goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-weekly-tv').value) || 0 },
                     monthly: { mobile: parseInt(document.getElementById('oobe-goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-monthly-tv').value) || 0 } 
                 };
-                await saveGoalsToFirestore(newGoals);
+                userSettings.initialSetupComplete = true;
+                localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
+                localStorage.setItem('salesTrackerGoals', JSON.stringify(currentGoals));
                 oobeGoalsScreen.style.display = 'none';
-                appContainer.style.display = 'block'; 
+                appContainer.style.display = 'block';
                 renderFullUI();
             });
 
-            // App Listeners
-            addSaleBtnMain.addEventListener('click', openModal);
-            addSaleBtnDesktop.addEventListener('click', openModal);
+            // Button listeners
+            addSaleBtnMain.addEventListener('click', openModal); // Mobile button
+            addSaleBtnDesktop.addEventListener('click', openModal); // Desktop button
+
             cancelBtn.addEventListener('click', closeModal);
             editGoalsBtn.addEventListener('click', showGoalsModal);
             cancelGoalsBtn.addEventListener('click', hideGoalsModal);
             filterProductEl.addEventListener('change', renderFullUI);
             sortSalesEl.addEventListener('change', renderFullUI);
             categorySelect.addEventListener('change', updateServiceBuilderUI);
-            goalsForm.addEventListener('submit', async (e) => { 
+            goalsForm.addEventListener('submit', (e) => { 
                 e.preventDefault(); 
-                const newGoals = { weekly: { mobile: parseInt(document.getElementById('goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('goal-weekly-tv').value) || 0 }, monthly: { mobile: parseInt(document.getElementById('goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('goal-monthly-tv').value) || 0 } };
-                await saveGoalsToFirestore(newGoals);
-                renderFullUI();
+                currentGoals = { weekly: { mobile: parseInt(document.getElementById('goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('goal-weekly-tv').value) || 0 }, monthly: { mobile: parseInt(document.getElementById('goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('goal-monthly-tv').value) || 0 } };
+                localStorage.setItem('salesTrackerGoals', JSON.stringify(currentGoals));
                 hideGoalsModal(); 
+                renderFullUI();
             });
             addServiceBtn.addEventListener('click', addServiceToSale);
             currentSaleServicesEl.addEventListener('click', e => { if (e.target.closest('.remove-service-btn')) { currentSaleServices.splice(parseInt(e.target.closest('.remove-service-btn').dataset.index), 1); renderCurrentServices(); } });
-            saleForm.addEventListener('submit', (e) => { 
-                e.preventDefault(); 
-                if (currentSaleServices.length === 0) return; 
-                const saleData = { 
-                    customerName: document.getElementById('customer-name').value, 
-                    saleDate: document.getElementById('sale-date').value, 
-                    services: currentSaleServices, 
-                    totalCommission: currentSaleServices.reduce((sum, s) => sum + s.commission, 0), 
-                    notes: document.getElementById('notes').value 
-                };
-                saveSaleToFirestore(saleData); 
-                closeModal(); 
-            });
-            salesListEl.addEventListener('click', (e) => { 
-                const delBtn = e.target.closest('.delete-btn'); 
-                if (delBtn) { 
-                    const saleId = delBtn.closest('[data-id]').dataset.id; 
-                    if(confirm('Are you sure you want to delete this sale?')) {
-                        deleteSaleFromFirestore(saleId); 
-                    }
-                } 
-            });
+            saleForm.addEventListener('submit', (e) => { e.preventDefault(); if (currentSaleServices.length === 0) return; const saleData = { customerName: document.getElementById('customer-name').value, saleDate: document.getElementById('sale-date').value, services: currentSaleServices, totalCommission: currentSaleServices.reduce((sum, s) => sum + s.commission, 0), notes: document.getElementById('notes').value }; sales.push(saleData); closeModal(); renderFullUI(); });
+            salesListEl.addEventListener('click', (e) => { const delBtn = e.target.closest('.delete-btn'); if (delBtn) { const saleIndex = parseInt(delBtn.closest('[data-id]').dataset.id); if (!isNaN(saleIndex)) { sales.splice(saleIndex, 1); renderFullUI(); } } });
             
             settingsBtn.addEventListener('click', (e) => { 
                 e.stopPropagation(); 
@@ -726,13 +506,27 @@
             
             themeToggleBtn.addEventListener('click', toggleTheme);
             tempToggleBtn.addEventListener('click', toggleTempUnit);
+            setProfileBtn.addEventListener('click', showProfileModal);
+            profileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newName = document.getElementById('profile-name-input').value;
+                 if (newName !== null) {
+                    userSettings.name = newName;
+                    welcomeMessageEl.textContent = `Welcome, ${userSettings.name}!`;
+                    localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
+                    hideProfileModal();
+                }
+            });
+            cancelProfileBtn.addEventListener('click', hideProfileModal);
         }
         
         // --- Start App ---
+        initializeApp();
         setupEventListeners();
-        updateTime();
-        setInterval(updateTime, 1000);
-        setInterval(updateWeather, 60000);
+        updateTime(); // Initial call for time
+        updateWeather(); // Initial call for date and weather
+        setInterval(updateTime, 1000); // Update time every second
+        setInterval(updateWeather, 60000); // Update date and weather every minute
     </script>
 </body>
 </html>
