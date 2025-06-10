@@ -57,6 +57,9 @@
             <p class="text-xs text-slate-400 mt-6 text-center leading-relaxed">
                 <strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. No information is transmitted over the internet. All data is stored locally in your browser and will be lost if the page is refreshed or closed. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.
             </p>
+            <div class="pt-6">
+                <button id="agree-btn" class="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300">I Agree</button>
+            </div>
         </div>
     </div>
 
@@ -196,6 +199,7 @@
         const settingsBtn = document.getElementById('settings-btn'), settingsMenu = document.getElementById('settings-menu');
         const themeToggleBtn = document.getElementById('theme-toggle'), tempToggleBtn = document.getElementById('temp-toggle');
         const setProfileBtn = document.getElementById('set-profile-btn');
+        const agreeBtn = document.getElementById('agree-btn');
         
         // --- UI & Logic Functions ---
         const openModal = () => saleModal.classList.remove('hidden');
@@ -430,7 +434,7 @@
         
         // --- Init & Event Listeners ---
         function initializeApp() {
-            // Load settings from localStorage first
+            // Load settings from localStorage
             const savedSettings = localStorage.getItem('salesTrackerSettings');
             if (savedSettings) {
                 userSettings = JSON.parse(savedSettings);
@@ -438,30 +442,26 @@
                 if (userSettings.name) {
                     welcomeMessageEl.textContent = `Welcome, ${userSettings.name}!`;
                 }
+                 // Load goals if they exist
                 const savedGoals = localStorage.getItem('salesTrackerGoals');
                 if (savedGoals) {
                     currentGoals = JSON.parse(savedGoals);
                 }
             }
 
-            // Always show splash screen on startup
-            splashScreen.style.display = 'flex';
-
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-                
-                // Then, decide what to show next
-                if (userSettings.initialSetupComplete) {
-                    appContainer.style.display = 'block';
-                    renderFullUI();
-                } else {
-                    // This is the first run, show the goals setup screen
-                    oobeGoalsScreen.style.display = 'flex';
-                }
-            }, 2500); // 2.5 second delay
+            if (userSettings.initialSetupComplete) {
+                appContainer.style.display = 'block';
+                renderFullUI();
+            } else {
+                splashScreen.style.display = 'flex';
+            }
         }
 
         function setupEventListeners() {
+            agreeBtn.addEventListener('click', () => {
+                splashScreen.style.display = 'none';
+                oobeGoalsScreen.style.display = 'flex';
+            });
             oobeGoalsForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 currentGoals = { 
