@@ -214,7 +214,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- App State (now managed from Firestore) ---
+        // --- App State ---
         let currentUser = null;
         let sales = [];
         let currentSaleServices = [];
@@ -226,7 +226,6 @@
         const productCatalog = { Mobile: { plans: {'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },}, addOns: {'AT&T Next Up': { commission: 10, combo: { 'AT&T Unlimited Starter': 40, 'AT&T Unlimited Extra': 60, 'AT&T Unlimited Premium': 70, 'AT&T Device Upgrade': 15 }},'AT&T Protect Advantage for 1 Tier 1': { commission: 14 }, 'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },'AT&T Protect Advantage for 4': { commission: 50 }, 'AT&T Turbo': { commission: 7 },}}, Internet: { plans: {'AT&T Fiber 1000': { baseCommission: 200.00 },'AT&T Fiber 500': { baseCommission: 150.00 },'AT&T Fiber 300': { baseCommission: 100.00 },'AT&T Fiber 100': { baseCommission: 100.00 },'AT&T Fiber <100': { baseCommission: 75.00 },}}, DirecTV: { plans: {'DirecTV Stream Premium': { baseCommission: 50.00 },'DirecTV Stream Basic': { baseCommission: 40.00 },'DirecTV Satellite Premium': { baseCommission: 50.00 },'DirecTV Satellite Basic': { baseCommission: 40.00 },}}};
 
         // --- DOM Elements ---
-        // Auth Modals
         const loginModal = document.getElementById('login-modal');
         const signupModal = document.getElementById('signup-modal');
         const loginForm = document.getElementById('login-form');
@@ -236,14 +235,10 @@
         const showSignupBtn = document.getElementById('show-signup');
         const showLoginBtn = document.getElementById('show-login');
         const logoutBtn = document.getElementById('logout-btn');
-        
-        // App Screens
         const splashScreen = document.getElementById('splash-screen');
         const oobeGoalsScreen = document.getElementById('oobe-goals-screen');
         const oobeGoalsForm = document.getElementById('oobe-goals-form');
         const appContainer = document.getElementById('app-container');
-
-        // Other elements
         const welcomeMessageEl = document.getElementById('welcome-message');
         const salesListEl = document.getElementById('sales-list'), noSalesMessage = document.getElementById('no-sales-message');
         const addSaleBtnMain = document.getElementById('add-sale-btn-main');
@@ -263,35 +258,46 @@
 
         // --- Firebase & Auth Logic ---
         
+        // CORRECTED: This function is now wrapped in a try...catch to handle initialization errors.
         onAuthStateChanged(auth, async (user) => {
-            splashScreen.style.display = 'flex'; 
+            splashScreen.style.display = 'flex';
 
             setTimeout(async () => {
-                if (user) {
-                    currentUser = user;
-                    
-                    loginModal.style.display = 'none';
-                    signupModal.style.display = 'none';
-                    splashScreen.style.display = 'none';
-                    
-                    await fetchData();
+                try {
+                    if (user) {
+                        currentUser = user;
+                        
+                        loginModal.style.display = 'none';
+                        signupModal.style.display = 'none';
+                        splashScreen.style.display = 'none';
+                        
+                        await fetchData();
 
-                    if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
-                        oobeGoalsScreen.style.display = 'flex';
+                        if (currentGoals.weekly.mobile === 0 && currentGoals.monthly.mobile === 0) {
+                            oobeGoalsScreen.style.display = 'flex';
+                        } else {
+                            appContainer.style.display = 'block';
+                            renderFullUI();
+                        }
                     } else {
-                        appContainer.style.display = 'block';
-                        renderFullUI();
+                        currentUser = null;
+                        resetLocalData();
+                        
+                        splashScreen.style.display = 'none';
+                        appContainer.style.display = 'none';
+                        oobeGoalsScreen.style.display = 'none';
+                        loginModal.style.display = 'flex';
                     }
-                } else {
-                    currentUser = null;
-                    resetLocalData();
+                } catch (error) {
+                    console.error("Failed to initialize app state:", error);
+                    await signOut(auth);
                     
                     splashScreen.style.display = 'none';
                     appContainer.style.display = 'none';
                     oobeGoalsScreen.style.display = 'none';
                     loginModal.style.display = 'flex';
                 }
-            }, 2000); 
+            }, 2000);
         });
         
         async function handleSignup(e) {
@@ -381,8 +387,7 @@
                 alert("Could not delete sale. Please try again.");
             }
         }
-
-        // CORRECTED: This function no longer calls renderFullUI() itself.
+        
         async function saveGoalsToFirestore(newGoals) {
             if (!currentUser) return;
             const uid = currentUser.uid;
@@ -639,21 +644,15 @@
             showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); loginModal.style.display = 'none'; signupModal.style.display = 'flex'; });
             showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); signupModal.style.display = 'none'; loginModal.style.display = 'flex'; });
             
-            // CORRECTED: This listener now has the proper logic sequence to transition UI states.
             oobeGoalsForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const newGoals = { 
                     weekly: { mobile: parseInt(document.getElementById('oobe-goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-weekly-tv').value) || 0 },
                     monthly: { mobile: parseInt(document.getElementById('oobe-goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('oobe-goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('oobe-goal-monthly-tv').value) || 0 } 
                 };
-                
-                // 1. Save data
                 await saveGoalsToFirestore(newGoals);
-                // 2. Hide OOBE screen
                 oobeGoalsScreen.style.display = 'none';
-                // 3. Show main app screen
                 appContainer.style.display = 'block'; 
-                // 4. Render the UI
                 renderFullUI();
             });
 
@@ -670,7 +669,7 @@
                 e.preventDefault(); 
                 const newGoals = { weekly: { mobile: parseInt(document.getElementById('goal-weekly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-weekly-internet').value) || 0, tv: parseInt(document.getElementById('goal-weekly-tv').value) || 0 }, monthly: { mobile: parseInt(document.getElementById('goal-monthly-mobile').value) || 0, internet: parseInt(document.getElementById('goal-monthly-internet').value) || 0, tv: parseInt(document.getElementById('goal-monthly-tv').value) || 0 } };
                 await saveGoalsToFirestore(newGoals);
-                renderFullUI(); // Re-render goals after saving
+                renderFullUI();
                 hideGoalsModal(); 
             });
             addServiceBtn.addEventListener('click', addServiceToSale);
