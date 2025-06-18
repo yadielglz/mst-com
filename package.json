@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AT&T Commission Tracker - A React-based sales tracking application",
   "main": "index.js",
-  "homepage": "https://marco.github.io/mst-com",
+  "homepage": "https://yadielglz.github.io/mst-com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
