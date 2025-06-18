@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mst-com/static/css/main.b615edc3.css",
+    "main.js": "/mst-com/static/js/main.02d121f3.js",
+    "index.html": "/mst-com/index.html",
+    "main.b615edc3.css.map": "/mst-com/static/css/main.b615edc3.css.map",
+    "main.02d121f3.js.map": "/mst-com/static/js/main.02d121f3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b615edc3.css",
+    "static/js/main.02d121f3.js"
+  ]
+}
