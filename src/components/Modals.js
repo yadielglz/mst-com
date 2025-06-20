@@ -245,9 +245,9 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
             </div>
           </div>
 
-          <div className="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center">
+          <div className="mt-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex justify-between items-center">
             <span className="text-lg font-bold">Total Commission:</span>
-            <span className="text-2xl font-bold text-emerald-500">${tempTotalCommission.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-emerald-600">${tempTotalCommission.toFixed(2)}</span>
           </div>
 
           <div className="mt-4">
@@ -699,7 +699,7 @@ export const SettingsModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-end z-50 md:hidden" onClick={onClose}>
-      <div className="bg-white dark:bg-slate-800 rounded-t-2xl p-4 w-full animate-slide-up" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white dark:bg-slate-900 rounded-t-2xl p-4 w-full animate-slide-up" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Settings</h2>
           <button onClick={onClose} className="p-2">

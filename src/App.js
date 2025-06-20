@@ -514,14 +514,14 @@ function App() {
   // Render components
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">AT&T Commission Tracker</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-sm text-slate-400 mt-4">Loading...</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">Loading...</p>
         </div>
       </div>
     );
@@ -529,10 +529,10 @@ function App() {
 
   if (showSplash) {
     return (
-      <div className="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">AT&T Commission Tracker</h1>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
             <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
@@ -572,7 +572,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-200 ${userSettings.theme}`}>
       <Toaster position="top-right" />
       
       {/* Authentication Modal */}
@@ -582,7 +582,6 @@ function App() {
         onAuthSuccess={handleAuthSuccess}
       />
       
-      {/* Header */}
       <Header 
         userSettings={userSettings}
         weather={weather}
@@ -592,42 +591,58 @@ function App() {
         onSetProfile={() => setShowProfileModal(true)}
         onToggleTheme={toggleTheme}
         onToggleTempUnit={toggleTempUnit}
+        onSignOut={handleSignOut}
         showSettingsMenu={showSettingsMenu}
         user={user}
-        onSignOut={handleSignOut}
       />
 
-      {/* Main Content */}
-      <main className="max-w-5xl mx-auto p-4 md:p-6">
-        {/* Mobile Dashboard */}
-        <MobileDashboard 
-          metrics={dashboardMetrics}
-          onOpenSaleModal={() => setShowSaleModal(true)}
-        />
-
-        {/* Desktop Dashboard */}
-        <DesktopDashboard 
-          metrics={dashboardMetrics}
-          onOpenSaleModal={() => setShowSaleModal(true)} 
-        />
-
-        {/* Goals Section */}
-        <GoalsSection 
-          goals={currentGoals}
-          progress={progress}
-          onEditGoals={() => setShowGoalsModal(true)}
-        />
-
-        {/* Sales Log */}
-        <SalesLog 
-          sales={filteredAndSortedSales}
-          onAddSale={() => setShowSaleModal(true)}
-          onDeleteSale={handleDeleteSale}
-          filterProduct={filterProduct}
-          sortSales={sortSales}
-          onFilterChange={setFilterProduct}
-          onSortChange={setSortSales}
-        />
+      <main className="flex-1 bg-slate-50 dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <MobileDashboard metrics={dashboardMetrics} onOpenSaleModal={() => setShowSaleModal(true)} />
+          
+          {/* Mobile Action Buttons */}
+          <div className="flex justify-end items-center gap-4 mb-4 md:hidden">
+            <a
+              href="https://mst.att.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn bg-white border border-slate-300 dark:border-slate-700 text-att-blue hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Open MST
+            </a>
+            <button
+              onClick={() => setShowSaleModal(true)}
+              className="btn btn-primary"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Log Sale
+            </button>
+          </div>
+          
+          <DesktopDashboard metrics={dashboardMetrics} onOpenSaleModal={() => setShowSaleModal(true)} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SalesLog 
+                sales={filteredAndSortedSales}
+                onDeleteSale={handleDeleteSale}
+                filterProduct={filterProduct}
+                sortSales={sortSales}
+                onFilterChange={setFilterProduct}
+                onSortChange={setSortSales}
+                userSettings={userSettings}
+              />
+            </div>
+            <div>
+              <GoalsSection 
+                goals={currentGoals}
+                progress={progress}
+                onEditGoals={() => setShowGoalsModal(true)}
+              />
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Modals */}

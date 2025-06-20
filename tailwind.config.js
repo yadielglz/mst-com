@@ -2,20 +2,21 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html"
   ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        'att-blue': '#067ab4',
-        'att-blue-light': '#3aa5dc',
-        'att-secondary': '#ff7200',
-        'att-gray': '#505050',
+        'att-blue': {
+          DEFAULT: '#067AB4',
+          light: '#3AA5DC',
+        },
+        'att-orange': '#FF7200',
+        'att-gray': '#4a4a4a',
         'att-light-gray': '#f5f5f5',
       },
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
+        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       animation: {
         'slide-up': 'slide-up 0.4s ease-out',

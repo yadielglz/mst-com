@@ -1,74 +1,70 @@
 # Firebase Setup Guide for AT&T Commission Tracker
 
-## Step 1: Create a Firebase Project
+## 1. Create Firebase Project
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Click "Create a project" or "Add project"
-3. Enter a project name (e.g., "att-commission-tracker")
-4. Choose whether to enable Google Analytics (optional)
+2. Click "Add project"
+3. Enter project name: "att-commission-tracker" (or your preferred name)
+4. Enable Google Analytics (optional)
 5. Click "Create project"
 
-## Step 2: Enable Authentication
+## 2. Enable Authentication
 
-1. In your Firebase project, click "Authentication" in the left sidebar
-2. Click "Get started"
-3. Go to the "Sign-in method" tab
-4. Click "Email/Password" and enable it
-5. Click "Save"
+1. In Firebase Console, go to "Authentication" → "Sign-in method"
+2. Enable "Email/Password" authentication
+3. Click "Save"
 
-## Step 3: Create Firestore Database
+## 3. Create Firestore Database
 
-1. In your Firebase project, click "Firestore Database" in the left sidebar
-2. Click "Create database"
-3. Choose "Start in test mode" (we'll add security rules later)
-4. Choose a location close to your users
-5. Click "Done"
+1. Go to "Firestore Database" → "Create database"
+2. Choose "Start in test mode" (we'll add security rules later)
+3. Select a location close to your users
+4. Click "Done"
 
-## Step 4: Get Your Firebase Configuration
+## 4. Configure Security Rules
 
-1. In your Firebase project, click the gear icon (⚙️) next to "Project Overview"
-2. Click "Project settings"
-3. Scroll down to "Your apps" section
-4. Click the web icon (</>)
-5. Register your app with a nickname (e.g., "att-commission-tracker-web")
-6. Copy the firebaseConfig object
+**IMPORTANT**: Replace the default security rules with these secure rules:
 
-## Step 5: Update Your Firebase Configuration
-
-1. Open `src/firebase.js` in your project
-2. Replace the placeholder values with your actual Firebase config:
-
-```javascript
-const firebaseConfig = {
-  apiKey: "your-actual-api-key",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
-};
-```
-
-## Step 6: Set Up Security Rules (Optional but Recommended)
-
-1. In Firestore Database, go to the "Rules" tab
-2. Replace the default rules with:
+1. Go to "Firestore Database" → "Rules"
+2. Replace the existing rules with:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can only access their own data
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Sales collection - users can only access their own sales
     match /sales/{document} {
-      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && 
+        (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid;
     }
     
+    // User settings collection - users can only access their own settings
     match /userSettings/{document} {
-      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && 
+        (document == request.auth.uid || 
+         (resource != null && resource.data.userId == request.auth.uid));
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid;
     }
     
+    // Goals collection - users can only access their own goals
     match /goals/{document} {
-      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow read, write: if isAuthenticated() && 
+        (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && 
+        request.resource.data.userId == request.auth.uid;
     }
   }
 }
@@ -76,50 +72,94 @@ service cloud.firestore {
 
 3. Click "Publish"
 
-## Step 7: Test Your Setup
+## 5. Configure Firestore Indexes
 
-1. Run your development server: `npm start`
-2. Open the app in your browser
-3. You should see an authentication modal
-4. Create a new account or sign in
-5. Try adding a sale to test the Firebase integration
+After setting up your database, you must create an index for the sales query to work. Firebase will often provide a direct link in the browser's developer console to create this automatically.
+
+1.  Run the app and sign in.
+2.  Open the developer console (F12) and look for a Firebase error that says "The query requires an index."
+3.  Click the link in the error message to automatically create the required index.
+
+**Manual Creation:**
+
+If you can't use the automatic link, create the index manually:
+
+1.  Go to **Firestore Database** → **Indexes**.
+2.  Click **"Add Index"**.
+3.  **Collection ID:** `sales`
+4.  **Fields to index:**
+    -   `userId` → **Ascending**
+    -   `createdAt` → **Descending**
+5.  **Query scopes:** Collection
+6.  Click **"Create Index"**.
+
+## 6. Get Firebase Configuration
+
+1. Go to "Project settings" (gear icon)
+2. Scroll down to "Your apps"
+3. Click "Add app" → "Web"
+4. Register app with name: "AT&T Commission Tracker"
+5. Copy the configuration object
+
+## 7. Update Application Configuration
+
+1. Open `src/firebase.js`
+2. Replace the placeholder values with your actual Firebase config:
+
+```javascript
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-project-id.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project-id.appspot.com",
+  messagingSenderId: "your-messaging-sender-id",
+  appId: "your-app-id"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+```
+
+## 8. Test the Setup
+
+1. Start your application: `npm start`
+2. Try to sign up with a new account
+3. Test logging a sale
+4. Verify data appears in Firestore Database
 
 ## Troubleshooting
 
-### Common Issues:
+### "Missing or insufficient permissions" Error
 
-1. **"Firebase: Error (auth/invalid-api-key)"**
-   - Check that your API key is correct in `src/firebase.js`
+If you get this error, check:
 
-2. **"Firebase: Error (auth/operation-not-allowed)"**
-   - Make sure Email/Password authentication is enabled in Firebase Console
+1. **Security Rules**: Make sure you've published the security rules above
+2. **User Authentication**: Ensure the user is properly signed in
+3. **Collection Names**: Verify the collections are named exactly: `sales`, `userSettings`, `goals`
+4. **User ID Field**: The service automatically adds `userId` field to documents
 
-3. **"Firebase: Error (firestore/permission-denied)"**
-   - Check your Firestore security rules
-   - Make sure you're signed in before trying to access data
+### Common Issues
 
-4. **"Firebase: Error (firestore/unavailable)"**
-   - Check your internet connection
-   - Verify your Firestore database is created and active
-
-### Getting Help:
-
-- Check the [Firebase Documentation](https://firebase.google.com/docs)
-- Look at the browser console for detailed error messages
-- Verify all configuration values are correct
-
-## Next Steps
-
-Once Firebase is working:
-
-1. **Deploy to Production**: Update your Firebase config for production
-2. **Add More Features**: Consider adding push notifications, offline support
-3. **Monitor Usage**: Check Firebase Console for usage analytics
-4. **Scale Up**: Consider upgrading to a paid plan if you exceed free limits
+- **Test Mode**: If you left the database in test mode, it will work but is insecure
+- **Location**: Make sure you selected a database location close to your users
+- **Authentication**: Ensure Email/Password authentication is enabled
 
 ## Security Notes
 
-- Never commit your Firebase config to public repositories
-- Use environment variables for production deployments
-- Regularly review your security rules
-- Monitor your Firebase usage and costs 
+- The rules above ensure users can only access their own data
+- Each document must have a `userId` field matching the authenticated user's UID
+- The application automatically adds this field when creating documents
+- Never share your Firebase config publicly in production
+
+## Next Steps
+
+Once setup is complete:
+1. Test all functionality (sign up, log sales, view data)
+2. Consider enabling additional authentication methods if needed
+3. Set up monitoring and alerts in Firebase Console
+4. Consider upgrading to a paid plan for production use 

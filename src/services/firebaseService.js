@@ -144,6 +144,8 @@ export const subscribeToSales = (callback) => {
       sales.push({ id: doc.id, ...doc.data() });
     });
     callback(sales);
+  }, (error) => {
+    console.error('Sales subscription error:', error);
   });
 };
 

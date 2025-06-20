@@ -1,20 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Custom CSS Variables */
 :root {
-  --att-blue: #067ab4;
-  --att-blue-light: #3aa5dc;
-  --att-secondary: #ff7200;
-  --att-gray: #505050;
+  --att-blue: #067AB4;
+  --att-blue-light: #3AA5DC;
+  --att-orange: #FF7200;
+  --att-gray: #4a4a4a;
   --att-light-gray: #f5f5f5;
+  --att-bg-dark: #1f2937; /* slate-800 */
 }
 
 /* Base styles */
 body {
-  font-family: 'Inter', sans-serif;
+  @apply bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  @apply min-h-screen bg-slate-50 dark:bg-slate-900;
 }
 
 /* Custom scrollbar */
@@ -50,23 +60,23 @@ body {
 /* Component-specific styles */
 @layer components {
   .card {
-    @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm p-5 border border-slate-200 dark:border-slate-700;
+    @apply bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 border-none cursor-pointer;
+    @apply font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-200;
   }
 
   .btn-primary {
-    @apply bg-att-blue text-white hover:bg-blue-800;
+    @apply bg-att-blue text-white hover:bg-att-blue-light;
   }
 
   .btn-secondary {
-    @apply bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-500;
+    @apply bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-600;
   }
 
   .form-input {
-    @apply w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-att-blue focus:ring-2 focus:ring-att-blue/20;
+    @apply w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-700;
   }
 
   .progress-bar {
@@ -88,11 +98,11 @@ body {
 
 /* Modal styles */
 .modal-backdrop {
-  @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4;
+  @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50;
 }
 
 .modal-content {
-  @apply bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up;
+  @apply bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto;
 }
 
 /* Responsive design */
@@ -229,4 +239,24 @@ body {
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+.dark .card {
+  @apply bg-slate-800 border-slate-700;
+}
+
+.dark .modal-content {
+  @apply bg-slate-900;
+}
+
+.dark .form-input {
+  @apply bg-slate-700 border-slate-600 placeholder-slate-400;
+}
+
+.dark .btn-secondary {
+  @apply bg-slate-700 hover:bg-slate-600;
+}
+
+.dark .text-slate-500 {
+  @apply text-slate-400;
 } 
