@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, Search, ExternalLink, Plus } from 'lucide-react';
+import { Settings, Search, ExternalLink, Plus, LogOut, User } from 'lucide-react';
 
 const Header = ({ 
   userSettings, 
@@ -7,10 +7,13 @@ const Header = ({
   onOpenSaleModal, 
   onOpenSearch, 
   onToggleSettings, 
+  onOpenSettingsModal,
   onSetProfile, 
   onToggleTheme, 
   onToggleTempUnit,
-  showSettingsMenu 
+  showSettingsMenu,
+  user,
+  onSignOut
 }) => {
   const [time, setTime] = React.useState('--:-- --');
   const [date, setDate] = React.useState('---------- --, ----');
@@ -42,6 +45,11 @@ const Header = ({
           </h1>
           <p className="text-slate-500 dark:text-slate-400">
             {userSettings.name ? `Welcome, ${userSettings.name}!` : 'Welcome!'}
+            {user && (
+              <span className="ml-2 text-xs text-slate-400">
+                ({user.email})
+              </span>
+            )}
           </p>
         </div>
       </div>
@@ -67,7 +75,7 @@ const Header = ({
               <Search className="w-5 h-5" />
             </button>
             <button
-              onClick={onToggleSettings}
+              onClick={onOpenSettingsModal}
               className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700"
               aria-label="Settings"
               title="Settings"
@@ -79,24 +87,6 @@ const Header = ({
 
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center space-x-4">
-          <a
-            href="https://mst.att.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 text-sm bg-white dark:bg-slate-700 text-att-blue dark:text-att-blue-light font-semibold py-2 px-3 rounded-lg shadow-sm border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
-          >
-            <ExternalLink className="w-4 h-4" />
-            Open MST
-          </a>
-          
-          <button
-            onClick={onOpenSaleModal}
-            className="flex items-center justify-center gap-2 text-sm bg-att-blue text-white font-semibold py-2 px-3 rounded-lg shadow-sm hover:bg-blue-800 transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            Log New Sale
-          </button>
-
           <div className="relative">
             <button
               onClick={onToggleSettings}
@@ -132,6 +122,15 @@ const Header = ({
                       °C / °F
                     </button>
                   </div>
+                  {user && (
+                    <button
+                      onClick={onSignOut}
+                      className="w-full text-left px-2 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  )}
                 </div>
               </div>
             )}

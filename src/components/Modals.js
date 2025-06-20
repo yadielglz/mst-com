@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { X, Plus, Lock, User, Target, Download, Upload } from 'lucide-react';
+import { X, Plus, Lock, User, Target, Download, Upload, LogOut } from 'lucide-react';
 
 // Sale Modal
 export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices, productCatalog }) => {
@@ -19,32 +19,46 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
 
     const categoryData = productCatalog[selectedCategory];
     const planData = categoryData.plans[selectedPlan];
-    const service = { category: selectedCategory, planName: selectedPlan, commission: 0, addOns: [], lines: null };
+    const service = { 
+      category: selectedCategory, 
+      planName: selectedPlan, 
+      baseCommission: 0,
+      potentialBonus: 0,
+      addOns: [], 
+      lines: null 
+    };
 
     if (selectedCategory === 'Mobile') {
-      let perLineCommission = 0;
       const hasNextUp = selectedAddons.includes('AT&T Next Up');
-      
+      let base = planData.baseCommission;
+      let bonus = 0;
+
+      // The bonus comes from the difference between the combo rate and the base rate
       if (hasNextUp && planData.baseCommission > 0 && categoryData.addOns['AT&T Next Up'].combo[selectedPlan]) {
-        perLineCommission = categoryData.addOns['AT&T Next Up'].combo[selectedPlan];
-      } else {
-        perLineCommission = planData.baseCommission;
+        bonus = categoryData.addOns['AT&T Next Up'].combo[selectedPlan] - base;
       }
       
+      // Add commissions from other add-ons to the base
       selectedAddons.forEach(addonName => {
-        if (addonName === 'AT&T Next Up' && perLineCommission > planData.baseCommission) return;
-        perLineCommission += categoryData.addOns[addonName].commission;
+        // The "Next Up" bonus is handled separately, so just add its base commission
+        if (addonName === 'AT&T Next Up') {
+            base += categoryData.addOns[addonName].commission;
+        } else {
+            base += categoryData.addOns[addonName].commission;
+        }
       });
       
       service.addOns = selectedAddons;
       if (planData.hasLines) {
-        service.commission = perLineCommission * lines;
+        service.baseCommission = base * lines;
+        service.potentialBonus = bonus * lines;
         service.lines = lines;
       } else {
-        service.commission = perLineCommission;
+        service.baseCommission = base;
+        service.potentialBonus = bonus;
       }
     } else {
-      service.commission = planData.baseCommission;
+      service.baseCommission = planData.baseCommission;
     }
 
     setCurrentServices(prev => [...prev, service]);
@@ -57,17 +71,18 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
     setCurrentServices(prev => prev.filter((_, i) => i !== index));
   };
 
-  const totalCommission = currentServices.reduce((sum, s) => sum + s.commission, 0);
+  // This will be recalculated dynamically in App.js, but we can show a temporary total here
+  const tempTotalCommission = currentServices.reduce((sum, s) => sum + s.baseCommission + s.potentialBonus, 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (currentServices.length === 0) return;
     
+    // We no longer save totalCommission, it will be calculated on the fly
     const saleData = {
       customerName: formData.customerName,
       saleDate: formData.saleDate,
       services: currentServices,
-      totalCommission,
       notes: formData.notes
     };
     
@@ -215,7 +230,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                       <p className="text-sm text-slate-500">{service.category}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="font-medium text-emerald-500">${service.commission.toFixed(2)}</span>
+                      <span className="font-medium text-emerald-500">${(service.baseCommission + service.potentialBonus).toFixed(2)}</span>
                       <button
                         type="button"
                         onClick={() => removeService(index)}
@@ -232,7 +247,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
 
           <div className="mt-4 bg-slate-100 dark:bg-slate-700 p-3 rounded-lg flex justify-between items-center">
             <span className="text-lg font-bold">Total Commission:</span>
-            <span className="text-2xl font-bold text-emerald-500">${totalCommission.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-emerald-500">${tempTotalCommission.toFixed(2)}</span>
           </div>
 
           <div className="mt-4">
@@ -517,8 +532,8 @@ export const SearchPopout = ({ query, onQueryChange, onClose }) => {
 export const OOBEScreen = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [goals, setGoals] = useState({
-    weekly: { mobile: 10, internet: 5, tv: 5 },
-    monthly: { mobile: 40, internet: 20, tv: 20 }
+    weekly: { mobile: 10, internet: 5, tv: 2 },
+    monthly: { mobile: 40, internet: 20, tv: 8 }
   });
 
   const steps = [
@@ -656,6 +671,77 @@ export const OOBEScreen = ({ onComplete }) => {
       <div className="w-full max-w-lg mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-2 text-center">{steps[step].title}</h2>
         {steps[step].content}
+
+        <div className="mt-8">
+          <button 
+            onClick={() => onComplete(goals)}
+            className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Settings Modal for Mobile
+export const SettingsModal = ({
+  isOpen,
+  onClose,
+  onSetProfile,
+  onToggleTheme,
+  onToggleTempUnit,
+  onSignOut,
+  user,
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-end z-50 md:hidden" onClick={onClose}>
+      <div className="bg-white dark:bg-slate-800 rounded-t-2xl p-4 w-full animate-slide-up" onClick={(e) => e.stopPropagation()}>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Settings</h2>
+          <button onClick={onClose} className="p-2">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+        <div className="space-y-2 text-lg">
+          <button
+            onClick={() => { onSetProfile(); onClose(); }}
+            className="w-full text-left p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"
+          >
+            <User className="w-5 h-5" />
+            Set Profile Name
+          </button>
+          <div className="flex items-center justify-between p-3 rounded-lg">
+            <span>Dark Mode</span>
+            <button
+              onClick={onToggleTheme}
+              className="relative inline-flex items-center h-6 rounded-full w-11 transition-colors bg-slate-200 dark:bg-slate-700"
+            >
+              <span className="inline-block w-4 h-4 transform bg-white rounded-full transition-transform dark:translate-x-5" />
+            </button>
+          </div>
+          <div className="flex items-center justify-between p-3 rounded-lg">
+            <span>Temp Unit</span>
+            <button
+              onClick={onToggleTempUnit}
+              className="px-3 py-1 text-sm rounded-md bg-slate-200 dark:bg-slate-700"
+            >
+              °C / °F
+            </button>
+          </div>
+          {user && (
+            <button
+              onClick={() => { onSignOut(); onClose(); }}
+              className="w-full text-left p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-red-600 dark:text-red-400 flex items-center gap-2"
+            >
+              <LogOut className="w-5 h-5" />
+              Sign Out
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

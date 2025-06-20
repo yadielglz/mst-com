@@ -23,21 +23,38 @@ import {
   X,
   Check,
   AlertCircle,
-  Info
+  Info,
+  LogOut
 } from 'lucide-react';
+
+// Import Firebase services
+import { 
+  onAuthChange, 
+  getCurrentUser, 
+  signOutUser,
+  subscribeToSales,
+  saveUserSettings,
+  getUserSettings,
+  saveGoals,
+  getGoals,
+  addSale as firebaseAddSale,
+  deleteSale as firebaseDeleteSale
+} from './services/firebaseService';
 
 // Import components
 import Header from './components/Header';
 import { MobileDashboard, DesktopDashboard } from './components/Dashboard';
 import GoalsSection from './components/GoalsSection';
 import SalesLog from './components/SalesLog';
+import AuthModal from './components/AuthModal';
 import { 
   SaleModal, 
   GoalsModal, 
   ProfileModal, 
   PinModal, 
   SearchPopout, 
-  OOBEScreen 
+  OOBEScreen,
+  SettingsModal
 } from './components/Modals';
 
 // Product catalog data
@@ -88,6 +105,11 @@ const PRODUCT_CATALOG = {
 };
 
 function App() {
+  // Authentication state
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   // State management
   const [sales, setSales] = useState([]);
   const [userSettings, setUserSettings] = useState({
@@ -114,54 +136,104 @@ function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [showSearchPopout, setShowSearchPopout] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [lastDeletedSale, setLastDeletedSale] = useState(null);
   const [undoTimeout, setUndoTimeout] = useState(null);
 
-  // Load data from localStorage on mount
+  // Firebase authentication listener
   useEffect(() => {
-    const savedSales = localStorage.getItem('salesTrackerSales');
-    const savedSettings = localStorage.getItem('salesTrackerSettings');
-    const savedGoals = localStorage.getItem('salesTrackerGoals');
-    const savedPin = localStorage.getItem('salesTrackerPin');
+    const unsubscribe = onAuthChange((user) => {
+      setUser(user);
+      setIsLoading(false);
+      
+      if (user) {
+        // User is signed in, load their data
+        loadUserData();
+      } else {
+        // User is signed out, show auth modal
+        setShowAuthModal(true);
+        setSales([]);
+        setUserSettings({
+          name: '',
+          theme: 'light',
+          tempUnit: 'F',
+          initialSetupComplete: false
+        });
+        setCurrentGoals({
+          weekly: { mobile: 0, internet: 0, tv: 0 },
+          monthly: { mobile: 0, internet: 0, tv: 0 }
+        });
+      }
+    });
 
-    if (savedSales) setSales(JSON.parse(savedSales));
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      setUserSettings(settings);
-      document.documentElement.classList.toggle('dark', settings.theme === 'dark');
+    return () => unsubscribe();
+  }, []);
+
+  // Load user data from Firebase
+  const loadUserData = async () => {
+    try {
+      // Load settings
+      const settingsResult = await getUserSettings();
+      if (settingsResult.success && settingsResult.settings) {
+        setUserSettings(settingsResult.settings);
+        document.documentElement.classList.toggle('dark', settingsResult.settings.theme === 'dark');
+      }
+
+      // Load goals
+      const goalsResult = await getGoals();
+      if (goalsResult.success && goalsResult.goals) {
+        setCurrentGoals(goalsResult.goals);
+      }
+
+      // Set up real-time sales listener
+      const unsubscribe = subscribeToSales((salesData) => {
+        setSales(salesData);
+      });
+
+      return unsubscribe;
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      toast.error('Failed to load user data');
     }
-    if (savedGoals) setCurrentGoals(JSON.parse(savedGoals));
-    if (savedPin) setPinLock(JSON.parse(savedPin));
+  };
 
-    // Check if first time user
-    if (!savedSettings || !JSON.parse(savedSettings).initialSetupComplete) {
+  // Handle authentication success
+  const handleAuthSuccess = async (user) => {
+    setUser(user);
+    setShowAuthModal(false);
+    
+    // Check if this is a new user
+    const settingsResult = await getUserSettings();
+    if (!settingsResult.success || !settingsResult.settings) {
       setShowOOBE(true);
     } else {
       setShowSplash(false);
     }
+  };
 
-    // Check PIN lock
-    if (savedPin && JSON.parse(savedPin).enabled) {
-      setShowPinModal(true);
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      toast.success('Signed out successfully');
+    } catch (error) {
+      toast.error('Failed to sign out');
     }
-  }, []);
+  };
 
-  // Save data to localStorage when it changes
+  // Save settings to Firebase
   useEffect(() => {
-    localStorage.setItem('salesTrackerSales', JSON.stringify(sales));
-  }, [sales]);
+    if (user && userSettings.name) {
+      saveUserSettings(userSettings);
+    }
+  }, [userSettings, user]);
 
+  // Save goals to Firebase
   useEffect(() => {
-    localStorage.setItem('salesTrackerSettings', JSON.stringify(userSettings));
-  }, [userSettings]);
-
-  useEffect(() => {
-    localStorage.setItem('salesTrackerGoals', JSON.stringify(currentGoals));
-  }, [currentGoals]);
-
-  useEffect(() => {
-    localStorage.setItem('salesTrackerPin', JSON.stringify(pinLock));
-  }, [pinLock]);
+    if (user && currentGoals.weekly.mobile > 0) {
+      saveGoals(currentGoals);
+    }
+  }, [currentGoals, user]);
 
   // Time and weather updates
   useEffect(() => {
@@ -206,14 +278,62 @@ function App() {
     }
   }, [userSettings.tempUnit]);
 
+  // Calculate commissions dynamically based on weekly performance
+  const salesWithDynamicCommissions = React.useMemo(() => {
+    if (!sales || sales.length === 0) return [];
+
+    const salesByWeek = {};
+
+    // Group sales by week and calculate total mobile lines per week
+    sales.forEach(sale => {
+      const week = startOfWeek(new Date(sale.saleDate), { weekStartsOn: 1 }); // Assuming week starts on Monday
+      const weekKey = format(week, 'yyyy-MM-dd');
+
+      if (!salesByWeek[weekKey]) {
+        salesByWeek[weekKey] = { sales: [], mobileLines: 0 };
+      }
+
+      salesByWeek[weekKey].sales.push(sale);
+      const mobileLinesInSale = sale.services.reduce((total, s) => {
+        if (s.category === 'Mobile' && s.lines) {
+          return total + s.lines;
+        }
+        return total;
+      }, 0);
+      salesByWeek[weekKey].mobileLines += mobileLinesInSale;
+    });
+
+    // Determine if bonus is met for each week
+    Object.keys(salesByWeek).forEach(weekKey => {
+      salesByWeek[weekKey].bonusMet = salesByWeek[weekKey].mobileLines >= 6;
+    });
+
+    // Calculate final commission for each sale
+    return sales.map(sale => {
+      const week = startOfWeek(new Date(sale.saleDate), { weekStartsOn: 1 });
+      const weekKey = format(week, 'yyyy-MM-dd');
+      const bonusMet = salesByWeek[weekKey]?.bonusMet || false;
+
+      const totalCommission = sale.services.reduce((sum, service) => {
+        let serviceCommission = service.baseCommission;
+        if (bonusMet) {
+          serviceCommission += service.potentialBonus;
+        }
+        return sum + serviceCommission;
+      }, 0);
+
+      return { ...sale, totalCommission };
+    });
+  }, [sales]);
+
   // Calculate dashboard metrics
   const dashboardMetrics = React.useMemo(() => {
-    const totalSales = sales.length;
-    const totalCommission = sales.reduce((sum, sale) => sum + sale.totalCommission, 0);
+    const totalSales = salesWithDynamicCommissions.length;
+    const totalCommission = salesWithDynamicCommissions.reduce((sum, sale) => sum + sale.totalCommission, 0);
     const avgCommission = totalSales > 0 ? totalCommission / totalSales : 0;
     
     return { totalSales, totalCommission, avgCommission };
-  }, [sales]);
+  }, [salesWithDynamicCommissions]);
 
   // Calculate progress
   const progress = React.useMemo(() => {
@@ -243,7 +363,7 @@ function App() {
 
   // Filter and sort sales
   const filteredAndSortedSales = React.useMemo(() => {
-    let processedSales = [...sales];
+    let processedSales = [...salesWithDynamicCommissions];
     
     // Filter by product
     if (filterProduct !== 'all') {
@@ -256,7 +376,7 @@ function App() {
     if (searchQuery) {
       processedSales = processedSales.filter(sale =>
         sale.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        sale.notes.toLowerCase().includes(searchQuery.toLowerCase())
+        (sale.notes && sale.notes.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
     
@@ -275,37 +395,48 @@ function App() {
     });
     
     return processedSales;
-  }, [sales, filterProduct, searchQuery, sortSales]);
+  }, [salesWithDynamicCommissions, filterProduct, searchQuery, sortSales]);
 
   // Event handlers
-  const handleAddSale = (saleData) => {
-    const newSale = {
-      ...saleData,
-      id: Date.now()
-    };
-    
-    setSales(prev => [...prev, newSale]);
-    setCurrentSaleServices([]);
-    setShowSaleModal(false);
-    toast.success('Sale logged successfully!');
+  const handleAddSale = async (saleData) => {
+    try {
+      const result = await firebaseAddSale(saleData);
+      if (result.success) {
+        setCurrentSaleServices([]);
+        setShowSaleModal(false);
+        toast.success('Sale logged successfully!');
+      } else {
+        toast.error('Failed to log sale: ' + result.error);
+      }
+    } catch (error) {
+      toast.error('Failed to log sale');
+    }
   };
 
-  const handleDeleteSale = (saleId) => {
-    const saleToDelete = sales.find(s => s.id === saleId);
-    if (saleToDelete) {
-      setLastDeletedSale({ sale: saleToDelete, id: saleId });
-      setSales(prev => prev.filter(s => s.id !== saleId));
-      
-      // Clear previous timeout
-      if (undoTimeout) clearTimeout(undoTimeout);
-      
-      // Set new timeout
-      const timeout = setTimeout(() => {
-        setLastDeletedSale(null);
-      }, 6000);
-      setUndoTimeout(timeout);
-      
-      toast.success('Sale deleted');
+  const handleDeleteSale = async (saleId) => {
+    try {
+      const result = await firebaseDeleteSale(saleId);
+      if (result.success) {
+        const saleToDelete = sales.find(s => s.id === saleId);
+        if (saleToDelete) {
+          setLastDeletedSale({ sale: saleToDelete, id: saleId });
+          
+          // Clear previous timeout
+          if (undoTimeout) clearTimeout(undoTimeout);
+          
+          // Set new timeout
+          const timeout = setTimeout(() => {
+            setLastDeletedSale(null);
+          }, 6000);
+          setUndoTimeout(timeout);
+          
+          toast.success('Sale deleted');
+        }
+      } else {
+        toast.error('Failed to delete sale: ' + result.error);
+      }
+    } catch (error) {
+      toast.error('Failed to delete sale');
     }
   };
 
@@ -381,22 +512,51 @@ function App() {
   };
 
   // Render components
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
+        <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
+          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
+          <div className="flex justify-center mt-6">
+            <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p className="text-sm text-slate-400 mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (showSplash) {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">AT&T Commission Tracker</h1>
-          <p className="text-xs text-slate-400 mt-6 text-center leading-relaxed">
-            <strong>Disclaimer:</strong> This is an assistant tool for tracking purposes only. No information is transmitted over the internet. All data is stored locally in your browser and will be lost if the page is refreshed or closed. Any discrepancies in official commission calculations must be handled with HR or your direct supervisor.
-          </p>
-          <div className="pt-6">
+          
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
+            <p className="text-sm text-blue-700 dark:text-blue-300 text-left leading-relaxed">
+              <strong>This is an assistant tool for tracking purposes only.</strong>
+            </p>
+            <ul className="text-sm text-blue-700 dark:text-blue-300 text-left mt-3 space-y-1">
+              <li>• Your data is stored securely in the cloud and synced across devices</li>
+              <li>• This tool is for personal use and tracking only</li>
+              <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
+              <li>• This is not an official AT&T application</li>
+            </ul>
+          </div>
+          
+          <div className="space-y-3">
             <button 
               onClick={() => setShowSplash(false)}
-              className="w-full bg-att-blue text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300"
+              className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
             >
-              I Agree
+              I Understand and Agree
             </button>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              By clicking "I Understand and Agree", you acknowledge that you have read and understood this disclaimer.
+            </p>
           </div>
         </div>
       </div>
@@ -415,17 +575,26 @@ function App() {
     <div className="min-h-screen bg-att-light-gray text-slate-800 dark:bg-slate-900 dark:text-slate-200">
       <Toaster position="top-right" />
       
+      {/* Authentication Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+      
       {/* Header */}
       <Header 
         userSettings={userSettings}
         weather={weather}
-        onOpenSaleModal={() => setShowSaleModal(true)}
         onOpenSearch={() => setShowSearchPopout(true)}
         onToggleSettings={() => setShowSettingsMenu(!showSettingsMenu)}
+        onOpenSettingsModal={() => setShowSettingsModal(true)}
         onSetProfile={() => setShowProfileModal(true)}
         onToggleTheme={toggleTheme}
         onToggleTempUnit={toggleTempUnit}
         showSettingsMenu={showSettingsMenu}
+        user={user}
+        onSignOut={handleSignOut}
       />
 
       {/* Main Content */}
@@ -437,7 +606,10 @@ function App() {
         />
 
         {/* Desktop Dashboard */}
-        <DesktopDashboard metrics={dashboardMetrics} />
+        <DesktopDashboard 
+          metrics={dashboardMetrics}
+          onOpenSaleModal={() => setShowSaleModal(true)} 
+        />
 
         {/* Goals Section */}
         <GoalsSection 
@@ -496,6 +668,18 @@ function App() {
           query={searchQuery}
           onQueryChange={setSearchQuery}
           onClose={() => setShowSearchPopout(false)}
+        />
+      )}
+
+      {showSettingsModal && (
+        <SettingsModal
+          isOpen={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          onSetProfile={() => setShowProfileModal(true)}
+          onToggleTheme={toggleTheme}
+          onToggleTempUnit={toggleTempUnit}
+          onSignOut={handleSignOut}
+          user={user}
         />
       )}
 
