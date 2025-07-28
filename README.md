@@ -1,6 +1,6 @@
-# AT&T Commission Tracker
+# T-Mobile Commission Tracker
 
-A modern React-based web application for AT&T sales representatives to track their commissions, set performance goals, and monitor their sales progress.
+A modern React-based web application for T-Mobile sales representatives to track their commissions, set performance goals, and monitor their sales progress.
 
 ## 🚀 Features
 
@@ -8,7 +8,7 @@ A modern React-based web application for AT&T sales representatives to track the
 - **Sales Tracking**: Log and manage individual sales with customer details, services, and commission calculations
 - **Goal Setting**: Set and track weekly and monthly goals for Mobile, Internet, and TV services
 - **Progress Monitoring**: Visual progress bars and real-time goal tracking
-- **Commission Calculator**: Automatic commission calculation based on AT&T's product catalog
+- **Commission Calculator**: Manual commission entry for T-Mobile's product catalog
 
 ### Enhanced Features (New in React Version)
 1. **Advanced Analytics Dashboard**: Enhanced visual metrics with icons and better data presentation
@@ -78,20 +78,22 @@ A modern React-based web application for AT&T sales representatives to track the
 
 ## 🎨 Product Catalog
 
-The app includes a comprehensive AT&T product catalog with commission rates:
+The app includes a comprehensive T-Mobile product catalog with manual commission entry:
 
 ### Mobile Services
-- AT&T Unlimited Plans (Starter, Extra, Premium)
+- T-Mobile Unlimited Plans (Essentials, Magenta, Magenta MAX)
+- T-Mobile Go5G Plans (Go5G, Go5G Plus, Go5G Next)
 - BYOD Plans
 - Device Upgrades
-- Add-ons (Next Up, Protection, Turbo)
+- Add-ons (Protection, JUMP!, Plus)
 
 ### Internet Services
-- AT&T Fiber Plans (1000, 500, 300, 100, <100 Mbps)
+- T-Mobile Home Internet Plans
+- T-Mobile 5G Home Internet
 
 ### TV Services
-- DirecTV Stream (Premium, Basic)
-- DirecTV Satellite (Premium, Basic)
+- T-Mobile TVision Plans
+- T-Mobile TVision LIVE TV
 
 ## 🔧 Configuration
 
@@ -165,9 +167,16 @@ This is an assistant tool for tracking purposes only. No information is transmit
 For support and questions:
 - Create an issue in the GitHub repository
 - Check the documentation in the app's help section
-- Contact your AT&T supervisor for official commission questions
+- Contact your T-Mobile supervisor for official commission questions
 
 ## 🔄 Changelog
+
+### Version 2.1.0 (T-Mobile Version)
+- Switched from AT&T to T-Mobile product catalog
+- Removed automatic commission calculation
+- Added manual commission entry for each service
+- Updated branding throughout the application
+- Updated product catalog to T-Mobile services
 
 ### Version 2.0.0 (React Version)
 - Complete rewrite in React 18

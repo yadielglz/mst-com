@@ -1,4 +1,4 @@
-# AT&T Commission Tracker - Improvements Summary
+# T-Mobile Commission Tracker - Improvements Summary
 
 ## 🚀 Major Improvements Implemented
 

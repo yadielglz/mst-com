@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Installing AT&T Commission Tracker..."
+echo "Installing T-Mobile Commission Tracker..."
 echo
 
 echo "Installing dependencies..."

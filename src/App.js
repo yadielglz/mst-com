@@ -61,45 +61,40 @@ import {
 const PRODUCT_CATALOG = {
   Mobile: {
     plans: {
-      'AT&T Unlimited Starter': { baseCommission: 30, hasLines: true },
-      'AT&T Unlimited Extra': { baseCommission: 40, hasLines: true },
-      'AT&T Unlimited Premium': { baseCommission: 50, hasLines: true },
-      'BYOD w/ AT&T Starter': { baseCommission: 20, hasLines: false },
-      'BYOD w/ AT&T Extra': { baseCommission: 30, hasLines: false },
-      'BYOD w/ AT&T Premium': { baseCommission: 40, hasLines: false },
-      'AT&T Device Upgrade': { baseCommission: 5, hasLines: false },
+      'T-Mobile Essentials': { hasLines: true },
+      'T-Mobile Magenta': { hasLines: true },
+      'T-Mobile Magenta MAX': { hasLines: true },
+      'T-Mobile Go5G': { hasLines: true },
+      'T-Mobile Go5G Plus': { hasLines: true },
+      'T-Mobile Go5G Next': { hasLines: true },
+      'BYOD w/ T-Mobile Essentials': { hasLines: false },
+      'BYOD w/ T-Mobile Magenta': { hasLines: false },
+      'BYOD w/ T-Mobile Magenta MAX': { hasLines: false },
+      'T-Mobile Device Upgrade': { hasLines: false },
     },
     addOns: {
-      'AT&T Next Up': { 
-        commission: 10, 
-        combo: { 
-          'AT&T Unlimited Starter': 40, 
-          'AT&T Unlimited Extra': 60, 
-          'AT&T Unlimited Premium': 70, 
-          'AT&T Device Upgrade': 15 
-        }
-      },
-      'AT&T Protect Advantage for 1 Tier 1': { commission: 14 },
-      'AT&T Protect Advantage for 1 Tier 2': { commission: 17 },
-      'AT&T Protect Advantage for 4': { commission: 50 },
-      'AT&T Turbo': { commission: 7 },
+      'T-Mobile Protection': { name: 'T-Mobile Protection' },
+      'T-Mobile Protection Plus': { name: 'T-Mobile Protection Plus' },
+      'T-Mobile Protection Premium': { name: 'T-Mobile Protection Premium' },
+      'T-Mobile JUMP!': { name: 'T-Mobile JUMP!' },
+      'T-Mobile JUMP! On Demand': { name: 'T-Mobile JUMP! On Demand' },
+      'T-Mobile Plus': { name: 'T-Mobile Plus' },
+      'T-Mobile Plus Up': { name: 'T-Mobile Plus Up' },
     }
   },
   Internet: {
     plans: {
-      'AT&T Fiber 1000': { baseCommission: 200.00 },
-      'AT&T Fiber 500': { baseCommission: 150.00 },
-      'AT&T Fiber 300': { baseCommission: 100.00 },
-      'AT&T Fiber 100': { baseCommission: 100.00 },
-      'AT&T Fiber <100': { baseCommission: 75.00 },
+      'T-Mobile Home Internet': { name: 'T-Mobile Home Internet' },
+      'T-Mobile Home Internet Plus': { name: 'T-Mobile Home Internet Plus' },
+      'T-Mobile 5G Home Internet': { name: 'T-Mobile 5G Home Internet' },
     }
   },
-  DirecTV: {
+  TV: {
     plans: {
-      'DirecTV Stream Premium': { baseCommission: 50.00 },
-      'DirecTV Stream Basic': { baseCommission: 40.00 },
-      'DirecTV Satellite Premium': { baseCommission: 50.00 },
-      'DirecTV Satellite Basic': { baseCommission: 40.00 },
+      'T-Mobile TVision': { name: 'T-Mobile TVision' },
+      'T-Mobile TVision VIBE': { name: 'T-Mobile TVision VIBE' },
+      'T-Mobile TVision LIVE TV': { name: 'T-Mobile TVision LIVE TV' },
+      'T-Mobile TVision LIVE TV+': { name: 'T-Mobile TVision LIVE TV+' },
     }
   }
 };
@@ -278,48 +273,14 @@ function App() {
     }
   }, [userSettings.tempUnit]);
 
-  // Calculate commissions dynamically based on weekly performance
-  const salesWithDynamicCommissions = React.useMemo(() => {
+  // Process sales with manual commission amounts
+  const salesWithManualCommissions = React.useMemo(() => {
     if (!sales || sales.length === 0) return [];
 
-    const salesByWeek = {};
-
-    // Group sales by week and calculate total mobile lines per week
-    sales.forEach(sale => {
-      const week = startOfWeek(new Date(sale.saleDate), { weekStartsOn: 1 }); // Assuming week starts on Monday
-      const weekKey = format(week, 'yyyy-MM-dd');
-
-      if (!salesByWeek[weekKey]) {
-        salesByWeek[weekKey] = { sales: [], mobileLines: 0 };
-      }
-
-      salesByWeek[weekKey].sales.push(sale);
-      const mobileLinesInSale = sale.services.reduce((total, s) => {
-        if (s.category === 'Mobile' && s.lines) {
-          return total + s.lines;
-        }
-        return total;
-      }, 0);
-      salesByWeek[weekKey].mobileLines += mobileLinesInSale;
-    });
-
-    // Determine if bonus is met for each week
-    Object.keys(salesByWeek).forEach(weekKey => {
-      salesByWeek[weekKey].bonusMet = salesByWeek[weekKey].mobileLines >= 6;
-    });
-
-    // Calculate final commission for each sale
+    // Return sales as-is since commissions are now manual
     return sales.map(sale => {
-      const week = startOfWeek(new Date(sale.saleDate), { weekStartsOn: 1 });
-      const weekKey = format(week, 'yyyy-MM-dd');
-      const bonusMet = salesByWeek[weekKey]?.bonusMet || false;
-
       const totalCommission = sale.services.reduce((sum, service) => {
-        let serviceCommission = service.baseCommission;
-        if (bonusMet) {
-          serviceCommission += service.potentialBonus;
-        }
-        return sum + serviceCommission;
+        return sum + (service.manualCommission || 0);
       }, 0);
 
       return { ...sale, totalCommission };
@@ -328,12 +289,12 @@ function App() {
 
   // Calculate dashboard metrics
   const dashboardMetrics = React.useMemo(() => {
-    const totalSales = salesWithDynamicCommissions.length;
-    const totalCommission = salesWithDynamicCommissions.reduce((sum, sale) => sum + sale.totalCommission, 0);
+    const totalSales = salesWithManualCommissions.length;
+    const totalCommission = salesWithManualCommissions.reduce((sum, sale) => sum + sale.totalCommission, 0);
     const avgCommission = totalSales > 0 ? totalCommission / totalSales : 0;
     
     return { totalSales, totalCommission, avgCommission };
-  }, [salesWithDynamicCommissions]);
+  }, [salesWithManualCommissions]);
 
   // Calculate progress
   const progress = React.useMemo(() => {
@@ -346,7 +307,7 @@ function App() {
     sales.forEach(sale => {
       const saleDate = new Date(sale.saleDate);
       sale.services.forEach(service => {
-        const category = service.category === 'DirecTV' ? 'TV' : service.category;
+        const category = service.category;
         const units = category === 'Mobile' ? (service.lines || 0) : 1;
         
         if (saleDate >= startOfMonthDate) {
@@ -363,7 +324,7 @@ function App() {
 
   // Filter and sort sales
   const filteredAndSortedSales = React.useMemo(() => {
-    let processedSales = [...salesWithDynamicCommissions];
+    let processedSales = [...salesWithManualCommissions];
     
     // Filter by product
     if (filterProduct !== 'all') {
@@ -395,7 +356,7 @@ function App() {
     });
     
     return processedSales;
-  }, [salesWithDynamicCommissions, filterProduct, searchQuery, sortSales]);
+  }, [salesWithManualCommissions, filterProduct, searchQuery, sortSales]);
 
   // Event handlers
   const handleAddSale = async (saleData) => {
@@ -477,7 +438,7 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `att-commission-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
+    a.download = `tmobile-commission-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Data exported successfully');
@@ -508,7 +469,7 @@ function App() {
     setUserSettings(prev => ({ ...prev, initialSetupComplete: true }));
     setShowOOBE(false);
     setShowSplash(false);
-    toast.success('Welcome to AT&T Commission Tracker!');
+    toast.success('Welcome to T-Mobile Commission Tracker!');
   };
 
   // Render components
@@ -516,8 +477,8 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">AT&T Commission Tracker</h1>
+          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -531,8 +492,8 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">AT&T Commission Tracker</h1>
+          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
             <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
@@ -543,7 +504,7 @@ function App() {
               <li>• Your data is stored securely in the cloud and synced across devices</li>
               <li>• This tool is for personal use and tracking only</li>
               <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
-              <li>• This is not an official AT&T application</li>
+              <li>• This is not an official T-Mobile application</li>
             </ul>
           </div>
           

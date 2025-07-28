@@ -44,8 +44,7 @@ async function testFirestorePermissions(userId) {
       services: [{
         category: 'Mobile',
         planName: 'Test Plan',
-        baseCommission: 10,
-        potentialBonus: 0
+        manualCommission: 10
       }],
       userId: userId,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),

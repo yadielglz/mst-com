@@ -1,10 +1,10 @@
-# Firebase Setup Guide for AT&T Commission Tracker
+# Firebase Setup Guide for T-Mobile Commission Tracker
 
 ## 1. Create Firebase Project
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Click "Add project"
-3. Enter project name: "att-commission-tracker" (or your preferred name)
+3. Enter project name: "tmobile-commission-tracker" (or your preferred name)
 4. Enable Google Analytics (optional)
 5. Click "Create project"
 
@@ -98,7 +98,7 @@ If you can't use the automatic link, create the index manually:
 1. Go to "Project settings" (gear icon)
 2. Scroll down to "Your apps"
 3. Click "Add app" → "Web"
-4. Register app with name: "AT&T Commission Tracker"
+4. Register app with name: "T-Mobile Commission Tracker"
 5. Copy the configuration object
 
 ## 7. Update Application Configuration

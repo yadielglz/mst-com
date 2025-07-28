@@ -24,7 +24,7 @@ export const DesktopDashboard = ({ metrics, onOpenSaleModal }) => (
   <div className="hidden md:block mb-6">
     <div className="flex justify-end items-center gap-4 mb-4">
       <a
-        href="https://mst.att.com"
+        href="https://mst.t-mobile.com"
         target="_blank"
         rel="noopener noreferrer"
         className="btn bg-white border border-slate-300 dark:border-slate-700 text-att-blue hover:bg-slate-100 dark:hover:bg-slate-800"

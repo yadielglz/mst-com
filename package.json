@@ -1,7 +1,7 @@
 {
-  "name": "att-commission-tracker",
+  "name": "tmobile-commission-tracker",
   "version": "1.0.0",
-  "description": "AT&T Commission Tracker - A React-based sales tracking application",
+  "description": "T-Mobile Commission Tracker - A React-based sales tracking application",
   "main": "index.js",
   "homepage": "https://yadielglz.github.io/mst-com",
   "scripts": {

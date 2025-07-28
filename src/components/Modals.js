@@ -13,6 +13,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
   const [selectedPlan, setSelectedPlan] = useState('');
   const [lines, setLines] = useState(1);
   const [selectedAddons, setSelectedAddons] = useState([]);
+  const [manualCommission, setManualCommission] = useState('');
 
   const addServiceToSale = () => {
     if (!selectedCategory || !selectedPlan) return;
@@ -22,49 +23,23 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
     const service = { 
       category: selectedCategory, 
       planName: selectedPlan, 
-      baseCommission: 0,
-      potentialBonus: 0,
+      manualCommission: parseFloat(manualCommission) || 0,
       addOns: [], 
       lines: null 
     };
 
     if (selectedCategory === 'Mobile') {
-      const hasNextUp = selectedAddons.includes('AT&T Next Up');
-      let base = planData.baseCommission;
-      let bonus = 0;
-
-      // The bonus comes from the difference between the combo rate and the base rate
-      if (hasNextUp && planData.baseCommission > 0 && categoryData.addOns['AT&T Next Up'].combo[selectedPlan]) {
-        bonus = categoryData.addOns['AT&T Next Up'].combo[selectedPlan] - base;
-      }
-      
-      // Add commissions from other add-ons to the base
-      selectedAddons.forEach(addonName => {
-        // The "Next Up" bonus is handled separately, so just add its base commission
-        if (addonName === 'AT&T Next Up') {
-            base += categoryData.addOns[addonName].commission;
-        } else {
-            base += categoryData.addOns[addonName].commission;
-        }
-      });
-      
       service.addOns = selectedAddons;
       if (planData.hasLines) {
-        service.baseCommission = base * lines;
-        service.potentialBonus = bonus * lines;
         service.lines = lines;
-      } else {
-        service.baseCommission = base;
-        service.potentialBonus = bonus;
       }
-    } else {
-      service.baseCommission = planData.baseCommission;
     }
 
     setCurrentServices(prev => [...prev, service]);
     setSelectedPlan('');
     setSelectedAddons([]);
     setLines(1);
+    setManualCommission('');
   };
 
   const removeService = (index) => {
@@ -72,7 +47,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
   };
 
   // This will be recalculated dynamically in App.js, but we can show a temporary total here
-  const tempTotalCommission = currentServices.reduce((sum, s) => sum + s.baseCommission + s.potentialBonus, 0);
+  const tempTotalCommission = currentServices.reduce((sum, s) => sum + (s.manualCommission || 0), 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -198,6 +173,19 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                     </div>
                   </div>
                 )}
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Manual Commission ($)</label>
+                  <input
+                    type="number"
+                    value={manualCommission}
+                    onChange={(e) => setManualCommission(e.target.value)}
+                    className="form-input"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                  />
+                </div>
               </div>
             )}
 
@@ -230,7 +218,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                       <p className="text-sm text-slate-500">{service.category}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="font-medium text-emerald-500">${(service.baseCommission + service.potentialBonus).toFixed(2)}</span>
+                      <span className="font-medium text-emerald-500">${(service.manualCommission || 0).toFixed(2)}</span>
                       <button
                         type="button"
                         onClick={() => removeService(index)}
@@ -541,9 +529,9 @@ export const OOBEScreen = ({ onComplete }) => {
       title: 'Welcome!',
       content: (
         <div className="text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="AT&T Emblem" className="h-12 mx-auto mb-4" />
+          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">
-            Welcome to AT&T Commission Tracker
+            Welcome to T-Mobile Commission Tracker
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-4">
             Track your sales, set goals, and stay motivated. Your data is private and never leaves your device.
