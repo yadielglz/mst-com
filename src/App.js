@@ -1198,38 +1198,38 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [user, showAuthModal, showSplash, showOOBE, showPinModal]);
-  
+
   // Firebase authentication listener
   useEffect(() => {
     console.log('App: Initializing Firebase auth listener...');
     
     try {
-      const unsubscribe = onAuthChange((user) => {
+    const unsubscribe = onAuthChange((user) => {
         console.log('App: Auth state changed:', user ? 'User logged in' : 'User logged out');
-        setUser(user);
-        setIsLoading(false);
-        
-        if (user) {
-          // User is signed in, load their data
-          loadUserData();
-        } else {
-          // User is signed out, show auth modal
-          setShowAuthModal(true);
-          setSales([]);
-          setUserSettings({
-            name: '',
-            theme: 'light',
-            tempUnit: 'F',
-            initialSetupComplete: false
-          });
-          setCurrentGoals({
-            weekly: { mobile: 0, internet: 0, tv: 0 },
-            monthly: { mobile: 0, internet: 0, tv: 0 }
-          });
-        }
-      });
+      setUser(user);
+      setIsLoading(false);
+      
+      if (user) {
+        // User is signed in, load their data
+        loadUserData();
+      } else {
+        // User is signed out, show auth modal
+        setShowAuthModal(true);
+        setSales([]);
+        setUserSettings({
+          name: '',
+          theme: 'light',
+          tempUnit: 'F',
+          initialSetupComplete: false
+        });
+        setCurrentGoals({
+          weekly: { mobile: 0, internet: 0, tv: 0 },
+          monthly: { mobile: 0, internet: 0, tv: 0 }
+        });
+      }
+    });
 
-      return () => unsubscribe();
+    return () => unsubscribe();
     } catch (error) {
       console.error('App: Firebase auth error:', error);
       // Fallback: show auth modal even if Firebase fails
@@ -1676,57 +1676,57 @@ function App() {
 
   // Fallback UI - Always show something
   try {
-    if (showSplash) {
-      return (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
-          <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
+  if (showSplash) {
+    return (
+      <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
+        <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
             <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
             <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
-            
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-              <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
-              <p className="text-sm text-blue-700 dark:text-blue-300 text-left leading-relaxed">
-                <strong>This is an assistant tool for tracking purposes only.</strong>
-              </p>
-              <ul className="text-sm text-blue-700 dark:text-blue-300 text-left mt-3 space-y-1">
-                <li>• Your data is stored securely in the cloud and synced across devices</li>
-                <li>• This tool is for personal use and tracking only</li>
-                <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
+          
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
+            <p className="text-sm text-blue-700 dark:text-blue-300 text-left leading-relaxed">
+              <strong>This is an assistant tool for tracking purposes only.</strong>
+            </p>
+            <ul className="text-sm text-blue-700 dark:text-blue-300 text-left mt-3 space-y-1">
+              <li>• Your data is stored securely in the cloud and synced across devices</li>
+              <li>• This tool is for personal use and tracking only</li>
+              <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
                 <li>• This is not an official T-Mobile application</li>
-              </ul>
-            </div>
-            
-            <div className="space-y-3">
-              <button 
-                onClick={() => setShowSplash(false)}
-                className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
-              >
-                I Understand and Agree
-              </button>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                By clicking "I Understand and Agree", you acknowledge that you have read and understood this disclaimer.
-              </p>
-            </div>
+            </ul>
+          </div>
+          
+          <div className="space-y-3">
+            <button 
+              onClick={() => setShowSplash(false)}
+              className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
+            >
+              I Understand and Agree
+            </button>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              By clicking "I Understand and Agree", you acknowledge that you have read and understood this disclaimer.
+            </p>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
-    if (showOOBE) {
-      return <OOBEScreen onComplete={handleOOBEComplete} />;
-    }
+  if (showOOBE) {
+    return <OOBEScreen onComplete={handleOOBEComplete} />;
+  }
 
-    if (showPinModal) {
-      return <PinModal onUnlock={() => setShowPinModal(false)} pinLock={pinLock} />;
-    }
+  if (showPinModal) {
+    return <PinModal onUnlock={() => setShowPinModal(false)} pinLock={pinLock} />;
+  }
 
-    return (
+  return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-        <Toaster position="top-right" />
-        
+      <Toaster position="top-right" />
+      
         {/* Header */}
-        <Header 
-          user={user} 
+      <Header 
+        user={user}
           onSignOut={handleSignOut}
           onToggleTheme={toggleTheme}
           onShowSettings={() => setShowSettingsModal(true)}
@@ -1774,7 +1774,7 @@ function App() {
               <p className="text-sm sm:text-base opacity-90">Browse devices & plans</p>
             </button>
           </div>
-
+          
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
@@ -1798,24 +1798,24 @@ function App() {
                       return quoteDate.getMonth() === now.getMonth() && quoteDate.getFullYear() === now.getFullYear();
                     }).length}
                   </p>
-                </div>
+            </div>
                 <div className="text-3xl sm:text-4xl">📅</div>
               </div>
             </div>
             
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
-                <div>
+            <div>
                   <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Avg Quote Value</p>
                   <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
                     ${quotesWithPricing.length > 0 
                       ? Math.round(quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0) / quotesWithPricing.length)
                       : 0}/mo
                   </p>
-                </div>
-                <div className="text-3xl sm:text-4xl">💰</div>
-              </div>
             </div>
+                <div className="text-3xl sm:text-4xl">💰</div>
+          </div>
+        </div>
             
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
@@ -1831,105 +1831,119 @@ function App() {
           </div>
 
           {/* Device and Plans Showcase */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Featured Devices & Plans</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Device & Plans Showcase</h3>
               <button
                 onClick={() => setShowDeviceShowcase(true)}
-                className="text-[#E20074] hover:text-[#B8005C] dark:hover:text-[#FF6B9D] font-semibold text-sm sm:text-base transition-colors"
+                className="text-[#E20074] hover:text-[#B8005C] font-medium text-sm transition-colors"
               >
-                View All →
+                View All
               </button>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Featured Smartphones */}
+              {/* Premium Smartphones */}
               <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Premium Smartphones</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone 16 Pro Max, Galaxy S25 Ultra</p>
-                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $45.83/mo</p>
+                  <div className="text-3xl mb-2">📱</div>
+                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Premium Smartphones</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">iPhone 15, Samsung S24</p>
+                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
                 </div>
               </div>
-              
+
+              {/* Foldable Devices */}
               <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Foldable Devices</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">Galaxy Z Fold7, Pixel 9 Pro Fold</p>
-                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $66.67/mo</p>
+                  <div className="text-3xl mb-2">📱</div>
+                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Foldable Devices</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Z Fold6, Z Flip6, Razr+</p>
+                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
                 </div>
               </div>
-              
+
+              {/* Budget Options */}
               <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Budget Options</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone SE, Galaxy A16, Moto G</p>
-                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $8.33/mo</p>
+                  <div className="text-3xl mb-2">📱</div>
+                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Budget Options</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Moto G, REVVL, A-Series</p>
+                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
                 </div>
               </div>
-              
+
+              {/* Tablets & Watches */}
               <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Tablets & Watches</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPad Pro, Galaxy Tab, Apple Watch</p>
-                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $8.33/mo</p>
+                  <div className="text-3xl mb-2">⌚</div>
+                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Tablets & Watches</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">iPad, Galaxy Tab, Apple Watch</p>
+                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Recent Quotes Preview */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
-              <button
-                onClick={() => setShowSettingsModal(true)}
-                className="text-[#E20074] hover:text-[#B8005C] dark:hover:text-[#FF6B9D] font-semibold text-sm sm:text-base transition-colors"
-              >
-                View All →
-              </button>
+          {/* Promotional Banners */}
+          <div className="space-y-4">
+            {/* Current Promotions Banner */}
+            <div className="bg-gradient-to-r from-[#E20074] to-[#FF6B9D] rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">🎉 Current Promotions</h3>
+                  <p className="text-sm sm:text-base opacity-90 mb-3">
+                    Get up to $800 off when you switch to T-Mobile! Plus, enjoy 3 months of Netflix on us.
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Switch & Save</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Netflix on Us</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">5G Included</span>
+                  </div>
+                </div>
+                <div className="text-4xl sm:text-5xl ml-4">📱</div>
+              </div>
             </div>
-            
-            {quotesWithPricing.slice(0, 3).map((quote, index) => (
-              <div key={index} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg mb-3 last:mb-0">
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base truncate">
-                    {quote.customerName || 'Customer'}
+
+            {/* 5G Network Banner */}
+            <div className="bg-gradient-to-r from-[#4A90E2] to-[#7BB3F0] rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">🚀 America's Largest 5G Network</h3>
+                  <p className="text-sm sm:text-base opacity-90 mb-3">
+                    Experience lightning-fast speeds with our nationwide 5G coverage. No extra charges!
                   </p>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">
-                    {quote.services.map(service => service.name).join(', ')}
-                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Nationwide 5G</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">No Extra Cost</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Ultra Capacity</span>
+                  </div>
                 </div>
-                <div className="text-right ml-4">
-                  <p className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base">
-                    ${quote.totalMonthly}/mo
+                <div className="text-4xl sm:text-5xl ml-4">📶</div>
+              </div>
+            </div>
+
+            {/* Family Plans Banner */}
+            <div className="bg-gradient-to-r from-[#50C878] to-[#7DCEA0] rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg sm:text-xl font-bold mb-2">👨‍👩‍👧‍👦 Family Plans Starting at $120/mo</h3>
+                  <p className="text-sm sm:text-base opacity-90 mb-3">
+                    Up to 4 lines with unlimited data, talk & text. The more lines, the more you save!
                   </p>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                    {format(new Date(quote.date), 'MMM d')}
-                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">4 Lines $120</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Unlimited Data</span>
+                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Family Savings</span>
+                  </div>
                 </div>
+                <div className="text-4xl sm:text-5xl ml-4">👨‍👩‍👧‍👦</div>
               </div>
-            ))}
-            
-            {quotesWithPricing.length === 0 && (
-              <div className="text-center py-8 sm:py-12">
-                <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📝</div>
-                <h3 className="text-lg sm:text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
-                  No Quotes Yet
-                </h3>
-                <p className="text-sm sm:text-base text-slate-500 dark:text-slate-500">
-                  Create your first quote to get started
-                </p>
-              </div>
-            )}
+            </div>
           </div>
         </div>
 
-        {/* Modals */}
+      {/* Modals */}
         {showQuoteModal && (
           <MultiStepQuoteModal
             onClose={() => setShowQuoteModal(false)}
@@ -1973,21 +1987,21 @@ function App() {
           />
         )}
 
-        {showGoalsModal && (
-          <GoalsModal
-            goals={currentGoals}
+      {showGoalsModal && (
+        <GoalsModal 
+          goals={currentGoals}
             onSave={handleSaveGoals}
-            onClose={() => setShowGoalsModal(false)}
-          />
-        )}
+          onClose={() => setShowGoalsModal(false)}
+        />
+      )}
 
-        {showProfileModal && (
-          <ProfileModal
-            name={userSettings.name}
+      {showProfileModal && (
+        <ProfileModal 
+          name={userSettings.name}
             onSave={handleSaveProfile}
-            onClose={() => setShowProfileModal(false)}
-          />
-        )}
+          onClose={() => setShowProfileModal(false)}
+        />
+      )}
 
         {showPinModal && (
           <PinModal
@@ -1996,29 +2010,29 @@ function App() {
           />
         )}
 
-        {showSearchPopout && (
-          <SearchPopout
-            query={searchQuery}
-            onQueryChange={setSearchQuery}
-            onClose={() => setShowSearchPopout(false)}
-          />
-        )}
+      {showSearchPopout && (
+        <SearchPopout 
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+          onClose={() => setShowSearchPopout(false)}
+        />
+      )}
 
         {showOOBE && (
           <OOBEScreen onComplete={handleOOBEComplete} />
         )}
 
         {/* Undo Toast */}
-        {lastDeletedSale && (
+      {lastDeletedSale && (
           <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
             <div className="flex items-center gap-2">
               <span>Quote deleted</span>
-              <button
-                onClick={handleUndoDelete}
+        <button
+          onClick={handleUndoDelete}
                 className="text-att-blue hover:text-att-blue-light font-medium"
-              >
+        >
                 Undo
-              </button>
+        </button>
             </div>
           </div>
         )}
@@ -2033,15 +2047,15 @@ function App() {
           <p className="text-slate-600 dark:text-slate-300 mb-4">
             An unexpected error occurred. Please try refreshing the page or contact support.
           </p>
-          <button
+      <button
             onClick={() => window.location.reload()}
             className="bg-att-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors duration-300"
-          >
+      >
             Refresh Page
-          </button>
+      </button>
         </div>
-      </div>
-    );
+    </div>
+  );
   }
 }
 
