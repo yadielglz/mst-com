@@ -298,7 +298,7 @@ const PRODUCT_CATALOG = {
           processor: 'Snapdragon 8 Gen 4',
           camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
           battery: '4900mAh, 45W charging',
-          features: '5G, Ultrasonic fingerprint, IP68'
+          features: '5G, Ultrasonic fingerprint, IP68, Wireless charging'
         }
       },
       'Galaxy S25': { 
@@ -306,33 +306,33 @@ const PRODUCT_CATALOG = {
         downPayment: '$199.99', 
         monthlyPayment: '$29.17', 
         storage: '256GB', 
-        color: 'Onyx Black',
-        image: 'https://i.ibb.co/LDZ54tmk/S25.jpg',
+        color: 'Cobalt Violet',
+        image: 'https://i.ibb.co/VqKJ8L9m/S25.jpg',
         brand: 'Samsung',
         category: 'Standard',
         specs: {
           display: '6.2" Dynamic AMOLED 2X',
           processor: 'Snapdragon 8 Gen 4',
-          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          camera: '50MP Main + 12MP Ultra Wide',
           battery: '4000mAh, 25W charging',
           features: '5G, Ultrasonic fingerprint, IP68'
         }
       },
-      'Galaxy S25 Edge': { 
-        price: '$999.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$33.33', 
-        storage: '256GB', 
-        color: 'Onyx Black',
-        image: 'https://i.ibb.co/nqxfZ22y/S25Edge.jpg',
+      'Galaxy A55': { 
+        price: '$449.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$18.75', 
+        storage: '128GB', 
+        color: 'Awesome Black',
+        image: 'https://i.ibb.co/0jK8L9m/A55.jpg',
         brand: 'Samsung',
-        category: 'Premium',
+        category: 'Budget',
         specs: {
-          display: '6.6" Dynamic AMOLED 2X',
-          processor: 'Snapdragon 8 Gen 4',
-          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
-          battery: '4500mAh, 25W charging',
-          features: '5G, Ultrasonic fingerprint, IP68, Edge display'
+          display: '6.6" Super AMOLED',
+          processor: 'Exynos 1480',
+          camera: '50MP Main + 12MP Ultra Wide + 5MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Side fingerprint, IP67'
         }
       },
       'Galaxy S24 Ultra': { 
@@ -2523,178 +2523,134 @@ function App() {
                 </div>
               </div>
             ) : (
-              /* Default View - Show sample content */
+              /* Promo Dashboard - When No Quote is Active */
               <div className="space-y-6">
-                {/* Plan Selection */}
-                <div className="mb-6">
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('plans')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Select Your Plan</h3>
-                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                      {collapsedSections.plans ? '▼' : '▲'}
-                    </button>
-                  </div>
-                  {!collapsedSections.plans && (
-                    <div className="grid grid-cols-1 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
-                        <div key={planName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-lg font-bold text-att-blue">{planData.price}</div>
-                              <div className="text-xs text-slate-500">per line</div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                {/* Welcome Section */}
+                <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-6 text-white">
+                  <div className="flex items-center gap-4">
+                    <div className="text-4xl">🚀</div>
+                    <div>
+                      <h2 className="text-2xl font-bold mb-2">Welcome to T-Mobile Sales Quote Tool</h2>
+                      <p className="text-att-blue-100">Create professional quotes for your customers with our comprehensive tool</p>
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Device Selection */}
-                <div className="mb-6">
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('devices')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Your Device</h3>
-                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                      {collapsedSections.devices ? '▼' : '▲'}
-                    </button>
+                {/* Quick Actions */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={startNewQuote}>
+                    <div className="text-3xl mb-3">📋</div>
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">Start New Quote</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Create a new customer quote with plans, devices, and add-ons</p>
                   </div>
-                  {!collapsedSections.devices && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
-                        <div key={deviceName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
-                          <div className="text-center">
-                            {deviceData.image ? (
-                              <img 
-                                src={deviceData.image} 
-                                alt={deviceName}
-                                className="w-16 h-16 mx-auto mb-2 object-contain rounded-lg"
-                              />
-                            ) : (
-                              <div className="text-3xl mb-2">📱</div>
-                            )}
-                            <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
-                            <div className="space-y-1">
-                              <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
-                              <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 text-center">
+                    <div className="text-3xl mb-3">📊</div>
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">Sales Analytics</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">View your sales performance and customer insights</p>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 text-center">
+                    <div className="text-3xl mb-3">⚙️</div>
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">Settings</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Configure your preferences and account settings</p>
+                  </div>
                 </div>
 
-                {/* Add-ons */}
-                <div className="mb-6">
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('addOns')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Add Protection & Features</h3>
-                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                      {collapsedSections.addOns ? '▼' : '▲'}
-                    </button>
-                  </div>
-                  {!collapsedSections.addOns && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => (
-                        <div key={addonName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-3 hover:border-att-blue transition-colors cursor-pointer">
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1">
-                              <h4 className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</h4>
-                              <p className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</p>
-                            </div>
-                            <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Discounts and Fees */}
-                <div>
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('discounts')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Discounts & Fees</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {currentQuote.discounts.length + currentQuote.fees.length} selected
-                      </span>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        {collapsedSections.discounts ? '▼' : '▲'}
-                      </button>
-                    </div>
-                  </div>
-                  {!collapsedSections.discounts && (
-                    <div className="space-y-4">
-                      {/* Discounts */}
+                {/* Promotional Banners */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg p-6 text-white">
+                    <div className="flex items-center gap-4">
+                      <div className="text-4xl">📱</div>
                       <div>
-                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Available Discounts</h4>
-                        <div className="grid grid-cols-1 gap-3">
-                          {Object.entries(PRODUCT_CATALOG.Mobile.discounts || {}).slice(0, 4).map(([discountName, discountData]) => {
-                            const isSelected = currentQuote.discounts.some(discount => discount.name === discountName);
-                            return (
-                              <div 
-                                key={discountName} 
-                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-green-500 transition-colors cursor-pointer ${
-                                  isSelected ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-600'
-                                }`}
-                                onClick={() => toggleDiscount(discountName, discountData)}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{discountName}</h5>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">{discountData.description}</p>
-                                  </div>
-                                  <div className="text-sm font-bold text-green-600 dark:text-green-400">-{discountData.amount}</div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Fees */}
-                      <div>
-                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Additional Fees</h4>
-                        <div className="grid grid-cols-1 gap-3">
-                          {Object.entries(PRODUCT_CATALOG.Mobile.fees || {}).slice(0, 4).map(([feeName, feeData]) => {
-                            const isSelected = currentQuote.fees.some(fee => fee.name === feeName);
-                            return (
-                              <div 
-                                key={feeName} 
-                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-red-500 transition-colors cursor-pointer ${
-                                  isSelected ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-600'
-                                }`}
-                                onClick={() => toggleFee(feeName, feeData)}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{feeName}</h5>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">{feeData.description}</p>
-                                  </div>
-                                  <div className="text-sm font-bold text-red-600 dark:text-red-400">+{feeData.amount}</div>
-                                </div>
-                              </div>
-                            );
-                          })}
+                        <h3 className="text-xl font-bold mb-2">5G Network Coverage</h3>
+                        <p className="text-purple-100 mb-3">America's largest 5G network with coverage in all 50 states</p>
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="bg-white/20 px-2 py-1 rounded">99% Coverage</span>
+                          <span className="bg-white/20 px-2 py-1 rounded">Ultra Fast</span>
                         </div>
                       </div>
                     </div>
-                  )}
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-lg p-6 text-white">
+                    <div className="flex items-center gap-4">
+                      <div className="text-4xl">🎬</div>
+                      <div>
+                        <h3 className="text-xl font-bold mb-2">Netflix on Us</h3>
+                        <p className="text-orange-100 mb-3">Get Netflix included with eligible plans at no extra cost</p>
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="bg-white/20 px-2 py-1 rounded">HD Streaming</span>
+                          <span className="bg-white/20 px-2 py-1 rounded">2 Screens</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Current Promotions */}
+                <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Current Promotions</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="border border-green-200 dark:border-green-700 rounded-lg p-4 bg-green-50 dark:bg-green-900/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-green-600 dark:text-green-400 text-xl">🎁</span>
+                        <h4 className="font-semibold text-green-800 dark:text-green-200">Free iPhone 15</h4>
+                      </div>
+                      <p className="text-sm text-green-700 dark:text-green-300">Trade in any eligible device and get iPhone 15 for free with new line activation</p>
+                    </div>
+                    
+                    <div className="border border-blue-200 dark:border-blue-700 rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-blue-600 dark:text-blue-400 text-xl">💳</span>
+                        <h4 className="font-semibold text-blue-800 dark:text-blue-200">AutoPay Discount</h4>
+                      </div>
+                      <p className="text-sm text-blue-700 dark:text-blue-300">Save $5 per line when you enroll in AutoPay with a debit card or bank account</p>
+                    </div>
+                    
+                    <div className="border border-purple-200 dark:border-purple-700 rounded-lg p-4 bg-purple-50 dark:bg-purple-900/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-purple-600 dark:text-purple-400 text-xl">👥</span>
+                        <h4 className="font-semibold text-purple-800 dark:text-purple-200">Family Plan Savings</h4>
+                      </div>
+                      <p className="text-sm text-purple-700 dark:text-purple-300">Add up to 6 lines and save up to $30 per month on your family plan</p>
+                    </div>
+                    
+                    <div className="border border-orange-200 dark:border-orange-700 rounded-lg p-4 bg-orange-50 dark:bg-orange-900/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-orange-600 dark:text-orange-400 text-xl">📺</span>
+                        <h4 className="font-semibold text-orange-800 dark:text-orange-200">Apple TV+ on Us</h4>
+                      </div>
+                      <p className="text-sm text-orange-700 dark:text-orange-300">Get Apple TV+ included with eligible plans - watch award-winning shows</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* T-Mobile Benefits */}
+                <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Why Choose T-Mobile?</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">🌐</div>
+                      <h4 className="font-semibold text-slate-800 dark:text-white text-sm">Largest 5G Network</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">Coverage in all 50 states</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">💰</div>
+                      <h4 className="font-semibold text-slate-800 dark:text-white text-sm">No Annual Contracts</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">Freedom to change anytime</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">🎬</div>
+                      <h4 className="font-semibold text-slate-800 dark:text-white text-sm">Streaming Included</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">Netflix & Apple TV+ on us</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">📱</div>
+                      <h4 className="font-semibold text-slate-800 dark:text-white text-sm">Latest Devices</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">iPhone, Samsung & more</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -2938,110 +2894,19 @@ function App() {
                   </p>
                 </div>
               ) : (
-                /* Sample Quote - AT&T Style */
-                <div className="space-y-4">
-                  {/* Plan Details */}
-                  <div>
-                    <div className="font-semibold text-slate-800 dark:text-white">Plan: T-Mobile Go5G Plus</div>
-                    <div className="text-slate-600 dark:text-slate-400">Plan cost $90.00</div>
-                  </div>
-
-                  {/* Device Details */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-bold text-slate-600 dark:text-slate-400">1</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-slate-800 dark:text-white">Device: iPhone 16 Pro Max</div>
-                      <div className="text-slate-600 dark:text-slate-400">Device Price: $1,299.99 each</div>
-                    </div>
-                  </div>
-
-                  {/* Monthly Costs Section */}
-                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
-                    <div className="font-semibold text-slate-800 dark:text-white text-sm">Monthly Costs</div>
-                  </div>
-
-                  {/* Installment Details */}
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 dark:text-slate-400">Term:</span>
-                      <span className="text-slate-800 dark:text-white">36 months</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 dark:text-slate-400">Estimated Payoff:</span>
-                      <span className="text-slate-800 dark:text-white">July 2028</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 dark:text-slate-400">Promo Eligible:</span>
-                      <span className="text-slate-800 dark:text-white">July 2026 (12 mos./33% paid)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 dark:text-slate-400">Upgrade Anytime*</span>
-                    </div>
-                  </div>
-
-                  {/* Cost Breakdown */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">Device Installment:</span>
-                      <span className="text-slate-800 dark:text-white">$45.83 for 36 months</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">T-Mobile JUMP!:</span>
-                      <span className="text-slate-800 dark:text-white">$12.00</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">T-Mobile Protection:</span>
-                      <span className="text-slate-800 dark:text-white">$0.00</span>
-                    </div>
-                  </div>
-
-                  {/* Monthly Subtotal */}
-                  <div className="border-t border-slate-200 dark:border-slate-600 pt-2">
-                    <div className="flex justify-between font-semibold">
-                      <span className="text-slate-800 dark:text-white">Monthly Subtotal</span>
-                      <span className="text-slate-800 dark:text-white">$147.83 for 36 months</span>
-                    </div>
-                  </div>
-
-                  {/* One-Time Costs Section */}
-                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
-                    <div className="font-semibold text-slate-800 dark:text-white text-sm">One-Time Costs</div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">Down Payment:</span>
-                      <span className="text-slate-800 dark:text-white">$199.99</span>
-                    </div>
-                  </div>
-
-                  {/* Total Summary */}
-                  <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-4 text-white">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-semibold">T-Mobile TOTAL</span>
-                      <div className="text-right">
-                        <div className="text-sm opacity-90">Excludes taxes and other fees</div>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between">
-                        <span className="text-sm opacity-90">Monthly Costs:</span>
-                        <span className="font-bold">$147.83</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm opacity-90">One-Time Costs:</span>
-                        <span className="font-semibold">$199.99</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Disclaimers */}
-                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
-                    <p>* Services, taxes, fees, and other charges additional. If service is canceled, installment plan balance is due. Upgrade dates shown are approximate.</p>
-                    <p>* Requires purchase of eligible smartphone on T-Mobile Installment plan with JUMP! feature, qualifying rate plan, and credit approval.</p>
-                  </div>
+                /* Blank State when No Quote is Active */
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-6">🚀</div>
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-3">Ready to Create a Quote?</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
+                    Start building a professional quote for your customer. Select plans, devices, and add-ons to see the cost breakdown here.
+                  </p>
+                  <button
+                    onClick={startNewQuote}
+                    className="px-6 py-3 bg-att-blue text-white rounded-lg font-medium hover:bg-att-blue/90 transition-colors"
+                  >
+                    Start New Quote
+                  </button>
                 </div>
               )}
 
@@ -3129,7 +2994,13 @@ function App() {
                       <div>
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">2. Select Device</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
-                          {Object.entries(PRODUCT_CATALOG.Mobile.devices).map(([deviceName, deviceData]) => (
+                          {Object.entries(
+                            selectedDeviceType === 'smartphone' ? PRODUCT_CATALOG.Mobile.devices :
+                            selectedDeviceType === 'tablet' ? PRODUCT_CATALOG.Mobile.tablets :
+                            selectedDeviceType === 'watch' ? PRODUCT_CATALOG.Mobile.watches :
+                            selectedDeviceType === 'hotspot' ? PRODUCT_CATALOG.Mobile.hotspots :
+                            PRODUCT_CATALOG.Mobile.devices
+                          ).map(([deviceName, deviceData]) => (
                             <label 
                               key={deviceName} 
                               className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -3155,7 +3026,12 @@ function App() {
                                   />
                                 ) : (
                                   <div className="w-16 h-16 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center mb-2">
-                                    <span className="text-2xl">📱</span>
+                                    <span className="text-2xl">
+                                      {selectedDeviceType === 'smartphone' ? '📱' :
+                                       selectedDeviceType === 'tablet' ? '📱' :
+                                       selectedDeviceType === 'watch' ? '⌚' :
+                                       selectedDeviceType === 'hotspot' ? '📶' : '📱'}
+                                    </span>
                                   </div>
                                 )}
                                 <div className="font-semibold text-slate-800 dark:text-white">{deviceName}</div>
