@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -29,10 +29,25 @@
 /* Base styles */
 body {
   @apply bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Product Sans", "Google Sans", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Apply Google Sans to all elements */
+* {
+  font-family: "Product Sans", "Google Sans", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Ensure form elements use Google Sans */
+input, textarea, select, button {
+  font-family: "Product Sans", "Google Sans", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Ensure modals and overlays use Google Sans */
+.modal-content, .modal-backdrop {
+  font-family: "Product Sans", "Google Sans", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #root {
