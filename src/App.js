@@ -54,7 +54,8 @@ import {
   PinModal, 
   SearchPopout, 
   OOBEScreen,
-  SettingsModal
+  SettingsModal,
+  QuoteHistoryModal
 } from './components/Modals';
 
 // Product catalog data for T-Mobile Sales Quote Tool
@@ -167,6 +168,7 @@ function App() {
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [showSearchPopout, setShowSearchPopout] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showQuoteHistory, setShowQuoteHistory] = useState(false);
   const [lastDeletedSale, setLastDeletedSale] = useState(null);
   const [undoTimeout, setUndoTimeout] = useState(null);
 
@@ -564,12 +566,46 @@ function App() {
     }
   };
 
+  // Handle OOBE completion
   const handleOOBEComplete = (goals) => {
     setCurrentGoals(goals);
-    setUserSettings(prev => ({ ...prev, initialSetupComplete: true }));
     setShowOOBE(false);
     setShowSplash(false);
-    toast.success('Welcome to T-Mobile Sales Quote Tool!');
+  };
+
+  // Handle save goals
+  const handleSaveGoals = async (newGoals) => {
+    try {
+      const result = await saveGoals(newGoals);
+      if (result.success) {
+        setCurrentGoals(newGoals);
+        setShowGoalsModal(false);
+        toast.success('Goals saved successfully!');
+      } else {
+        toast.error('Failed to save goals');
+      }
+    } catch (error) {
+      console.error('Error saving goals:', error);
+      toast.error('Failed to save goals');
+    }
+  };
+
+  // Handle save profile
+  const handleSaveProfile = async (name) => {
+    try {
+      const newSettings = { ...userSettings, name };
+      const result = await saveUserSettings(newSettings);
+      if (result.success) {
+        setUserSettings(newSettings);
+        setShowProfileModal(false);
+        toast.success('Profile updated successfully!');
+      } else {
+        toast.error('Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast.error('Failed to update profile');
+    }
   };
 
   // Show loading screen
@@ -643,82 +679,142 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-200 ${userSettings.theme}`}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <Toaster position="top-right" />
       
-      {/* Authentication Modal */}
-      <AuthModal 
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onAuthSuccess={handleAuthSuccess}
-      />
-      
+      {/* Header */}
       <Header 
-        userSettings={userSettings}
-        weather={weather}
-        onOpenSearch={() => setShowSearchPopout(true)}
-        onToggleSettings={() => setShowSettingsMenu(!showSettingsMenu)}
-        onOpenSettingsModal={() => setShowSettingsModal(true)}
-        onSetProfile={() => setShowProfileModal(true)}
-        onToggleTheme={toggleTheme}
-        onToggleTempUnit={toggleTempUnit}
+        user={user} 
         onSignOut={handleSignOut}
-        showSettingsMenu={showSettingsMenu}
-        user={user}
+        onToggleTheme={toggleTheme}
+        onShowSettings={() => setShowSettingsModal(true)}
+        onShowQuoteHistory={() => setShowQuoteHistory(true)}
       />
 
-      <main className="flex-1 bg-slate-50 dark:bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <MobileDashboard metrics={dashboardMetrics} onOpenSaleModal={() => setShowSaleModal(true)} />
-          
-          {/* Mobile Action Buttons */}
-          <div className="flex justify-end items-center gap-4 mb-4 md:hidden">
-            <a
-              href="https://mst.att.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn bg-white border border-slate-300 dark:border-slate-700 text-att-blue hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Open MST
-            </a>
-            <button
-              onClick={() => setShowSaleModal(true)}
-              className="btn btn-primary"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Log Sale
-            </button>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-6">
+        {/* Welcome Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-slate-800 dark:text-white mb-2">
+            Welcome to T-Mobile Sales Quote Tool! 🚀
+          </h1>
+          <p className="text-lg text-slate-600 dark:text-slate-300">
+            Create amazing quotes for your customers with our fun and easy interface
+          </p>
+        </div>
+
+        {/* Quick Actions Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {/* Create New Quote */}
+          <button
+            onClick={() => setShowSaleModal(true)}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+            <div className="relative z-10">
+              <div className="text-4xl mb-4">✨</div>
+              <h3 className="text-xl font-bold mb-2">Create New Quote</h3>
+              <p className="text-att-blue-100">Build a professional quote with our fun interface</p>
+            </div>
+          </button>
+
+          {/* Quote History */}
+          <button
+            onClick={() => setShowQuoteHistory(true)}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+            <div className="relative z-10">
+              <div className="text-4xl mb-4">📋</div>
+              <h3 className="text-xl font-bold mb-2">Quote History</h3>
+              <p className="text-emerald-100">View and manage all your previous quotes</p>
+            </div>
+          </button>
+
+          {/* Settings */}
+          <button
+            onClick={() => setShowSettingsModal(true)}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+            <div className="relative z-10">
+              <div className="text-4xl mb-4">⚙️</div>
+              <h3 className="text-xl font-bold mb-2">Settings</h3>
+              <p className="text-purple-100">Customize your experience and manage goals</p>
+            </div>
+          </button>
+        </div>
+
+        {/* Dashboard Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
+                <p className="text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
+              </div>
+              <div className="text-3xl">📊</div>
+            </div>
           </div>
           
-          <DesktopDashboard metrics={dashboardMetrics} onOpenSaleModal={() => setShowSaleModal(true)} />
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <SalesLog 
-                sales={filteredAndSortedQuotes}
-                onDeleteSale={handleDeleteSale}
-                filterProduct={filterProduct}
-                sortSales={sortSales}
-                onFilterChange={setFilterProduct}
-                onSortChange={setSortSales}
-                userSettings={userSettings}
-              />
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
+                <p className="text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
+              </div>
+              <div className="text-3xl">💰</div>
             </div>
-            <div>
-              <GoalsSection 
-                goals={currentGoals}
-                progress={progress}
-                onEditGoals={() => setShowGoalsModal(true)}
-              />
+          </div>
+          
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
+                <p className="text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
+              </div>
+              <div className="text-3xl">🎯</div>
             </div>
           </div>
         </div>
-      </main>
+
+        {/* Recent Quotes Preview */}
+        {filteredAndSortedQuotes.length > 0 && (
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
+              <button
+                onClick={() => setShowQuoteHistory(true)}
+                className="text-att-blue hover:text-att-blue-light font-medium"
+              >
+                View All →
+              </button>
+            </div>
+            <div className="space-y-3">
+              {filteredAndSortedQuotes.slice(0, 3).map((quote) => (
+                <div key={quote.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                  <div>
+                    <p className="font-medium text-slate-800 dark:text-white">{quote.customerName}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      {format(new Date(quote.saleDate), 'MMM dd, yyyy')}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-emerald-600">${quote.totalMonthly.toFixed(2)}/mo</p>
+                    {quote.totalOneTime > 0 && (
+                      <p className="text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Modals */}
       {showSaleModal && (
-        <SaleModal 
+        <SaleModal
           onClose={() => setShowSaleModal(false)}
           onSave={handleAddSale}
           currentServices={currentSaleServices}
@@ -727,33 +823,17 @@ function App() {
         />
       )}
 
-      {showGoalsModal && (
-        <GoalsModal 
-          goals={currentGoals}
-          onSave={(newGoals) => {
-            setCurrentGoals(newGoals);
-            setShowGoalsModal(false);
-          }}
-          onClose={() => setShowGoalsModal(false)}
-        />
-      )}
-
-      {showProfileModal && (
-        <ProfileModal 
-          name={userSettings.name}
-          onSave={(name) => {
-            setUserSettings(prev => ({ ...prev, name }));
-            setShowProfileModal(false);
-          }}
-          onClose={() => setShowProfileModal(false)}
-        />
-      )}
-
-      {showSearchPopout && (
-        <SearchPopout 
-          query={searchQuery}
-          onQueryChange={setSearchQuery}
-          onClose={() => setShowSearchPopout(false)}
+      {showQuoteHistory && (
+        <QuoteHistoryModal
+          onClose={() => setShowQuoteHistory(false)}
+          quotes={filteredAndSortedQuotes}
+          onDeleteSale={handleDeleteSale}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterProduct={filterProduct}
+          onFilterChange={setFilterProduct}
+          sortSales={sortSales}
+          onSortChange={setSortSales}
         />
       )}
 
@@ -766,28 +846,59 @@ function App() {
           onToggleTempUnit={toggleTempUnit}
           onSignOut={handleSignOut}
           user={user}
+          onShowGoals={() => setShowGoalsModal(true)}
         />
       )}
 
-      {/* Undo Delete Button */}
-      {lastDeletedSale && (
-        <button
-          onClick={handleUndoDelete}
-          className="fixed bottom-4 left-4 z-50 bg-amber-500 text-white rounded-full p-3 shadow-lg hover:bg-amber-700 flex items-center gap-2"
-        >
-          <X className="w-4 h-4" />
-          Undo Delete
-        </button>
+      {showGoalsModal && (
+        <GoalsModal
+          goals={currentGoals}
+          onSave={handleSaveGoals}
+          onClose={() => setShowGoalsModal(false)}
+        />
       )}
 
-      {/* Privacy Info Button */}
-      <button
-        onClick={() => toast('All data is stored locally in your browser')}
-        className="fixed bottom-4 right-4 z-50 bg-att-blue text-white rounded-full p-3 shadow-lg hover:bg-blue-800"
-        title="Privacy Info"
-      >
-        <Info className="w-6 h-6" />
-      </button>
+      {showProfileModal && (
+        <ProfileModal
+          name={userSettings.name}
+          onSave={handleSaveProfile}
+          onClose={() => setShowProfileModal(false)}
+        />
+      )}
+
+      {showPinModal && (
+        <PinModal
+          onUnlock={handlePinUnlock}
+          pinLock={pinLock}
+        />
+      )}
+
+      {showSearchPopout && (
+        <SearchPopout
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+          onClose={() => setShowSearchPopout(false)}
+        />
+      )}
+
+      {showOOBE && (
+        <OOBEScreen onComplete={handleOOBEComplete} />
+      )}
+
+      {/* Undo Toast */}
+      {lastDeletedSale && (
+        <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
+          <div className="flex items-center gap-2">
+            <span>Quote deleted</span>
+            <button
+              onClick={handleUndoDelete}
+              className="text-att-blue hover:text-att-blue-light font-medium"
+            >
+              Undo
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
