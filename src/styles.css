@@ -33,11 +33,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  /* Mobile optimizations */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Apply Google Sans to all elements */
 * {
   font-family: "Product Sans", "Google Sans", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 /* Ensure form elements use Google Sans */
@@ -52,6 +60,32 @@ input, textarea, select, button {
 
 #root {
   @apply min-h-screen bg-slate-50 dark:bg-slate-900;
+  /* Mobile optimizations */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  input, textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Ensure proper touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve mobile scrolling */
+  .modal-content {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
 }
 
 /* Custom scrollbar */
@@ -126,16 +160,36 @@ input, textarea, select, button {
 /* Modal styles */
 .modal-backdrop {
   @apply fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50;
+  /* Mobile optimizations */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .modal-content {
   @apply bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto;
+  /* Mobile optimizations */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* Responsive design */
 @media (max-width: 640px) {
   .modal-content {
     @apply p-4 max-w-[98vw];
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+  
+  /* Ensure mobile menu works properly */
+  .mobile-menu-container {
+    position: relative;
+    z-index: 40;
+  }
+  
+  /* Improve mobile button interactions */
+  .btn-fun {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -327,6 +381,9 @@ input, textarea, select, button {
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+  /* Mobile optimizations */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-fun::before {
@@ -407,6 +464,17 @@ input, textarea, select, button {
     margin: 1rem;
     max-width: calc(100vw - 2rem);
   }
+  
+  /* Ensure proper mobile grid layout */
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  /* Improve mobile spacing */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* Dark mode improvements */
@@ -471,6 +539,9 @@ input, textarea, select, button {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(226, 0, 116, 0.3);
+  /* Mobile optimizations */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-fun:hover {
@@ -515,6 +586,9 @@ input, textarea, select, button {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(226, 0, 116, 0.2);
+  /* Mobile optimizations */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-tmobile:hover {
@@ -549,4 +623,62 @@ input, textarea, select, button {
 
 .gradient-tmobile-light {
   background: linear-gradient(135deg, var(--tmobile-magenta-light), #FFF0F5);
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 640px) {
+  /* Ensure proper mobile layout */
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Fix mobile grid issues */
+  .grid-cols-1 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Improve mobile text sizing */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+  
+  .text-4xl {
+    font-size: 2.25rem;
+  }
+  
+  /* Fix mobile spacing */
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  .p-8 {
+    padding: 1.5rem;
+  }
+  
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
 } 

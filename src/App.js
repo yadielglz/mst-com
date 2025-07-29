@@ -1178,21 +1178,23 @@ function App() {
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [showDeviceShowcase, setShowDeviceShowcase] = useState(false);
 
-  // Add debugging for mobile view - MOVED AFTER STATE DECLARATIONS
+  // Mobile detection and responsive handling
   useEffect(() => {
-    console.log('App: Component rendering...');
-    console.log('App: User state:', user);
-    console.log('App: Show auth modal:', showAuthModal);
-    console.log('App: Show splash:', showSplash);
-    console.log('App: Show OOBE:', showOOBE);
-    console.log('App: Show pin modal:', showPinModal);
-    console.log('App: Window width:', window.innerWidth);
-    console.log('App: Is mobile view:', window.innerWidth < 640);
+    const checkMobile = () => {
+      const isMobile = window.innerWidth < 768; // Changed from 640 to 768 for better tablet support
+      const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+      console.log('App: Window width:', window.innerWidth);
+      console.log('App: Is mobile:', isMobile);
+      console.log('App: Is tablet:', isTablet);
+    };
+    
+    // Check on mount
+    checkMobile();
     
     // Force mobile view detection
     const handleResize = () => {
       console.log('App: Window resized to:', window.innerWidth);
-      console.log('App: Is mobile view:', window.innerWidth < 640);
+      checkMobile();
     };
     
     window.addEventListener('resize', handleResize);
@@ -1654,7 +1656,7 @@ function App() {
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" alt="T-Mobile Logo" className="h-16 mx-auto mb-4 object-contain" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Sales Quote Tool</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">TST (T-Mobile Sales Tool)</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -1735,86 +1737,86 @@ function App() {
         />
 
         {/* Main Content */}
-        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           {/* Welcome Section */}
           <div className="mb-6 sm:mb-8 text-center">
-            <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">
-              Welcome to Sales Quote Tool! 🚀
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white mb-2">
+              T-Mobile Sales Tool! 🚀
             </h1>
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 px-2">
+            <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-slate-300 px-2">
               Create amazing quotes for your customers with our fun and easy interface
             </p>
           </div>
 
           {/* Quick Actions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
             <button
               onClick={() => setShowQuoteModal(true)}
-              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
-              <div className="text-3xl mb-2">📝</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1">Create New Quote</h3>
-              <p className="text-sm sm:text-base opacity-90">Start a professional quote</p>
+              <div className="text-2xl sm:text-3xl mb-2">📝</div>
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Create New Quote</h3>
+              <p className="text-xs sm:text-sm lg:text-base opacity-90">Start a professional quote</p>
             </button>
             
             <button
               onClick={() => setShowSettingsModal(true)}
-              className="btn-fun bg-gradient-to-r from-[#4A4A4A] to-[#6B7280] hover:from-[#2D2D2D] hover:to-[#4B5563] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#4A4A4A] to-[#6B7280] hover:from-[#2D2D2D] hover:to-[#4B5563] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
-              <div className="text-3xl mb-2">⚙️</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1">Settings</h3>
-              <p className="text-sm sm:text-base opacity-90">Configure app & view history</p>
+              <div className="text-2xl sm:text-3xl mb-2">⚙️</div>
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Settings</h3>
+              <p className="text-xs sm:text-sm lg:text-base opacity-90">Configure app & view history</p>
             </button>
             
             <button
               onClick={() => setShowDeviceShowcase(true)}
-              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
             >
-              <div className="text-3xl mb-2">📱</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1">Device Showcase</h3>
-              <p className="text-sm sm:text-base opacity-90">Browse devices & plans</p>
+              <div className="text-2xl sm:text-3xl mb-2">📱</div>
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Device Showcase</h3>
+              <p className="text-xs sm:text-sm lg:text-base opacity-90">Browse devices & plans</p>
             </button>
           </div>
           
           {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Available Plans</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">15+</p>
+                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Available Plans</p>
+                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">15+</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">📋</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl">📋</div>
               </div>
             </div>
             
-            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Device Options</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">50+</p>
+                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Device Options</p>
+                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">50+</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">📱</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl">📱</div>
               </div>
             </div>
             
-            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">5G Coverage</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">99%</p>
+                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">5G Coverage</p>
+                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">99%</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">📶</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl">📶</div>
               </div>
             </div>
             
-            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Customer Support</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">24/7</p>
+                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Customer Support</p>
+                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">24/7</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">🛟</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl">🛟</div>
               </div>
             </div>
           </div>
