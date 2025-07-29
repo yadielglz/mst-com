@@ -1213,10 +1213,11 @@ function App() {
       
       if (user) {
         // User is signed in, load their data
+        console.log('App: User authenticated, loading data...');
         loadUserData();
       } else {
-        // User is signed out, show auth modal
-        setShowAuthModal(true);
+        // User is signed out, reset state and show auth modal
+        console.log('App: User signed out, resetting state...');
         setSales([]);
         setUserSettings({
           name: '',
@@ -1228,6 +1229,19 @@ function App() {
           weekly: { mobile: 0, internet: 0, tv: 0 },
           monthly: { mobile: 0, internet: 0, tv: 0 }
         });
+        setShowSplash(true);
+        setShowOOBE(false);
+        setShowPinModal(false);
+        setShowSettingsModal(false);
+        setShowQuoteModal(false);
+        setShowDeviceShowcase(false);
+        setShowQuoteHistory(false);
+        setShowGoalsModal(false);
+        setShowProfileModal(false);
+        setShowSearchPopout(false);
+        setShowSaleModal(false);
+        setShowSettingsMenu(false);
+        setShowAuthModal(true);
       }
     });
 
@@ -1257,6 +1271,20 @@ function App() {
     const timer = setTimeout(checkCurrentUser, 1000);
     return () => clearTimeout(timer);
   }, [user]);
+
+  // Fallback timeout to ensure auth modal shows if no user after 3 seconds
+  useEffect(() => {
+    if (!user && !isLoading) {
+      const timer = setTimeout(() => {
+        console.log('App: Fallback timeout - ensuring auth modal is visible');
+        if (!user && !showAuthModal) {
+          setShowAuthModal(true);
+        }
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [user, isLoading, showAuthModal]);
 
   // Load user data from Firebase
   const loadUserData = async () => {
@@ -1308,9 +1336,42 @@ function App() {
   // Handle sign out
   const handleSignOut = async () => {
     try {
+      console.log('App: User signing out...');
       await signOutUser();
+      
+      // Reset all app state
+      setUser(null);
+      setSales([]);
+      setUserSettings({
+        name: '',
+        theme: 'light',
+        tempUnit: 'F',
+        initialSetupComplete: false
+      });
+      setCurrentGoals({
+        weekly: { mobile: 0, internet: 0, tv: 0 },
+        monthly: { mobile: 0, internet: 0, tv: 0 }
+      });
+      setShowSplash(true);
+      setShowOOBE(false);
+      setShowPinModal(false);
+      setShowSettingsModal(false);
+      setShowQuoteModal(false);
+      setShowDeviceShowcase(false);
+      setShowQuoteHistory(false);
+      setShowGoalsModal(false);
+      setShowProfileModal(false);
+      setShowSearchPopout(false);
+      setShowSaleModal(false);
+      setShowSettingsMenu(false);
+      
+      // Show auth modal
+      setShowAuthModal(true);
+      
       toast.success('Signed out successfully');
+      console.log('App: Sign out complete, auth modal should be visible');
     } catch (error) {
+      console.error('App: Sign out error:', error);
       toast.error('Failed to sign out');
     }
   };
