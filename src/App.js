@@ -1749,7 +1749,7 @@ function App() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <button
               onClick={() => setShowQuoteModal(true)}
-              className="btn-fun bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
               <div className="text-3xl mb-2">📝</div>
               <h3 className="text-lg sm:text-xl font-bold mb-1">Create New Quote</h3>
@@ -1758,7 +1758,7 @@ function App() {
             
             <button
               onClick={() => setShowSettingsModal(true)}
-              className="btn-fun bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#4A4A4A] to-[#6B7280] hover:from-[#2D2D2D] hover:to-[#4B5563] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
               <div className="text-3xl mb-2">⚙️</div>
               <h3 className="text-lg sm:text-xl font-bold mb-1">Settings</h3>
@@ -1767,7 +1767,7 @@ function App() {
             
             <button
               onClick={() => setShowDeviceShowcase(true)}
-              className="btn-fun bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
               <div className="text-3xl mb-2">📱</div>
               <h3 className="text-lg sm:text-xl font-bold mb-1">Device Showcase</h3>
@@ -1836,7 +1836,7 @@ function App() {
               <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Featured Devices & Plans</h2>
               <button
                 onClick={() => setShowDeviceShowcase(true)}
-                className="text-att-blue hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-sm sm:text-base transition-colors"
+                className="text-[#E20074] hover:text-[#B8005C] dark:hover:text-[#FF6B9D] font-semibold text-sm sm:text-base transition-colors"
               >
                 View All →
               </button>
@@ -1844,39 +1844,39 @@ function App() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Featured Smartphones */}
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
                   <div className="text-2xl mb-2">📱</div>
                   <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Premium Smartphones</h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone 16 Pro Max, Galaxy S25 Ultra</p>
-                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $45.83/mo</p>
+                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $45.83/mo</p>
                 </div>
               </div>
               
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
                   <div className="text-2xl mb-2">📱</div>
                   <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Foldable Devices</h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">Galaxy Z Fold7, Pixel 9 Pro Fold</p>
-                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $66.67/mo</p>
+                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $66.67/mo</p>
                 </div>
               </div>
               
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
                   <div className="text-2xl mb-2">📱</div>
                   <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Budget Options</h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone SE, Galaxy A16, Moto G</p>
-                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $8.33/mo</p>
+                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $8.33/mo</p>
                 </div>
               </div>
               
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
                 <div className="text-center">
                   <div className="text-2xl mb-2">📱</div>
                   <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Tablets & Watches</h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPad Pro, Galaxy Tab, Apple Watch</p>
-                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $8.33/mo</p>
+                  <p className="text-xs sm:text-sm font-semibold text-[#E20074]">From $8.33/mo</p>
                 </div>
               </div>
             </div>
@@ -1888,7 +1888,7 @@ function App() {
               <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
               <button
                 onClick={() => setShowSettingsModal(true)}
-                className="text-att-blue hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-sm sm:text-base transition-colors"
+                className="text-[#E20074] hover:text-[#B8005C] dark:hover:text-[#FF6B9D] font-semibold text-sm sm:text-base transition-colors"
               >
                 View All →
               </button>

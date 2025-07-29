@@ -14,6 +14,18 @@
   --att-bg-dark: #1f2937; /* slate-800 */
 }
 
+/* T-Mobile Color Palette */
+:root {
+  --tmobile-magenta: #E20074;
+  --tmobile-magenta-dark: #B8005C;
+  --tmobile-magenta-light: #F8E6F0;
+  --tmobile-pink: #FF6B9D;
+  --tmobile-pink-dark: #E55A8A;
+  --tmobile-gray: #4A4A4A;
+  --tmobile-gray-light: #F5F5F5;
+  --tmobile-gray-dark: #2D2D2D;
+}
+
 /* Base styles */
 body {
   @apply bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white;
@@ -431,4 +443,95 @@ body {
 
 .dark .modal-content::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+} 
+
+/* Update existing color classes */
+.btn-fun {
+  background: linear-gradient(135deg, var(--tmobile-magenta), var(--tmobile-pink));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(226, 0, 116, 0.3);
+}
+
+.btn-fun:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(226, 0, 116, 0.4);
+  background: linear-gradient(135deg, var(--tmobile-magenta-dark), var(--tmobile-pink-dark));
+}
+
+.btn-fun:active {
+  transform: translateY(0);
+}
+
+/* Update att-blue references to tmobile-magenta */
+.att-blue {
+  color: var(--tmobile-magenta) !important;
+}
+
+.bg-att-blue {
+  background-color: var(--tmobile-magenta) !important;
+}
+
+.hover\:bg-att-blue:hover {
+  background-color: var(--tmobile-magenta-dark) !important;
+}
+
+.hover\:text-att-blue:hover {
+  color: var(--tmobile-magenta) !important;
+}
+
+.text-att-blue {
+  color: var(--tmobile-magenta) !important;
+}
+
+/* T-Mobile specific button styles */
+.btn-tmobile {
+  background: linear-gradient(135deg, var(--tmobile-magenta), var(--tmobile-pink));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(226, 0, 116, 0.2);
+}
+
+.btn-tmobile:hover {
+  background: linear-gradient(135deg, var(--tmobile-magenta-dark), var(--tmobile-pink-dark));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(226, 0, 116, 0.3);
+}
+
+.btn-tmobile:active {
+  transform: translateY(0);
+}
+
+/* T-Mobile card styles */
+.card-tmobile {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-tmobile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* T-Mobile gradient backgrounds */
+.gradient-tmobile {
+  background: linear-gradient(135deg, var(--tmobile-magenta), var(--tmobile-pink));
+}
+
+.gradient-tmobile-light {
+  background: linear-gradient(135deg, var(--tmobile-magenta-light), #FFF0F5);
 } 

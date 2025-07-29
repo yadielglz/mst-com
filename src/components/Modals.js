@@ -80,30 +80,30 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
 
         <form onSubmit={handleSubmit}>
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Customer Name</label>
-                <input
-                  type="text"
-                  value={formData.customerName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
-                  className="form-input"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Sale Date</label>
-                <input
-                  type="date"
-                  value={formData.saleDate}
-                  onChange={(e) => setFormData(prev => ({ ...prev, saleDate: e.target.value }))}
-                  className="form-input"
-                  required
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Customer Name</label>
+              <input
+                type="text"
+                value={formData.customerName}
+                onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
+                className="form-input"
+                required
+              />
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Sale Date</label>
+              <input
+                type="date"
+                value={formData.saleDate}
+                onChange={(e) => setFormData(prev => ({ ...prev, saleDate: e.target.value }))}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
 
-            <hr className="my-4 dark:border-slate-700" />
+          <hr className="my-4 dark:border-slate-700" />
 
             <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl">
               <h3 className="font-semibold text-xl mb-4">Add Service(s) 🚀</h3>
@@ -134,10 +134,10 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                     </button>
                   ))}
                 </div>
-              </div>
+            </div>
 
               {/* Plan Selection */}
-              {selectedCategory && (
+            {selectedCategory && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-3">2. Choose Plan</label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-64 overflow-y-auto">
@@ -162,7 +162,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                         </div>
                       </button>
                     ))}
-                  </div>
+                </div>
                 </div>
               )}
 
@@ -212,7 +212,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
               )}
 
               {/* Lines Selection for Mobile */}
-              {selectedCategory === 'Mobile' && selectedPlan && productCatalog.Mobile.plans[selectedPlan]?.hasLines && (
+                {selectedCategory === 'Mobile' && selectedPlan && productCatalog.Mobile.plans[selectedPlan]?.hasLines && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-3">4. Number of Lines</label>
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -231,8 +231,8 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                       </button>
                     ))}
                   </div>
-                </div>
-              )}
+                  </div>
+                )}
 
               {/* Add-ons Selection for Mobile */}
               {selectedCategory === 'Mobile' && selectedPlan && (
@@ -265,45 +265,45 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                             <div className="font-semibold">{addonName}</div>
                             <div className={`text-sm ${selectedAddons.includes(addonName) ? 'text-white/90' : 'text-slate-500 dark:text-slate-400'}`}>
                               {addonData.description}
-                            </div>
+                        </div>
                             <div className={`font-bold ${selectedAddons.includes(addonName) ? 'text-white' : 'text-emerald-600'}`}>
                               {addonData.price}
                             </div>
                           </div>
                         </div>
                       </label>
-                    ))}
-                  </div>
-                </div>
-              )}
+                      ))}
+                    </div>
+              </div>
+            )}
 
-              <button
-                type="button"
-                onClick={addServiceToSale}
-                disabled={!selectedCategory || !selectedPlan}
+            <button
+              type="button"
+              onClick={addServiceToSale}
+              disabled={!selectedCategory || !selectedPlan}
                 className="w-full flex items-center justify-center bg-gradient-to-r from-att-blue to-att-blue-light text-white font-semibold py-3 px-6 rounded-xl disabled:opacity-50 hover:shadow-lg transition-all duration-200"
-              >
+            >
                 <Plus className="w-5 h-5 mr-2" />
                 Add Service to Quote
-              </button>
-            </div>
+            </button>
+          </div>
 
-            <hr className="my-4 dark:border-slate-700" />
+          <hr className="my-4 dark:border-slate-700" />
 
-            <div>
+          <div>
               <h3 className="font-semibold text-lg mb-2">Services in this Quote</h3>
-              <div className="space-y-2">
-                {currentServices.length === 0 ? (
-                  <p className="text-sm text-center py-4">No services added yet.</p>
-                ) : (
-                  currentServices.map((service, index) => (
+            <div className="space-y-2">
+              {currentServices.length === 0 ? (
+                <p className="text-sm text-center py-4">No services added yet.</p>
+              ) : (
+                currentServices.map((service, index) => (
                     <div key={index} className="bg-slate-100 dark:bg-slate-700/50 p-3 rounded-lg">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <p className="font-semibold text-slate-800 dark:text-slate-100">
                             {service.planName} - {service.planPrice}
-                            {service.lines ? ` (${service.lines} lines)` : ''}
-                          </p>
+                        {service.lines ? ` (${service.lines} lines)` : ''}
+                      </p>
                           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                             {service.planDescription}
                           </p>
@@ -323,43 +323,43 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                               Add-ons: {service.addOns.join(', ')}
                             </p>
                           )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeService(index)}
-                          className="p-1 text-red-500 hover:text-red-700"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
                     </div>
-                  ))
-                )}
-              </div>
+                      <button
+                        type="button"
+                        onClick={() => removeService(index)}
+                        className="p-1 text-red-500 hover:text-red-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
+          </div>
 
-            <div className="mt-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex justify-between items-center">
+          <div className="mt-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex justify-between items-center">
               <span className="text-lg font-bold">Total Monthly:</span>
               <span className="text-2xl font-bold text-emerald-600">${tempTotalCommission.toFixed(2)}/mo</span>
-            </div>
+          </div>
 
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-1">Notes</label>
-              <textarea
-                value={formData.notes}
-                onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                rows="3"
-                className="form-input"
-              />
-            </div>
+          <div className="mt-4">
+            <label className="block text-sm font-medium mb-1">Notes</label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+              rows="3"
+              className="form-input"
+            />
+          </div>
 
-            <div className="flex justify-end space-x-3 mt-6">
-              <button type="button" onClick={onClose} className="btn btn-secondary">
-                Cancel
-              </button>
-              <button type="submit" className="btn btn-primary">
+          <div className="flex justify-end space-x-3 mt-6">
+            <button type="button" onClick={onClose} className="btn btn-secondary">
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary">
                 Save Quote
-              </button>
+            </button>
             </div>
           </div>
         </form>
@@ -807,7 +807,7 @@ export const SettingsModal = ({
           {/* User Profile Section */}
           <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
             <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4">Profile</h3>
-            <button
+          <button
               onClick={onSetProfile}
               className="flex items-center gap-3 w-full p-4 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
             >
@@ -816,7 +816,7 @@ export const SettingsModal = ({
                 <div className="font-medium text-slate-800 dark:text-white">Set Profile Name</div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">Customize your display name</div>
               </div>
-            </button>
+          </button>
           </div>
 
           {/* Goals Management Section */}
@@ -880,7 +880,7 @@ export const SettingsModal = ({
                   <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">Signed in as</div>
                   <div className="font-medium text-slate-800 dark:text-white">{user.email}</div>
                 </div>
-                <button
+            <button
                   onClick={onSignOut}
                   className="flex items-center gap-3 w-full p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
                 >
@@ -889,7 +889,7 @@ export const SettingsModal = ({
                     <div className="font-medium text-red-600">Sign Out</div>
                     <div className="text-sm text-red-500">Sign out of your account</div>
                   </div>
-                </button>
+            </button>
               </div>
             </div>
           )}
@@ -1074,45 +1074,48 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
 
   // Calculate totals
   const calculateTotals = () => {
-    let monthlyTotal = 0;
-    let oneTimeTotal = 0;
-    let discountTotal = 0;
-    let feesTotal = 0;
+    let totalMonthly = 0;
+    let totalOneTime = 0;
 
-    // Calculate service totals
+    // Calculate services
     selectedServices.forEach(service => {
-      if (service.planPrice) {
-        const planPrice = parseFloat(service.planPrice.replace('$', '').replace('/mo', ''));
-        monthlyTotal += planPrice * (service.lines || 1);
+      // Find the plan/add-on in the catalog
+      const plan = productCatalog.Mobile.plans[service.name] || 
+                   productCatalog.Internet.plans[service.name] || 
+                   productCatalog.TV.plans[service.name];
+      
+      const addOn = productCatalog.Mobile.addOns[service.name] || 
+                    productCatalog.Internet.addOns[service.name] || 
+                    productCatalog.TV.addOns[service.name];
+
+      if (plan) {
+        totalMonthly += parseFloat(plan.price) * service.lines;
+      } else if (addOn) {
+        totalMonthly += parseFloat(addOn.price) * service.lines;
       }
-      if (service.device && service.deviceDetails) {
-        monthlyTotal += parseFloat(service.deviceDetails.monthlyPayment.replace('$', ''));
-        oneTimeTotal += parseFloat(service.deviceDetails.downPayment.replace('$', ''));
-      }
-      if (service.addOns) {
-        service.addOns.forEach(addonName => {
-          const addonData = productCatalog.Mobile.addOns[addonName];
-          if (addonData) {
-            monthlyTotal += parseFloat(addonData.price.replace('$', '').replace('/mo', ''));
-          }
-        });
+
+      // Add device monthly payments (but not down payments)
+      if (service.device && service.device !== 'show-devices' && service.device !== '') {
+        const device = productCatalog.Mobile.devices[service.device];
+        if (device) {
+          totalMonthly += parseFloat(device.monthlyPayment.replace('$', '').replace('/mo', ''));
+          // Note: Down payment is now handled as a fee, not automatically added
+        }
       }
     });
 
-    // Calculate discounts
-    selectedDiscounts.forEach(discount => {
-      discountTotal += discount.amount;
-    });
+    // Apply discounts (subtract from monthly)
+    const totalDiscounts = selectedDiscounts.reduce((sum, discount) => sum + Math.abs(discount.amount), 0);
+    totalMonthly -= totalDiscounts;
 
-    // Calculate fees
-    selectedFees.forEach(fee => {
-      feesTotal += fee.amount;
-    });
+    // Add fees (one-time costs)
+    const totalFees = selectedFees.reduce((sum, fee) => sum + fee.amount, 0);
+    totalOneTime += totalFees;
 
     return {
-      monthlyTotal: monthlyTotal - discountTotal,
-      oneTimeTotal: oneTimeTotal + feesTotal,
-      firstBill: monthlyTotal - discountTotal + oneTimeTotal + feesTotal
+      totalMonthly: Math.max(0, totalMonthly), // Ensure monthly total doesn't go negative
+      totalOneTime,
+      totalFirstMonth: Math.max(0, totalMonthly) + totalOneTime
     };
   };
 
@@ -2029,127 +2032,216 @@ const ServicesStep = ({ selectedServices, setSelectedServices, productCatalog })
 };
 
 const DiscountsFeesStep = ({ selectedDiscounts, setSelectedDiscounts, selectedFees, setSelectedFees }) => {
-  const [newDiscount, setNewDiscount] = useState({ name: '', amount: '', type: 'monthly' });
-  const [newFee, setNewFee] = useState({ name: '', amount: '', type: 'one-time' });
-
   const addDiscount = () => {
-    if (newDiscount.name && newDiscount.amount) {
-      setSelectedDiscounts(prev => [...prev, { ...newDiscount, amount: parseFloat(newDiscount.amount) }]);
-      setNewDiscount({ name: '', amount: '', type: 'monthly' });
-    }
+    setSelectedDiscounts([...selectedDiscounts, { name: '', amount: 0 }]);
   };
 
   const addFee = () => {
-    if (newFee.name && newFee.amount) {
-      setSelectedFees(prev => [...prev, { ...newFee, amount: parseFloat(newFee.amount) }]);
-      setNewFee({ name: '', amount: '', type: 'one-time' });
-    }
+    setSelectedFees([...selectedFees, { name: '', amount: 0 }]);
   };
+
+  const updateDiscount = (index, field, value) => {
+    const updated = [...selectedDiscounts];
+    updated[index] = { ...updated[index], [field]: value };
+    setSelectedDiscounts(updated);
+  };
+
+  const updateFee = (index, field, value) => {
+    const updated = [...selectedFees];
+    updated[index] = { ...updated[index], [field]: value };
+    setSelectedFees(updated);
+  };
+
+  const removeDiscount = (index) => {
+    setSelectedDiscounts(selectedDiscounts.filter((_, i) => i !== index));
+  };
+
+  const removeFee = (index) => {
+    setSelectedFees(selectedFees.filter((_, i) => i !== index));
+  };
+
+  // Standard discount options
+  const discountOptions = [
+    { value: 'military', label: 'Military Discount', amount: -10 },
+    { value: 'autopay', label: 'AutoPay Discount', amount: -5 },
+    { value: 'paperless', label: 'Paperless Billing', amount: -2 },
+    { value: 'senior', label: 'Senior Discount', amount: -8 },
+    { value: 'student', label: 'Student Discount', amount: -10 },
+    { value: 'firstresponder', label: 'First Responder', amount: -10 },
+    { value: 'teacher', label: 'Teacher Discount', amount: -10 },
+    { value: 'nurse', label: 'Nurse Discount', amount: -10 },
+    { value: 'custom', label: 'Custom Discount', amount: 0 }
+  ];
+
+  // Standard fee options
+  const feeOptions = [
+    { value: 'activation', label: 'Activation Fee', amount: 35 },
+    { value: 'downpayment', label: 'Down Payment Required', amount: 0 },
+    { value: 'simcard', label: 'SIM Card Fee', amount: 10 },
+    { value: 'shipping', label: 'Shipping & Handling', amount: 15 },
+    { value: 'custom', label: 'Custom Fee', amount: 0 }
+  ];
 
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <div className="text-6xl mb-4">💰</div>
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Discounts & Fees</h3>
-        <p className="text-slate-600 dark:text-slate-400">Add any applicable discounts or fees</p>
+      <div className="text-center">
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Discounts & Fees</h3>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+          Add any applicable discounts and fees to your quote
+        </p>
       </div>
 
-      {/* Discounts */}
+      {/* Discounts Section */}
       <div className="space-y-4">
-        <h4 className="text-lg font-semibold">Discounts</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input
-            type="text"
-            placeholder="Discount name"
-            value={newDiscount.name}
-            onChange={(e) => setNewDiscount({...newDiscount, name: e.target.value})}
-            className="form-input"
-          />
-          <input
-            type="number"
-            placeholder="Amount ($)"
-            value={newDiscount.amount}
-            onChange={(e) => setNewDiscount({...newDiscount, amount: e.target.value})}
-            className="form-input"
-          />
+        <div className="flex items-center justify-between">
+          <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Discounts</h4>
           <button
             onClick={addDiscount}
-            className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600"
+            className="flex items-center gap-2 px-3 py-2 bg-[#E20074] text-white text-sm rounded-lg hover:bg-[#B8005C] transition-colors"
           >
+            <Plus className="w-4 h-4" />
             Add Discount
           </button>
         </div>
 
-        {selectedDiscounts.length > 0 && (
-          <div className="space-y-2">
-            {selectedDiscounts.map((discount, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                <div>
-                  <div className="font-medium">{discount.name}</div>
-                  <div className="text-sm text-slate-500">{discount.type}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-emerald-600">-${discount.amount}</span>
-                  <button
-                    onClick={() => setSelectedDiscounts(prev => prev.filter((_, i) => i !== index))}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+        {selectedDiscounts.map((discount, index) => (
+          <div key={index} className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div className="flex-1">
+              <select
+                value={discount.name}
+                onChange={(e) => {
+                  const selected = discountOptions.find(opt => opt.value === e.target.value);
+                  updateDiscount(index, 'name', e.target.value);
+                  updateDiscount(index, 'amount', selected ? selected.amount : 0);
+                }}
+                className="w-full form-input mb-2"
+              >
+                <option value="">Select Discount Type</option>
+                {discountOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              
+              {discount.name === 'custom' && (
+                <input
+                  type="text"
+                  placeholder="Custom discount name"
+                  value={discount.customName || ''}
+                  onChange={(e) => updateDiscount(index, 'customName', e.target.value)}
+                  className="w-full form-input mb-2"
+                />
+              )}
+              
+              <input
+                type="number"
+                placeholder="Discount amount ($)"
+                value={discount.amount}
+                onChange={(e) => updateDiscount(index, 'amount', parseFloat(e.target.value) || 0)}
+                className="w-full form-input"
+              />
+            </div>
+            <button
+              onClick={() => removeDiscount(index)}
+              className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
-        )}
+        ))}
       </div>
 
-      {/* Fees */}
+      {/* Fees Section */}
       <div className="space-y-4">
-        <h4 className="text-lg font-semibold">Fees</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input
-            type="text"
-            placeholder="Fee name"
-            value={newFee.name}
-            onChange={(e) => setNewFee({...newFee, name: e.target.value})}
-            className="form-input"
-          />
-          <input
-            type="number"
-            placeholder="Amount ($)"
-            value={newFee.amount}
-            onChange={(e) => setNewFee({...newFee, amount: e.target.value})}
-            className="form-input"
-          />
+        <div className="flex items-center justify-between">
+          <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Fees</h4>
           <button
             onClick={addFee}
-            className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600"
+            className="flex items-center gap-2 px-3 py-2 bg-[#E20074] text-white text-sm rounded-lg hover:bg-[#B8005C] transition-colors"
           >
+            <Plus className="w-4 h-4" />
             Add Fee
           </button>
         </div>
 
-        {selectedFees.length > 0 && (
-          <div className="space-y-2">
-            {selectedFees.map((fee, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
-                <div>
-                  <div className="font-medium">{fee.name}</div>
-                  <div className="text-sm text-slate-500">{fee.type}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-amber-600">+${fee.amount}</span>
-                  <button
-                    onClick={() => setSelectedFees(prev => prev.filter((_, i) => i !== index))}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+        {selectedFees.map((fee, index) => (
+          <div key={index} className="flex items-center gap-3 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div className="flex-1">
+              <select
+                value={fee.name}
+                onChange={(e) => {
+                  const selected = feeOptions.find(opt => opt.value === e.target.value);
+                  updateFee(index, 'name', e.target.value);
+                  updateFee(index, 'amount', selected ? selected.amount : 0);
+                }}
+                className="w-full form-input mb-2"
+              >
+                <option value="">Select Fee Type</option>
+                {feeOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              
+              {fee.name === 'custom' && (
+                <input
+                  type="text"
+                  placeholder="Custom fee name"
+                  value={fee.customName || ''}
+                  onChange={(e) => updateFee(index, 'customName', e.target.value)}
+                  className="w-full form-input mb-2"
+                />
+              )}
+              
+              {fee.name === 'downpayment' && (
+                <input
+                  type="number"
+                  placeholder="Down payment amount ($)"
+                  value={fee.amount}
+                  onChange={(e) => updateFee(index, 'amount', parseFloat(e.target.value) || 0)}
+                  className="w-full form-input"
+                />
+              )}
+              
+              {fee.name !== 'downpayment' && (
+                <input
+                  type="number"
+                  placeholder="Fee amount ($)"
+                  value={fee.amount}
+                  onChange={(e) => updateFee(index, 'amount', parseFloat(e.target.value) || 0)}
+                  className="w-full form-input"
+                />
+              )}
+            </div>
+            <button
+              onClick={() => removeFee(index)}
+              className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
-        )}
+        ))}
+      </div>
+
+      {/* Summary */}
+      <div className="bg-gradient-to-r from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg">
+        <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Summary</h4>
+        <div className="space-y-1 text-sm">
+          <div className="flex justify-between">
+            <span>Total Discounts:</span>
+            <span className="text-green-600 font-semibold">
+              -${selectedDiscounts.reduce((sum, d) => sum + Math.abs(d.amount), 0).toFixed(2)}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span>Total Fees:</span>
+            <span className="text-red-600 font-semibold">
+              ${selectedFees.reduce((sum, f) => sum + f.amount, 0).toFixed(2)}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -2158,6 +2250,28 @@ const DiscountsFeesStep = ({ selectedDiscounts, setSelectedDiscounts, selectedFe
 const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selectedFees, totals, productCatalog }) => {
   const mobileServices = selectedServices.filter(s => s.category === 'Mobile' && s.isIndividualLine);
   const nonMobileServices = selectedServices.filter(s => s.category !== 'Mobile' || !s.isIndividualLine);
+
+  // Standard discount options
+  const discountOptions = [
+    { value: 'military', label: 'Military Discount', amount: -10 },
+    { value: 'autopay', label: 'AutoPay Discount', amount: -5 },
+    { value: 'paperless', label: 'Paperless Billing', amount: -2 },
+    { value: 'senior', label: 'Senior Discount', amount: -8 },
+    { value: 'student', label: 'Student Discount', amount: -10 },
+    { value: 'firstresponder', label: 'First Responder', amount: -10 },
+    { value: 'teacher', label: 'Teacher Discount', amount: -10 },
+    { value: 'nurse', label: 'Nurse Discount', amount: -10 },
+    { value: 'custom', label: 'Custom Discount', amount: 0 }
+  ];
+
+  // Standard fee options
+  const feeOptions = [
+    { value: 'activation', label: 'Activation Fee', amount: 35 },
+    { value: 'downpayment', label: 'Down Payment Required', amount: 0 },
+    { value: 'simcard', label: 'SIM Card Fee', amount: 10 },
+    { value: 'shipping', label: 'Shipping & Handling', amount: 15 },
+    { value: 'custom', label: 'Custom Fee', amount: 0 }
+  ];
 
   return (
     <div className="space-y-6">
@@ -2312,26 +2426,66 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
         </div>
       )}
 
+      {/* Discounts & Fees Summary */}
+      {(selectedDiscounts.length > 0 || selectedFees.length > 0) && (
+        <div className="bg-gradient-to-r from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg">
+          <h4 className="font-semibold text-slate-800 dark:text-white mb-3">Discounts & Fees</h4>
+          
+          {selectedDiscounts.length > 0 && (
+            <div className="mb-3">
+              <h5 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Discounts:</h5>
+              <div className="space-y-1">
+                {selectedDiscounts.map((discount, index) => (
+                  <div key={index} className="flex justify-between text-sm">
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {discount.name === 'custom' ? discount.customName : 
+                       discountOptions.find(opt => opt.value === discount.name)?.label || discount.name}
+                    </span>
+                    <span className="text-green-600 font-semibold">-${Math.abs(discount.amount).toFixed(2)}/mo</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {selectedFees.length > 0 && (
+            <div>
+              <h5 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Fees:</h5>
+              <div className="space-y-1">
+                {selectedFees.map((fee, index) => (
+                  <div key={index} className="flex justify-between text-sm">
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {fee.name === 'custom' ? fee.customName : 
+                       feeOptions.find(opt => opt.value === fee.name)?.label || fee.name}
+                    </span>
+                    <span className="text-red-600 font-semibold">+${fee.amount.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Totals */}
-      <div className="bg-gradient-to-r from-att-blue to-att-blue-light text-white rounded-lg p-4 sm:p-6">
-        <h4 className="text-lg sm:text-xl font-semibold mb-4">Quote Summary</h4>
+      <div className="bg-gradient-to-r from-[#E20074] to-[#FF6B9D] text-white p-4 sm:p-6 rounded-lg">
+        <h4 className="text-lg sm:text-xl font-semibold mb-4">Quote Totals</h4>
         <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-sm sm:text-base">Monthly Service Total:</span>
-            <span className="font-bold text-sm sm:text-base">${totals.monthlyTotal.toFixed(2)}/mo</span>
+          <div className="flex justify-between text-lg sm:text-xl">
+            <span>Monthly Total:</span>
+            <span className="font-bold">${totals.totalMonthly.toFixed(2)}/mo</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-sm sm:text-base">One-Time Charges:</span>
-            <span className="font-bold text-sm sm:text-base">${totals.oneTimeTotal.toFixed(2)}</span>
+          <div className="flex justify-between text-lg sm:text-xl">
+            <span>One-Time Total:</span>
+            <span className="font-bold">${totals.totalOneTime.toFixed(2)}</span>
           </div>
           <div className="border-t border-white/20 pt-3">
             <div className="flex justify-between text-lg sm:text-xl">
               <span>First Bill Total:</span>
-              <span className="font-bold">${totals.firstBill.toFixed(2)}</span>
+              <span className="font-bold">${totals.totalFirstMonth.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm opacity-90">
-              <span>Regular Monthly Bill:</span>
-              <span className="font-medium">${totals.monthlyTotal.toFixed(2)}/mo</span>
+              <span>Includes first month + one-time fees</span>
             </div>
           </div>
         </div>
@@ -2589,4 +2743,4 @@ export const DeviceShowcaseModal = ({ onClose, productCatalog }) => {
       </div>
     </div>
   );
-};
+}; 
