@@ -1522,9 +1522,9 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
                   BYOD
                 </button>
                 <button
-                  onClick={() => updateServiceDevice(serviceIndex, 'iPhone 15')}
+                  onClick={() => updateServiceDevice(serviceIndex, 'show-devices')}
                   className={`px-3 py-1 rounded text-sm ${
-                    service.device === 'iPhone 15'
+                    service.device && service.device !== ''
                       ? 'bg-att-blue text-white'
                       : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                   }`}
@@ -1534,43 +1534,89 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
               </div>
             </div>
 
-            {/* Device Grid */}
-            {service.device && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-64 overflow-y-auto">
-                {filteredDevices.map(([deviceName, deviceData]) => (
-                  <button
-                    key={deviceName}
-                    onClick={() => updateServiceDevice(serviceIndex, deviceName)}
-                    className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
-                      service.device === deviceName
-                        ? 'border-att-blue bg-att-blue text-white shadow-lg'
-                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <img 
-                        src={deviceData.image} 
-                        alt={deviceName}
-                        className="w-12 h-12 object-contain"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm">{deviceName}</div>
-                        <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-500'}`}>
-                          {deviceData.brand} • {deviceData.category}
+            {/* Device Grid - Show when user wants a new device */}
+            {(service.device && service.device !== '') && (
+              <div className="space-y-4">
+                <div className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                  Available Devices ({filteredDevices.length})
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-64 overflow-y-auto">
+                  {filteredDevices.map(([deviceName, deviceData]) => (
+                    <button
+                      key={deviceName}
+                      onClick={() => updateServiceDevice(serviceIndex, deviceName)}
+                      className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                        service.device === deviceName
+                          ? 'border-att-blue bg-att-blue text-white shadow-lg'
+                          : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <img 
+                          src={deviceData.image} 
+                          alt={deviceName}
+                          className="w-12 h-12 object-contain"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-sm">{deviceName}</div>
+                          <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-500'}`}>
+                            {deviceData.brand} • {deviceData.category}
+                          </div>
                         </div>
                       </div>
+                      <div className={`text-sm ${service.device === deviceName ? 'text-white/90' : 'text-slate-600'}`}>
+                        {deviceData.storage} • {deviceData.color}
+                      </div>
+                      <div className={`font-bold ${service.device === deviceName ? 'text-white' : 'text-emerald-600'}`}>
+                        {deviceData.price}
+                      </div>
+                      <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-400'}`}>
+                        ${deviceData.downPayment} down • ${deviceData.monthlyPayment}/mo
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Selected Device Summary */}
+                {service.device && service.device !== 'show-devices' && service.deviceDetails && (
+                  <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={service.deviceDetails.image} 
+                        alt={service.device}
+                        className="w-16 h-16 object-contain"
+                      />
+                      <div className="flex-1">
+                        <div className="font-semibold text-emerald-800 dark:text-emerald-200">{service.device}</div>
+                        <div className="text-sm text-emerald-600 dark:text-emerald-300">
+                          {service.deviceDetails.storage} • {service.deviceDetails.color}
+                        </div>
+                        <div className="text-sm text-emerald-600 dark:text-emerald-300">
+                          ${service.deviceDetails.downPayment} down • ${service.deviceDetails.monthlyPayment}/mo
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => updateServiceDevice(serviceIndex, '')}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
                     </div>
-                    <div className={`text-sm ${service.device === deviceName ? 'text-white/90' : 'text-slate-600'}`}>
-                      {deviceData.storage} • {deviceData.color}
-                    </div>
-                    <div className={`font-bold ${service.device === deviceName ? 'text-white' : 'text-emerald-600'}`}>
-                      {deviceData.price}
-                    </div>
-                    <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-400'}`}>
-                      ${deviceData.downPayment} down • ${deviceData.monthlyPayment}/mo
-                    </div>
-                  </button>
-                ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* BYOD Message */}
+            {!service.device && (
+              <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">📱</div>
+                  <div>
+                    <div className="font-medium text-slate-800 dark:text-white">Bring Your Own Device</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400">No device cost - use your existing phone</div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -1587,6 +1633,19 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
           </div>
         </div>
       ))}
+
+      {/* No Mobile Services Message */}
+      {selectedServices.filter(s => s.category === 'Mobile').length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">📱</div>
+          <h3 className="text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
+            No Mobile Plans Selected
+          </h3>
+          <p className="text-slate-500 dark:text-slate-500">
+            Go back to step 2 to add mobile plans that require device selection
+          </p>
+        </div>
+      )}
     </div>
   );
 };
