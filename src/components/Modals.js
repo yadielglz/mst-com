@@ -1860,6 +1860,14 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
           </p>
         </div>
       )}
+
+      {/* Device Specs Modal */}
+      {selectedDeviceForSpecs && (
+        <DeviceSpecsModal
+          device={selectedDeviceForSpecs}
+          onClose={() => setSelectedDeviceForSpecs(null)}
+        />
+      )}
     </div>
   );
 };
@@ -2446,11 +2454,3 @@ export const DeviceSpecsModal = ({ device, onClose }) => {
     </div>
   );
 };
-
-{/* Device Specs Modal */}
-{selectedDeviceForSpecs && (
-  <DeviceSpecsModal
-    device={selectedDeviceForSpecs}
-    onClose={() => setSelectedDeviceForSpecs(null)}
-  />
-)}
