@@ -2037,6 +2037,25 @@ function App() {
         )}
       </div>
     );
+  } catch (error) {
+    console.error('App: Error rendering main content:', error);
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center p-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Error</h1>
+          <p className="text-slate-600 dark:text-slate-300 mb-4">
+            An unexpected error occurred. Please try refreshing the page or contact support.
+          </p>
+      <button
+            onClick={() => window.location.reload()}
+            className="bg-att-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors duration-300"
+      >
+            Refresh Page
+      </button>
+        </div>
+    </div>
+  );
   }
+}
 
-export default App;
+export default App; 
