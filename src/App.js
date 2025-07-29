@@ -92,14 +92,14 @@ const PRODUCT_CATALOG = {
       'T-Mobile Data with DIGITS': { name: 'T-Mobile Data with DIGITS', price: '$10/mo', description: 'Use your phone number on multiple devices' },
     },
     devices: {
-      // iPhone Series
+      // iPhone Series 2025
       'iPhone 15 Pro Max': { 
         price: '$1199.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$41.67', 
         storage: '256GB', 
         color: 'Natural Titanium',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Premium'
       },
@@ -109,7 +109,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Natural Titanium',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Premium'
       },
@@ -119,7 +119,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Standard'
       },
@@ -129,7 +129,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$29.17', 
         storage: '256GB', 
         color: 'Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Standard'
       },
@@ -139,7 +139,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$20.83', 
         storage: '256GB', 
         color: 'Blue',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Standard'
       },
@@ -149,7 +149,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Blue',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Standard'
       },
@@ -159,19 +159,19 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$17.92', 
         storage: '128GB', 
         color: 'Midnight',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
         category: 'Budget'
       },
       
-      // Samsung Series
+      // Samsung Series 2025
       'Samsung Galaxy S24 Ultra': { 
         price: '$1299.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$45.83', 
         storage: '256GB', 
         color: 'Titanium Gray',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Premium'
       },
@@ -181,7 +181,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Onyx Black',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Premium'
       },
@@ -191,9 +191,29 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Onyx Black',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Standard'
+      },
+      'Samsung Galaxy Z Fold6': { 
+        price: '$1799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$66.67', 
+        storage: '256GB', 
+        color: 'Phantom Black',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Samsung',
+        category: 'Premium'
+      },
+      'Samsung Galaxy Z Flip6': { 
+        price: '$999.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$33.33', 
+        storage: '256GB', 
+        color: 'Mint',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Samsung',
+        category: 'Premium'
       },
       'Samsung Galaxy A15 5G': { 
         price: '$199.99', 
@@ -201,7 +221,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$8.33', 
         storage: '128GB', 
         color: 'Blue Black',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Budget'
       },
@@ -211,7 +231,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Blue Black',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Budget'
       },
@@ -221,7 +241,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$16.67', 
         storage: '128GB', 
         color: 'Awesome Blue',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Standard'
       },
@@ -231,19 +251,19 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$20.83', 
         storage: '128GB', 
         color: 'Awesome Blue',
-        image: 'https://i.ibb.co/0jZ8Q9L/samsung-s24-ultra.png',
+        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
         category: 'Standard'
       },
       
-      // Google Series
+      // Google Series 2025
       'Google Pixel 8 Pro': { 
         price: '$999.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Obsidian',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
         category: 'Premium'
       },
@@ -253,7 +273,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$20.83', 
         storage: '256GB', 
         color: 'Obsidian',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
         category: 'Standard'
       },
@@ -263,19 +283,19 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$18.75', 
         storage: '128GB', 
         color: 'Charcoal',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
         category: 'Budget'
       },
       
-      // OnePlus Series
+      // OnePlus Series 2025
       'OnePlus 12': { 
         price: '$799.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Silk Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'OnePlus',
         category: 'Premium'
       },
@@ -285,94 +305,178 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Chromatic Gray',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'OnePlus',
         category: 'Budget'
       },
       
-      // Motorola Series
-      'Motorola Edge+ (2023)': { 
-        price: '$799.99', 
+      // Motorola Series 2025 - Including New Razr Devices
+      'Motorola Razr+ (2024)': { 
+        price: '$999.99', 
         downPayment: '$199.99', 
-        monthlyPayment: '$25.00', 
+        monthlyPayment: '$33.33', 
         storage: '256GB', 
-        color: 'Interstellar Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        color: 'Viva Magenta',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
         category: 'Premium'
       },
-      'Motorola Moto G 5G (2024)': { 
+      'Motorola Razr (2024)': { 
+        price: '$699.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$20.83', 
+        storage: '128GB', 
+        color: 'Sage Green',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Motorola',
+        category: 'Standard'
+      },
+      'Motorola Edge+ (2024)': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Interstellar Black',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Motorola',
+        category: 'Premium'
+      },
+      'Motorola Edge (2024)': { 
+        price: '$599.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$16.67', 
+        storage: '128GB', 
+        color: 'Peacock Blue',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Motorola',
+        category: 'Standard'
+      },
+      'Motorola Moto G 5G (2025)': { 
         price: '$199.99', 
         downPayment: '$0', 
         monthlyPayment: '$8.33', 
         storage: '128GB', 
         color: 'Sage Green',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
         category: 'Budget'
       },
-      'Motorola Moto G Stylus 5G (2024)': { 
+      'Motorola Moto G Stylus 5G (2025)': { 
         price: '$299.99', 
         downPayment: '$0', 
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Steel Blue',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Motorola',
+        category: 'Budget'
+      },
+      'Motorola Moto G Power 5G (2025)': { 
+        price: '$249.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$10.42', 
+        storage: '128GB', 
+        color: 'Pearl White',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
         category: 'Budget'
       },
       
-      // TCL Series
-      'TCL 30 XE 5G': { 
+      // TCL Series 2025
+      'TCL 50 XE 5G': { 
         price: '$199.99', 
         downPayment: '$0', 
         monthlyPayment: '$8.33', 
         storage: '128GB', 
         color: 'Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'TCL',
         category: 'Budget'
       },
-      'TCL 30 V 5G': { 
+      'TCL 50 V 5G': { 
         price: '$299.99', 
         downPayment: '$0', 
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'TCL',
         category: 'Budget'
       },
       
-      // REVVL Series (T-Mobile Brand)
-      'REVVL 6x 5G': { 
+      // REVVL Series (T-Mobile Brand) 2025
+      'REVVL 7x 5G': { 
         price: '$199.99', 
         downPayment: '$0', 
         monthlyPayment: '$8.33', 
         storage: '128GB', 
         color: 'Nebula Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
         category: 'Budget'
       },
-      'REVVL 6x Pro 5G': { 
+      'REVVL 7x Pro 5G': { 
         price: '$299.99', 
         downPayment: '$0', 
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Nebula Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
         category: 'Budget'
       },
-      'REVVL V+ 5G': { 
+      'REVVL V+ 5G (2025)': { 
         price: '$399.99', 
         downPayment: '$0', 
         monthlyPayment: '$16.67', 
         storage: '128GB', 
         color: 'Nebula Black',
-        image: 'https://i.ibb.co/VqKJ8Lz/iphone-15-pro-max.png',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
+        category: 'Standard'
+      },
+      
+      // Nothing Phone Series
+      'Nothing Phone (2)': { 
+        price: '$599.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$16.67', 
+        storage: '128GB', 
+        color: 'White',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Nothing',
+        category: 'Standard'
+      },
+      'Nothing Phone (2a)': { 
+        price: '$349.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$14.58', 
+        storage: '128GB', 
+        color: 'White',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Nothing',
+        category: 'Budget'
+      },
+      
+      // ASUS Series
+      'ASUS ROG Phone 8': { 
+        price: '$1099.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$37.50', 
+        storage: '256GB', 
+        color: 'Phantom Black',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'ASUS',
+        category: 'Premium'
+      },
+      'ASUS Zenfone 11': { 
+        price: '$699.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$20.83', 
+        storage: '256GB', 
+        color: 'Eternal Black',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'ASUS',
         category: 'Standard'
       }
     }
@@ -418,6 +522,15 @@ function App() {
     console.log('App: Show pin modal:', showPinModal);
     console.log('App: Window width:', window.innerWidth);
     console.log('App: Is mobile view:', window.innerWidth < 640);
+    
+    // Force mobile view detection
+    const handleResize = () => {
+      console.log('App: Window resized to:', window.innerWidth);
+      console.log('App: Is mobile view:', window.innerWidth < 640);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [user, showAuthModal, showSplash, showOOBE, showPinModal]);
   
   // Authentication state

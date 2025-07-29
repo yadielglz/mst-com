@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun, Check } from 'lucide-react';
+import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun, Check, Smartphone } from 'lucide-react';
 
 // Sale Modal
 export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices, productCatalog }) => {
@@ -1741,7 +1741,7 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
                           }`}
                         >
                           <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                            <img 
+                            <DeviceImage 
                               src={deviceData.image} 
                               alt={deviceName}
                               className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
@@ -1770,7 +1770,7 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
                     {service.device && service.device !== 'show-devices' && service.deviceDetails && (
                       <div className="mt-4 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
                         <div className="flex items-center gap-3">
-                          <img 
+                          <DeviceImage 
                             src={service.deviceDetails.image} 
                             alt={service.device}
                             className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
@@ -2176,7 +2176,7 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
                 <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                      <img 
+                      <DeviceImage 
                         src={service.deviceDetails.image} 
                         alt={service.device}
                         className="w-12 h-12 object-contain"
@@ -2297,3 +2297,31 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
     </div>
   );
 }; 
+
+// Add image fallback component
+const DeviceImage = ({ src, alt, className = "w-16 h-16 object-cover rounded-lg" }) => {
+  const [imageError, setImageError] = useState(false);
+  
+  const handleImageError = () => {
+    console.log('Device image failed to load:', src);
+    setImageError(true);
+  };
+  
+  if (imageError) {
+    return (
+      <div className={`${className} bg-slate-200 dark:bg-slate-700 flex items-center justify-center`}>
+        <Smartphone className="w-8 h-8 text-slate-400" />
+      </div>
+    );
+  }
+  
+  return (
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className}
+      onError={handleImageError}
+      loading="lazy"
+    />
+  );
+};
