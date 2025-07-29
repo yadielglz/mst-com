@@ -1005,20 +1005,25 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
     { number: 6, title: 'Quote Summary', icon: '📊' }
   ];
 
+  // Add debugging
+  console.log('MultiStepQuoteModal: Current step:', currentStep);
+  console.log('MultiStepQuoteModal: Form data:', formData);
+  console.log('MultiStepQuoteModal: Selected services:', selectedServices);
+
   const calculateTotals = () => {
     let totalMonthly = 0;
     let totalOneTime = 0;
 
     // Calculate services
     selectedServices.forEach(service => {
-      // Find the plan/add-on in the catalog
-      const plan = productCatalog.Mobile.plans[service.name] || 
-                   productCatalog.Internet.plans[service.name] || 
-                   productCatalog.TV.plans[service.name];
+      // Find the plan/add-on in the catalog with proper null checks
+      const plan = (productCatalog.Mobile?.plans?.[service.name]) || 
+                   (productCatalog.Internet?.plans?.[service.name]) || 
+                   (productCatalog.TV?.plans?.[service.name]);
       
-      const addOn = productCatalog.Mobile.addOns[service.name] || 
-                    productCatalog.Internet.addOns[service.name] || 
-                    productCatalog.TV.addOns[service.name];
+      const addOn = (productCatalog.Mobile?.addOns?.[service.name]) || 
+                    (productCatalog.Internet?.addOns?.[service.name]) || 
+                    (productCatalog.TV?.addOns?.[service.name]);
 
       if (plan) {
         totalMonthly += parseFloat(plan.price) * service.lines;
@@ -1028,7 +1033,7 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
 
       // Add device monthly payments (but not down payments)
       if (service.device && service.device !== 'show-devices' && service.device !== '') {
-        const device = productCatalog.Mobile.devices[service.device];
+        const device = productCatalog.Mobile?.devices?.[service.device];
         if (device) {
           totalMonthly += parseFloat(device.monthlyPayment.replace('$', '').replace('/mo', ''));
           // Note: Down payment is now handled as a fee, not automatically added
@@ -1052,46 +1057,62 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
   };
 
   const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return <PlanSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 2:
-        return <DeviceSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 3:
-        return <ServicesStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 4:
-        return <DiscountsFeesStep selectedDiscounts={selectedDiscounts} setSelectedDiscounts={setSelectedDiscounts} selectedFees={selectedFees} setSelectedFees={setSelectedFees} />;
-      case 5:
-        return <CustomerInfoStep formData={formData} setFormData={setFormData} />;
-      case 6:
-        return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={calculateTotals()} productCatalog={productCatalog} />;
-      default:
-        return null;
+    console.log('MultiStepQuoteModal: Rendering step content for step:', currentStep);
+    
+    try {
+      switch (currentStep) {
+        case 1:
+          return <PlanSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
+        case 2:
+          return <DeviceSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
+        case 3:
+          return <ServicesStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
+        case 4:
+          return <DiscountsFeesStep selectedDiscounts={selectedDiscounts} setSelectedDiscounts={setSelectedDiscounts} selectedFees={selectedFees} setSelectedFees={setSelectedFees} />;
+        case 5:
+          return <CustomerInfoStep formData={formData} setFormData={setFormData} />;
+        case 6:
+          return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={calculateTotals()} productCatalog={productCatalog} />;
+        default:
+          console.error('MultiStepQuoteModal: Invalid step:', currentStep);
+          return <div className="text-center p-8">Invalid step: {currentStep}</div>;
+      }
+    } catch (error) {
+      console.error('MultiStepQuoteModal: Error rendering step content:', error);
+      return <div className="text-center p-8 text-red-600">Error rendering step content: {error.message}</div>;
     }
   };
 
   const handleNext = () => {
+    console.log('MultiStepQuoteModal: Next button clicked, current step:', currentStep);
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handlePrevious = () => {
+    console.log('MultiStepQuoteModal: Previous button clicked, current step:', currentStep);
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
   };
 
   const handleSave = () => {
-    const quoteData = {
-      ...formData,
-      services: selectedServices,
-      discounts: selectedDiscounts,
-      fees: selectedFees,
-      totals: calculateTotals(),
-      createdAt: new Date().toISOString()
-    };
-    onSave(quoteData);
+    console.log('MultiStepQuoteModal: Save button clicked');
+    try {
+      const quoteData = {
+        ...formData,
+        services: selectedServices,
+        discounts: selectedDiscounts,
+        fees: selectedFees,
+        totals: calculateTotals(),
+        createdAt: new Date().toISOString()
+      };
+      console.log('MultiStepQuoteModal: Saving quote data:', quoteData);
+      onSave(quoteData);
+    } catch (error) {
+      console.error('MultiStepQuoteModal: Error in handleSave:', error);
+    }
   };
 
   return (
@@ -1178,92 +1199,96 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
 };
 
 // Step Components
-const CustomerInfoStep = ({ formData, setFormData }) => (
-  <div className="space-y-6">
-    <div className="text-center">
-      <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Customer Information</h3>
-      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
-        Enter customer details to complete your quote
-      </p>
-    </div>
-
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Customer Name *
-        </label>
-        <input
-          type="text"
-          value={formData.customerName}
-          onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
-          placeholder="Enter customer's full name"
-          className="w-full form-input"
-          required
-        />
+const CustomerInfoStep = ({ formData, setFormData }) => {
+  console.log('CustomerInfoStep: Rendering with formData:', formData);
+  
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Customer Information</h3>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+          Enter customer details to complete your quote
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Email Address
+            Customer Name *
           </label>
           <input
-            type="email"
-            value={formData.customerEmail}
-            onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
-            placeholder="customer@example.com"
+            type="text"
+            value={formData.customerName}
+            onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+            placeholder="Enter customer's full name"
+            className="w-full form-input"
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={formData.customerEmail}
+              onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
+              placeholder="customer@example.com"
+              className="w-full form-input"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              value={formData.customerPhone}
+              onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
+              placeholder="(555) 123-4567"
+              className="w-full form-input"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Quote Date
+          </label>
+          <input
+            type="date"
+            value={formData.saleDate}
+            onChange={(e) => setFormData({ ...formData, saleDate: e.target.value })}
             className="w-full form-input"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Phone Number
+            Additional Notes
           </label>
-          <input
-            type="tel"
-            value={formData.customerPhone}
-            onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
-            placeholder="(555) 123-4567"
+          <textarea
+            value={formData.notes}
+            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            placeholder="Any special requirements, promotions, or notes..."
+            rows={3}
             className="w-full form-input"
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Quote Date
-        </label>
-        <input
-          type="date"
-          value={formData.saleDate}
-          onChange={(e) => setFormData({ ...formData, saleDate: e.target.value })}
-          className="w-full form-input"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Additional Notes
-        </label>
-        <textarea
-          value={formData.notes}
-          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-          placeholder="Any special requirements, promotions, or notes..."
-          rows={3}
-          className="w-full form-input"
-        />
+      <div className="bg-gradient-to-r from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg">
+        <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Ready for Quote Summary</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          All quote details have been configured. Click "Next" to review the complete quote summary.
+        </p>
       </div>
     </div>
-
-    <div className="bg-gradient-to-r from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg">
-      <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Ready for Quote Summary</h4>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        All quote details have been configured. Click "Next" to review the complete quote summary.
-      </p>
-    </div>
-  </div>
-);
+  );
+};
 
 const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatalog }) => {
   const [selectedCategory, setSelectedCategory] = useState('');

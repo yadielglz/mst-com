@@ -1115,6 +1115,11 @@ const PRODUCT_CATALOG = {
       'T-Mobile Home Internet Lite': { name: 'T-Mobile Home Internet Lite', price: '$30/mo', description: 'Basic home internet service' },
       'T-Mobile Business Internet': { name: 'T-Mobile Business Internet', price: '$70/mo', description: 'Business-grade internet service' },
     },
+    addOns: {
+      'T-Mobile Home Internet Protection': { name: 'T-Mobile Home Internet Protection', price: '$5/mo', description: 'Basic equipment protection' },
+      'T-Mobile Home Internet Plus Protection': { name: 'T-Mobile Home Internet Plus Protection', price: '$8/mo', description: 'Enhanced equipment protection' },
+      'T-Mobile Static IP': { name: 'T-Mobile Static IP', price: '$10/mo', description: 'Static IP address for business' },
+    },
     equipment: {
       'T-Mobile 5G Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0', description: '5G home internet gateway included' },
       'T-Mobile 4G LTE Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0', description: '4G LTE home internet gateway included' },
@@ -1575,6 +1580,8 @@ function App() {
   // Handle add sale
   const handleAddSale = async (quoteData) => {
     try {
+      console.log('App: Saving quote data:', quoteData);
+      
       // Convert the new quote data structure to the existing sale structure
       const saleData = {
         customerName: quoteData.customerName,
@@ -1588,11 +1595,13 @@ function App() {
 
       const result = await firebaseAddSale(saleData);
       if (result.success) {
-        setShowSaleModal(false);
+        setShowQuoteModal(false); // Fixed: Close the quote modal, not sale modal
         setCurrentSaleServices([]);
         toast.success('Quote saved successfully!');
+        console.log('App: Quote saved successfully, modal closed');
       } else {
         toast.error('Failed to save quote');
+        console.error('App: Failed to save quote:', result.error);
       }
     } catch (error) {
       console.error('Error adding sale:', error);
