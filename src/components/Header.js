@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, LogOut, Moon, Sun, Menu, X, Clock, Cloud } from 'lucide-react';
+import { Settings, LogOut, Moon, Sun, Menu, X, Clock, Cloud, User, ChevronDown } from 'lucide-react';
 
 const Header = ({ 
   user, 
@@ -53,164 +53,76 @@ const Header = ({
   };
 
   return (
-    <header className="bg-white dark:bg-slate-800 shadow-lg border-b border-slate-200 dark:border-slate-700 mobile-menu-container">
-      <div className="container mx-auto px-4 py-3 sm:py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo and Title */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            <img 
-              src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" 
-              alt="T-Mobile Logo" 
-              className="h-8 sm:h-12 w-auto object-contain"
-            />
-            <div className="hidden sm:block">
-              <h1 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">
-                Sales Quote Tool
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                Create amazing quotes for your customers
-              </p>
-            </div>
-            <div className="sm:hidden">
-              <h1 className="text-sm font-bold text-slate-800 dark:text-white">
-                Quote Tool
-              </h1>
-            </div>
-          </div>
-
-          {/* Clock and Weather - Desktop */}
-          <div className="hidden sm:flex items-center gap-4">
-            {/* Clock */}
-            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-              <Clock className="w-4 h-4" />
-              <div className="text-right">
-                <div className="text-sm font-medium">{formatTime(currentTime)}</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
+    <header className="bg-white dark:bg-slate-800 shadow-lg border-b border-slate-200 dark:border-slate-700 mobile-menu-container sticky top-0 z-50">
+      {/* Desktop Header */}
+      <div className="hidden sm:block">
+        <div className="container mx-auto px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Title */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              <img 
+                src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" 
+                alt="T-Mobile Logo" 
+                className="h-8 sm:h-12 w-auto object-contain"
+              />
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">
+                  Sales Quote Tool
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                  Create amazing quotes for your customers
+                </p>
               </div>
             </div>
 
-            {/* Weather */}
-            {weather && weather.temp && (
+            {/* Clock and Weather - Desktop */}
+            <div className="flex items-center gap-4">
+              {/* Clock */}
               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                <span className="text-lg">{weather.condition}</span>
+                <Clock className="w-4 h-4" />
                 <div className="text-right">
-                  <div className="text-sm font-medium">{weather.temp}°{tempUnit || 'F'}</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">Weather</div>
+                  <div className="text-sm font-medium">{formatTime(currentTime)}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Desktop Action Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
-            {/* Theme Toggle */}
-            <button
-              onClick={onToggleTheme}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
-              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-
-            {/* Settings Button */}
-            <button
-              onClick={onShowSettings}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
-              title="Settings"
-            >
-              <Settings className="w-5 h-5" />
-            </button>
-
-            {/* User Menu */}
-            {user && (
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <p className="text-sm font-medium text-slate-800 dark:text-white">
-                    {user.email}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Sales Representative
-                  </p>
-                </div>
-                <button
-                  onClick={onSignOut}
-                  className="flex items-center gap-2 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
-                  title="Sign out"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="sm:hidden">
-            <button
-              onClick={() => {
-                console.log('Mobile menu toggle clicked, current state:', isMobileMenuOpen);
-                setIsMobileMenuOpen(!isMobileMenuOpen);
-              }}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="sm:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <div className="space-y-3">
-              {/* Clock and Weather - Mobile */}
-              <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-                  <div>
-                    <div className="text-sm font-medium text-slate-800 dark:text-white">{formatTime(currentTime)}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
+              {/* Weather */}
+              {weather && weather.temp && (
+                <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                  <span className="text-lg">{weather.condition}</span>
+                  <div className="text-right">
+                    <div className="text-sm font-medium">{weather.temp}°{tempUnit || 'F'}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Weather</div>
                   </div>
                 </div>
-                {weather && weather.temp && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{weather.condition}</span>
-                    <div className="text-right">
-                      <div className="text-sm font-medium text-slate-800 dark:text-white">{weather.temp}°{tempUnit || 'F'}</div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
+            </div>
+
+            {/* Desktop Action Buttons */}
+            <div className="flex items-center gap-3">
+              {/* Theme Toggle */}
+              <button
+                onClick={onToggleTheme}
+                className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
+                title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
 
               {/* Settings Button */}
               <button
-                onClick={() => {
-                  console.log('Settings clicked');
-                  onShowSettings();
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors duration-200"
+                onClick={onShowSettings}
+                className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
+                title="Settings"
               >
                 <Settings className="w-5 h-5" />
-                <span>Settings</span>
               </button>
 
-              {/* Theme Toggle */}
-              <button
-                onClick={() => {
-                  console.log('Theme toggle clicked');
-                  onToggleTheme();
-                }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors duration-200"
-              >
-                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
-              </button>
-
-              {/* User Info and Sign Out */}
+              {/* User Menu */}
               {user && (
-                <>
-                  <div className="px-4 py-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                    <p className="text-sm font-medium text-slate-800 dark:text-white truncate">
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-slate-800 dark:text-white">
                       {user.email}
                     </p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -218,18 +130,143 @@ const Header = ({
                     </p>
                   </div>
                   <button
-                    onClick={() => {
-                      console.log('Sign out clicked');
-                      onSignOut();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+                    onClick={onSignOut}
+                    className="flex items-center gap-2 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
+                    title="Sign out"
                   >
-                    <LogOut className="w-5 h-5" />
+                    <LogOut className="w-4 h-4" />
                     <span>Sign Out</span>
                   </button>
-                </>
+                </div>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Header - Creative Portrait Design */}
+      <div className="sm:hidden">
+        {/* Main Mobile Header Bar */}
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Left: Logo + Time */}
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <img 
+                src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" 
+                alt="T-Mobile Logo" 
+                className="h-8 w-auto object-contain flex-shrink-0"
+              />
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 flex-shrink-0">
+                <Clock className="w-4 h-4" />
+                <div className="text-right">
+                  <div className="text-sm font-medium">{formatTime(currentTime)}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Center: Weather (if available) */}
+            {weather && weather.temp && (
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 mx-2">
+                <span className="text-lg">{weather.condition}</span>
+                <div className="text-right">
+                  <div className="text-sm font-medium">{weather.temp}°{tempUnit || 'F'}</div>
+                </div>
+              </div>
+            )}
+
+            {/* Right: Menu Button */}
+            <button
+              onClick={() => {
+                console.log('Mobile menu toggle clicked, current state:', isMobileMenuOpen);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200 flex-shrink-0"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu - Creative Slide Down */}
+        {isMobileMenuOpen && (
+          <div className="border-t border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-900">
+            <div className="px-4 py-4 space-y-3">
+              {/* User Profile Card */}
+              {user && (
+                <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-xl p-4 text-white shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm truncate">
+                        {user.email}
+                      </p>
+                      <p className="text-xs text-white/80">
+                        Sales Representative
+                      </p>
+                    </div>
+                    <ChevronDown className="w-5 h-5 text-white/60" />
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Actions Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* Settings */}
+                <button
+                  onClick={() => {
+                    console.log('Settings clicked');
+                    onShowSettings();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-slate-200 dark:border-slate-600"
+                >
+                  <div className="w-10 h-10 bg-att-blue/10 rounded-full flex items-center justify-center">
+                    <Settings className="w-5 h-5 text-att-blue" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Settings</span>
+                </button>
+
+                {/* Theme Toggle */}
+                <button
+                  onClick={() => {
+                    console.log('Theme toggle clicked');
+                    onToggleTheme();
+                  }}
+                  className="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-700 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-slate-200 dark:border-slate-600"
+                >
+                  <div className="w-10 h-10 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                    {isDark ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-slate-600" />}
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                    {isDark ? 'Light' : 'Dark'}
+                  </span>
+                </button>
+              </div>
+
+              {/* Sign Out Button */}
+              {user && (
+                <button
+                  onClick={() => {
+                    console.log('Sign out clicked');
+                    onSignOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 font-medium"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span>Sign Out</span>
+                </button>
+              )}
+
+              {/* App Info */}
+              <div className="text-center pt-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Sales Quote Tool v1.0
+                </p>
+              </div>
             </div>
           </div>
         )}
