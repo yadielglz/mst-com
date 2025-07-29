@@ -133,6 +133,8 @@ const PRODUCT_CATALOG = {
 };
 
 function App() {
+  console.log('App: Component rendering...');
+  
   // Authentication state
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -570,7 +572,7 @@ function App() {
     toast.success('Welcome to T-Mobile Sales Quote Tool!');
   };
 
-  // Render components
+  // Show loading screen
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
@@ -582,6 +584,16 @@ function App() {
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">Loading...</p>
         </div>
+      </div>
+    );
+  }
+
+  // Show auth modal if no user
+  if (!user && showAuthModal) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <AuthModal onAuthSuccess={handleAuthSuccess} />
+        <Toaster position="top-right" />
       </div>
     );
   }
