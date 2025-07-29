@@ -1653,8 +1653,8 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
+          <img src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" alt="T-Mobile Logo" className="h-16 mx-auto mb-4 object-contain" />
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Sales Quote Tool</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -1680,8 +1680,8 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-            <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
+            <img src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" alt="T-Mobile Logo" className="h-16 mx-auto mb-4 object-contain" />
+            <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Sales Quote Tool</h1>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
             <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
@@ -1737,7 +1737,7 @@ function App() {
           {/* Welcome Section */}
           <div className="mb-6 sm:mb-8 text-center">
             <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">
-              Welcome to T-Mobile Sales Quote Tool! 🚀
+              Welcome to Sales Quote Tool! 🚀
             </h1>
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 px-2">
               Create amazing quotes for your customers with our fun and easy interface

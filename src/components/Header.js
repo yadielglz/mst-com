@@ -29,13 +29,13 @@ const Header = ({
           {/* Logo and Title */}
           <div className="flex items-center gap-2 sm:gap-4">
             <img 
-              src="https://i.ibb.co/Y77B0htr/tmobile.png" 
+              src="https://i.ibb.co/V0r0hgn7/tmobile-header.png" 
               alt="T-Mobile Logo" 
-              className="h-8 sm:h-10 w-auto"
+              className="h-8 sm:h-12 w-auto object-contain"
             />
             <div className="hidden sm:block">
               <h1 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">
-                T-Mobile Sales Quote Tool
+                Sales Quote Tool
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                 Create amazing quotes for your customers
@@ -43,7 +43,7 @@ const Header = ({
             </div>
             <div className="sm:hidden">
               <h1 className="text-sm font-bold text-slate-800 dark:text-white">
-                T-Mobile Quote Tool
+                Quote Tool
               </h1>
             </div>
           </div>
