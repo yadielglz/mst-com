@@ -1115,7 +1115,7 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
       case 5:
         return <DiscountsFeesStep selectedDiscounts={selectedDiscounts} setSelectedDiscounts={setSelectedDiscounts} selectedFees={selectedFees} setSelectedFees={setSelectedFees} />;
       case 6:
-        return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={totals} />;
+        return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={totals} productCatalog={productCatalog} />;
       default:
         return null;
     }
@@ -1849,7 +1849,7 @@ const DiscountsFeesStep = ({ selectedDiscounts, setSelectedDiscounts, selectedFe
   );
 };
 
-const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selectedFees, totals }) => {
+const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selectedFees, totals, productCatalog }) => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -1927,11 +1927,11 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
                 <div className="text-sm font-medium mb-2">Add-ons:</div>
                 <div className="space-y-1">
                   {service.addOns.map(addonName => {
-                    const addonData = productCatalog.Mobile.addOns[addonName];
+                    const addonData = productCatalog?.Mobile?.addOns?.[addonName] || productCatalog?.Internet?.addOns?.[addonName] || productCatalog?.TV?.addOns?.[addonName];
                     return (
                       <div key={addonName} className="flex justify-between text-sm">
                         <span>{addonName}</span>
-                        <span className="font-medium">{addonData?.price}</span>
+                        <span className="font-medium">{addonData?.price || 'N/A'}</span>
                       </div>
                     );
                   })}
