@@ -630,135 +630,32 @@ export const OOBEScreen = ({ onComplete }) => {
     monthly: { mobile: 40, internet: 20, tv: 8 }
   });
 
+  const totalSteps = 6;
+
   const steps = [
-    {
-      title: 'Welcome!',
-      content: (
-        <div className="text-center">
-          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">
-            Welcome to T-Mobile Sales Quote Tool
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400 mb-4">
-            Create professional quotes for T-Mobile services, devices, and plans. Your data is private and never leaves your device.
-          </p>
-          <ul className="text-left text-sm text-slate-600 dark:text-slate-300 mb-6 list-disc list-inside">
-            <li>✔️ Local, private storage</li>
-            <li>✔️ Create detailed quotes with all T-Mobile services</li>
-            <li>✔️ PIN lock for extra privacy</li>
-            <li>✔️ Export/import your quotes anytime</li>
-          </ul>
-        </div>
-      )
-    },
-    {
-      title: 'Set Your Initial Goals',
-      content: (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          onComplete(goals);
-        }}>
-          <p className="text-center text-slate-500 mb-6">You can change these later in the settings.</p>
-          
-          <fieldset className="border-t pt-4 dark:border-slate-700">
-            <legend className="font-semibold text-lg mb-2 px-2">Weekly Goals</legend>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <label className="block">
-                Mobile Lines
-                <input
-                  type="number"
-                  value={goals.weekly.mobile}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    weekly: { ...prev.weekly, mobile: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-              <label className="block">
-                Internet
-                <input
-                  type="number"
-                  value={goals.weekly.internet}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    weekly: { ...prev.weekly, internet: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-              <label className="block">
-                TV
-                <input
-                  type="number"
-                  value={goals.weekly.tv}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    weekly: { ...prev.weekly, tv: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset className="border-t pt-4 dark:border-slate-700">
-            <legend className="font-semibold text-lg mb-2 px-2">Monthly Goals</legend>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <label className="block">
-                Mobile Lines
-                <input
-                  type="number"
-                  value={goals.monthly.mobile}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    monthly: { ...prev.monthly, mobile: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-              <label className="block">
-                Internet
-                <input
-                  type="number"
-                  value={goals.monthly.internet}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    monthly: { ...prev.monthly, internet: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-              <label className="block">
-                TV
-                <input
-                  type="number"
-                  value={goals.monthly.tv}
-                  onChange={(e) => setGoals(prev => ({
-                    ...prev,
-                    monthly: { ...prev.monthly, tv: parseInt(e.target.value) || 0 }
-                  }))}
-                  className="form-input mt-1"
-                  min="0"
-                />
-              </label>
-            </div>
-          </fieldset>
-
-          <div className="flex justify-end pt-4">
-            <button type="submit" className="btn btn-primary">
-              Start Tracking
-            </button>
-          </div>
-        </form>
-      )
-    }
+    { number: 1, title: 'Select Plans', icon: '📋' },
+    { number: 2, title: 'Choose Devices', icon: '📱' },
+    { number: 3, title: 'Add Services', icon: '🔧' },
+    { number: 4, title: 'Discounts & Fees', icon: '💰' },
+    { number: 5, title: 'Customer Info', icon: '👤' },
+    { number: 6, title: 'Quote Summary', icon: '📊' }
   ];
+
+  const handleNext = () => {
+    if (step < totalSteps) {
+      setStep(step + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (step > 1) {
+      setStep(step - 1);
+    }
+  };
+
+  const handleComplete = () => {
+    onComplete(goals);
+  };
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-att-light-gray p-4">
@@ -1064,15 +961,14 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
   const totalSteps = 6;
 
   const steps = [
-    { number: 1, title: 'Customer Info', icon: '👤' },
-    { number: 2, title: 'Select Plans', icon: '📋' },
-    { number: 3, title: 'Choose Devices', icon: '📱' },
-    { number: 4, title: 'Add Services', icon: '🔧' },
-    { number: 5, title: 'Discounts & Fees', icon: '💰' },
+    { number: 1, title: 'Select Plans', icon: '📋' },
+    { number: 2, title: 'Choose Devices', icon: '📱' },
+    { number: 3, title: 'Add Services', icon: '🔧' },
+    { number: 4, title: 'Discounts & Fees', icon: '💰' },
+    { number: 5, title: 'Customer Info', icon: '👤' },
     { number: 6, title: 'Quote Summary', icon: '📊' }
   ];
 
-  // Calculate totals
   const calculateTotals = () => {
     let totalMonthly = 0;
     let totalOneTime = 0;
@@ -1119,22 +1015,20 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
     };
   };
 
-  const totals = calculateTotals();
-
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
-        return <CustomerInfoStep formData={formData} setFormData={setFormData} />;
-      case 2:
         return <PlanSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 3:
+      case 2:
         return <DeviceSelectionStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 4:
+      case 3:
         return <ServicesStep selectedServices={selectedServices} setSelectedServices={setSelectedServices} productCatalog={productCatalog} />;
-      case 5:
+      case 4:
         return <DiscountsFeesStep selectedDiscounts={selectedDiscounts} setSelectedDiscounts={setSelectedDiscounts} selectedFees={selectedFees} setSelectedFees={setSelectedFees} />;
+      case 5:
+        return <CustomerInfoStep formData={formData} setFormData={setFormData} />;
       case 6:
-        return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={totals} productCatalog={productCatalog} />;
+        return <QuoteSummaryStep formData={formData} selectedServices={selectedServices} selectedDiscounts={selectedDiscounts} selectedFees={selectedFees} totals={calculateTotals()} productCatalog={productCatalog} />;
       default:
         return null;
     }
@@ -1158,7 +1052,7 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
       services: selectedServices,
       discounts: selectedDiscounts,
       fees: selectedFees,
-      totals: totals,
+      totals: calculateTotals(),
       createdAt: new Date().toISOString()
     };
     onSave(quoteData);
@@ -1250,83 +1144,87 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
 // Step Components
 const CustomerInfoStep = ({ formData, setFormData }) => (
   <div className="space-y-6">
-    <div className="text-center mb-6 sm:mb-8">
-      <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">👤</div>
+    <div className="text-center">
       <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Customer Information</h3>
-      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Let's start with the basics</p>
+      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+        Enter customer details to complete your quote
+      </p>
     </div>
-    
-    <div className="space-y-4 sm:space-y-6">
-      {/* Customer Name */}
+
+    <div className="space-y-4">
       <div>
-        <label className="block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
           Customer Name *
         </label>
         <input
           type="text"
           value={formData.customerName}
-          onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
-          className="w-full px-4 py-3 sm:py-4 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
-          placeholder="Enter customer name"
+          onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+          placeholder="Enter customer's full name"
+          className="w-full form-input"
           required
         />
       </div>
 
-      {/* Contact Information */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             Email Address
           </label>
           <input
             type="email"
             value={formData.customerEmail}
-            onChange={(e) => setFormData(prev => ({ ...prev, customerEmail: e.target.value }))}
-            className="w-full px-4 py-3 sm:py-4 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
-            placeholder="customer@email.com"
+            onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
+            placeholder="customer@example.com"
+            className="w-full form-input"
           />
         </div>
+
         <div>
-          <label className="block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             Phone Number
           </label>
           <input
             type="tel"
             value={formData.customerPhone}
-            onChange={(e) => setFormData(prev => ({ ...prev, customerPhone: e.target.value }))}
-            className="w-full px-4 py-3 sm:py-4 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
+            onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
             placeholder="(555) 123-4567"
+            className="w-full form-input"
           />
         </div>
       </div>
 
-      {/* Quote Date */}
       <div>
-        <label className="block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mb-2">
-          Quote Date *
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+          Quote Date
         </label>
         <input
           type="date"
           value={formData.saleDate}
-          onChange={(e) => setFormData(prev => ({ ...prev, saleDate: e.target.value }))}
-          className="w-full px-4 py-3 sm:py-4 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
-          required
+          onChange={(e) => setFormData({ ...formData, saleDate: e.target.value })}
+          className="w-full form-input"
         />
       </div>
 
-      {/* Notes */}
       <div>
-        <label className="block text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
           Additional Notes
         </label>
         <textarea
           value={formData.notes}
-          onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-          rows={4}
-          className="w-full px-4 py-3 sm:py-4 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base resize-none"
-          placeholder="Any special requirements or notes for this quote..."
+          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          placeholder="Any special requirements, promotions, or notes..."
+          rows={3}
+          className="w-full form-input"
         />
       </div>
+    </div>
+
+    <div className="bg-gradient-to-r from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg">
+      <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Ready for Quote Summary</h4>
+      <p className="text-sm text-slate-600 dark:text-slate-400">
+        All quote details have been configured. Click "Next" to review the complete quote summary.
+      </p>
     </div>
   </div>
 );
