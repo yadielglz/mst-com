@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun } from 'lucide-react';
+import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun, Check } from 'lucide-react';
 
 // Sale Modal
 export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices, productCatalog }) => {
@@ -1316,34 +1316,71 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedPlan, setSelectedPlan] = useState('');
   const [lines, setLines] = useState(1);
+  const [mobileLines, setMobileLines] = useState([]);
 
   const addService = () => {
     if (!selectedCategory || !selectedPlan) return;
 
     const categoryData = productCatalog[selectedCategory];
     const planData = categoryData.plans[selectedPlan];
-    const service = {
-      category: selectedCategory,
-      planName: selectedPlan,
-      planPrice: planData.price,
-      planDescription: planData.description,
-      device: '',
-      deviceDetails: null,
-      addOns: [],
-      lines: null
-    };
-
+    
     if (selectedCategory === 'Mobile' && planData.hasLines) {
-      service.lines = lines;
+      // For mobile plans with lines, create individual line entries
+      const newLines = [];
+      for (let i = 0; i < lines; i++) {
+        newLines.push({
+          id: Date.now() + i,
+          category: selectedCategory,
+          planName: selectedPlan,
+          planPrice: planData.price,
+          planDescription: planData.description,
+          device: '',
+          deviceDetails: null,
+          addOns: [],
+          lineNumber: i + 1,
+          isIndividualLine: true
+        });
+      }
+      setMobileLines(prev => [...prev, ...newLines]);
+    } else {
+      // For non-mobile or single-line services
+      const service = {
+        category: selectedCategory,
+        planName: selectedPlan,
+        planPrice: planData.price,
+        planDescription: planData.description,
+        device: '',
+        deviceDetails: null,
+        addOns: [],
+        lines: null,
+        isIndividualLine: false
+      };
+      setSelectedServices(prev => [...prev, service]);
     }
-
-    setSelectedServices(prev => [...prev, service]);
+    
     setSelectedPlan('');
     setLines(1);
   };
 
   const removeService = (index) => {
     setSelectedServices(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeMobileLine = (lineId) => {
+    setMobileLines(prev => prev.filter(line => line.id !== lineId));
+  };
+
+  const updateMobileLine = (lineId, updates) => {
+    setMobileLines(prev => prev.map(line => 
+      line.id === lineId ? { ...line, ...updates } : line
+    ));
+  };
+
+  const addMobileLinesToServices = () => {
+    if (mobileLines.length > 0) {
+      setSelectedServices(prev => [...prev, ...mobileLines]);
+      setMobileLines([]);
+    }
   };
 
   return (
@@ -1449,6 +1486,101 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
         </div>
       )}
 
+      {/* Mobile Lines Management */}
+      {mobileLines.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Mobile Lines Setup</h4>
+            <button
+              onClick={addMobileLinesToServices}
+              className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200 text-sm sm:text-base"
+            >
+              Add All Lines to Quote
+            </button>
+          </div>
+          
+          <div className="space-y-3">
+            {mobileLines.map((line) => (
+              <div key={line.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h5 className="font-semibold text-slate-800 dark:text-white">Line {line.lineNumber}</h5>
+                  <button
+                    onClick={() => removeMobileLine(line.id)}
+                    className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Plan
+                    </label>
+                    <select
+                      value={line.planName}
+                      onChange={(e) => updateMobileLine(line.id, { planName: e.target.value })}
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+                    >
+                      {Object.entries(productCatalog.Mobile.plans).map(([planName, planData]) => (
+                        <option key={planName} value={planName}>
+                          {planName} - {planData.price}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Device
+                    </label>
+                    <select
+                      value={line.device}
+                      onChange={(e) => {
+                        const deviceName = e.target.value;
+                        updateMobileLine(line.id, { 
+                          device: deviceName,
+                          deviceDetails: deviceName ? productCatalog.Mobile.devices[deviceName] : null
+                        });
+                      }}
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+                    >
+                      <option value="">BYOD</option>
+                      {Object.entries(productCatalog.Mobile.devices).map(([deviceName, deviceData]) => (
+                        <option key={deviceName} value={deviceName}>
+                          {deviceName} - {deviceData.price}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                
+                {line.device && line.deviceDetails && (
+                  <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={line.deviceDetails.image} 
+                        alt={line.device}
+                        className="w-12 h-12 object-contain"
+                      />
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">{line.device}</div>
+                        <div className="text-xs text-slate-500">
+                          {line.deviceDetails.storage} • {line.deviceDetails.color}
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          ${line.deviceDetails.downPayment} down • ${line.deviceDetails.monthlyPayment}/mo
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Selected Services */}
       {selectedServices.length > 0 && (
         <div className="space-y-4">
@@ -1457,13 +1589,15 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
             {selectedServices.map((service, index) => (
               <div key={index} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
                 <div className="flex-1">
-                  <div className="font-semibold text-sm sm:text-base">{service.planName}</div>
+                  <div className="font-semibold text-sm sm:text-base">
+                    {service.isIndividualLine ? `Line ${service.lineNumber}: ${service.planName}` : service.planName}
+                  </div>
                   <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     {service.planDescription}
                   </div>
-                  {service.lines && (
+                  {service.device && (
                     <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                      {service.lines} line(s)
+                      Device: {service.device}
                     </div>
                   )}
                 </div>
@@ -1512,180 +1646,196 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
     return true;
   });
 
+  const mobileServices = selectedServices.filter(s => s.category === 'Mobile' && s.isIndividualLine);
+  const nonMobileServices = selectedServices.filter(s => s.category !== 'Mobile' || !s.isIndividualLine);
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6 sm:mb-8">
         <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📱</div>
-        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Choose Devices</h3>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Select devices for your mobile plans</p>
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Device Management</h3>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Configure devices for each mobile line</p>
       </div>
 
-      {/* Filters - Mobile Optimized */}
-      <div className="space-y-3 sm:space-y-0 sm:flex sm:gap-4">
-        <select
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          className="w-full sm:max-w-xs px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
-        >
-          <option value="">All Brands</option>
-          {brands.map(brand => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full sm:max-w-xs px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
-        >
-          <option value="">All Categories</option>
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Mobile Services with Device Selection */}
-      {selectedServices.filter(s => s.category === 'Mobile').map((service, serviceIndex) => (
-        <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
-          <div className="mb-4">
-            <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">{service.planName}</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
-          </div>
-
-          {/* Device Selection */}
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-              <label className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300">Device:</label>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => updateServiceDevice(serviceIndex, '')}
-                  className={`px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
-                    !service.device
-                      ? 'bg-att-blue text-white'
-                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-                  }`}
-                >
-                  BYOD
-                </button>
-                <button
-                  onClick={() => updateServiceDevice(serviceIndex, 'show-devices')}
-                  className={`px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
-                    service.device && service.device !== ''
-                      ? 'bg-att-blue text-white'
-                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-                  }`}
-                >
-                  New Device
-                </button>
+      {/* Mobile Lines Device Configuration */}
+      {mobileServices.length > 0 && (
+        <div className="space-y-6">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Mobile Lines</h4>
+          
+          {mobileServices.map((service, serviceIndex) => (
+            <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="mb-4">
+                <h5 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">
+                  Line {service.lineNumber}: {service.planName}
+                </h5>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
               </div>
-            </div>
 
-            {/* Device Grid - Show when user wants a new device */}
-            {(service.device && service.device !== '') && (
+              {/* Device Selection */}
               <div className="space-y-4">
-                <div className="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-400">
-                  Available Devices ({filteredDevices.length})
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-h-64 overflow-y-auto">
-                  {filteredDevices.map(([deviceName, deviceData]) => (
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                  <label className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-300">Device:</label>
+                  <div className="flex gap-2">
                     <button
-                      key={deviceName}
-                      onClick={() => updateServiceDevice(serviceIndex, deviceName)}
-                      className={`p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 text-left ${
-                        service.device === deviceName
-                          ? 'border-att-blue bg-att-blue text-white shadow-lg'
-                          : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
+                      onClick={() => updateServiceDevice(serviceIndex, '')}
+                      className={`px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
+                        !service.device
+                          ? 'bg-att-blue text-white'
+                          : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                       }`}
                     >
-                      <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                        <img 
-                          src={deviceData.image} 
-                          alt={deviceName}
-                          className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-sm sm:text-base truncate">{deviceName}</div>
-                          <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-500'}`}>
-                            {deviceData.brand} • {deviceData.category}
-                          </div>
-                        </div>
-                      </div>
-                      <div className={`text-xs sm:text-sm ${service.device === deviceName ? 'text-white/90' : 'text-slate-600'}`}>
-                        {deviceData.storage} • {deviceData.color}
-                      </div>
-                      <div className={`font-bold text-sm sm:text-base ${service.device === deviceName ? 'text-white' : 'text-emerald-600'}`}>
-                        {deviceData.price}
-                      </div>
-                      <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-400'}`}>
-                        ${deviceData.downPayment} down • ${deviceData.monthlyPayment}/mo
-                      </div>
+                      BYOD
                     </button>
-                  ))}
+                    <button
+                      onClick={() => updateServiceDevice(serviceIndex, 'show-devices')}
+                      className={`px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
+                        service.device && service.device !== ''
+                          ? 'bg-att-blue text-white'
+                          : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                      }`}
+                    >
+                      New Device
+                    </button>
+                  </div>
                 </div>
-                
-                {/* Selected Device Summary */}
-                {service.device && service.device !== 'show-devices' && service.deviceDetails && (
-                  <div className="mt-4 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
-                    <div className="flex items-center gap-3">
-                      <img 
-                        src={service.deviceDetails.image} 
-                        alt={service.device}
-                        className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-emerald-800 dark:text-emerald-200 text-sm sm:text-base truncate">{service.device}</div>
-                        <div className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-300">
-                          {service.deviceDetails.storage} • {service.deviceDetails.color}
-                        </div>
-                        <div className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-300">
-                          ${service.deviceDetails.downPayment} down • ${service.deviceDetails.monthlyPayment}/mo
+
+                {/* Device Grid - Show when user wants a new device */}
+                {(service.device && service.device !== '') && (
+                  <div className="space-y-4">
+                    {/* Filters - Mobile Optimized */}
+                    <div className="space-y-3 sm:space-y-0 sm:flex sm:gap-4">
+                      <select
+                        value={selectedBrand}
+                        onChange={(e) => setSelectedBrand(e.target.value)}
+                        className="w-full sm:max-w-xs px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
+                      >
+                        <option value="">All Brands</option>
+                        {brands.map(brand => (
+                          <option key={brand} value={brand}>{brand}</option>
+                        ))}
+                      </select>
+                      <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="w-full sm:max-w-xs px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base"
+                      >
+                        <option value="">All Categories</option>
+                        {categories.map(category => (
+                          <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="text-sm sm:text-base font-medium text-slate-600 dark:text-slate-400">
+                      Available Devices ({filteredDevices.length})
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-h-64 overflow-y-auto">
+                      {filteredDevices.map(([deviceName, deviceData]) => (
+                        <button
+                          key={deviceName}
+                          onClick={() => updateServiceDevice(serviceIndex, deviceName)}
+                          className={`p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                            service.device === deviceName
+                              ? 'border-att-blue bg-att-blue text-white shadow-lg'
+                              : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                            <img 
+                              src={deviceData.image} 
+                              alt={deviceName}
+                              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="font-semibold text-sm sm:text-base truncate">{deviceName}</div>
+                              <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-500'}`}>
+                                {deviceData.brand} • {deviceData.category}
+                              </div>
+                            </div>
+                          </div>
+                          <div className={`text-xs sm:text-sm ${service.device === deviceName ? 'text-white/90' : 'text-slate-600'}`}>
+                            {deviceData.storage} • {deviceData.color}
+                          </div>
+                          <div className={`font-bold text-sm sm:text-base ${service.device === deviceName ? 'text-white' : 'text-emerald-600'}`}>
+                            {deviceData.price}
+                          </div>
+                          <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-400'}`}>
+                            ${deviceData.downPayment} down • ${deviceData.monthlyPayment}/mo
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Selected Device Summary */}
+                    {service.device && service.device !== 'show-devices' && service.deviceDetails && (
+                      <div className="mt-4 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                        <div className="flex items-center gap-3">
+                          <img 
+                            src={service.deviceDetails.image} 
+                            alt={service.device}
+                            className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-emerald-800 dark:text-emerald-200 text-sm sm:text-base truncate">{service.device}</div>
+                            <div className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-300">
+                              {service.deviceDetails.storage} • {service.deviceDetails.color}
+                            </div>
+                            <div className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-300">
+                              ${service.deviceDetails.downPayment} down • ${service.deviceDetails.monthlyPayment}/mo
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => updateServiceDevice(serviceIndex, '')}
+                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
-                      <button
-                        onClick={() => updateServiceDevice(serviceIndex, '')}
-                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* BYOD Message */}
+                {!service.device && (
+                  <div className="mt-4 p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl sm:text-3xl">📱</div>
+                      <div>
+                        <div className="font-medium text-slate-800 dark:text-white text-sm sm:text-base">Bring Your Own Device</div>
+                        <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">No device cost - use your existing phone</div>
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
-            )}
-
-            {/* BYOD Message */}
-            {!service.device && (
-              <div className="mt-4 p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl sm:text-3xl">📱</div>
-                  <div>
-                    <div className="font-medium text-slate-800 dark:text-white text-sm sm:text-base">Bring Your Own Device</div>
-                    <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">No device cost - use your existing phone</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
       {/* Non-Mobile Services */}
-      {selectedServices.filter(s => s.category !== 'Mobile').map((service, serviceIndex) => (
-        <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
-          <div className="mb-4">
-            <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">{service.planName}</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
-            <p className="text-sm text-slate-400 dark:text-slate-500">No device selection needed for this service</p>
-          </div>
+      {nonMobileServices.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Other Services</h4>
+          {nonMobileServices.map((service, serviceIndex) => (
+            <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="mb-4">
+                <h5 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">{service.planName}</h5>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
+                <p className="text-sm text-slate-400 dark:text-slate-500">No device selection needed for this service</p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
       {/* No Mobile Services Message */}
-      {selectedServices.filter(s => s.category === 'Mobile').length === 0 && (
+      {mobileServices.length === 0 && (
         <div className="text-center py-8 sm:py-12">
           <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📱</div>
           <h3 className="text-lg sm:text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
-            No Mobile Plans Selected
+            No Mobile Lines to Configure
           </h3>
           <p className="text-sm sm:text-base text-slate-500 dark:text-slate-500">
             Go back to step 2 to add mobile plans that require device selection
@@ -1700,70 +1850,138 @@ const ServicesStep = ({ selectedServices, setSelectedServices, productCatalog })
   const updateServiceAddOns = (serviceIndex, addonName, checked) => {
     const updatedServices = [...selectedServices];
     if (checked) {
-      updatedServices[serviceIndex].addOns = [...(updatedServices[serviceIndex].addOns || []), addonName];
+      updatedServices[serviceIndex].addOns = [...updatedServices[serviceIndex].addOns, addonName];
     } else {
-      updatedServices[serviceIndex].addOns = (updatedServices[serviceIndex].addOns || []).filter(a => a !== addonName);
+      updatedServices[serviceIndex].addOns = updatedServices[serviceIndex].addOns.filter(addon => addon !== addonName);
     }
     setSelectedServices(updatedServices);
   };
 
+  const mobileServices = selectedServices.filter(s => s.category === 'Mobile' && s.isIndividualLine);
+  const nonMobileServices = selectedServices.filter(s => s.category !== 'Mobile' || !s.isIndividualLine);
+
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <div className="text-6xl mb-4">🔧</div>
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Add Services</h3>
-        <p className="text-slate-600 dark:text-slate-400">Enhance your plans with additional services</p>
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🔧</div>
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Add Services</h3>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Select add-ons for your mobile lines</p>
       </div>
 
-      {selectedServices.filter(s => s.category === 'Mobile').map((service, serviceIndex) => (
-        <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-6">
-          <div className="mb-4">
-            <h4 className="text-lg font-semibold">{service.planName}</h4>
-            <p className="text-sm text-slate-500">{service.planDescription}</p>
-          </div>
+      {/* Mobile Lines Add-ons */}
+      {mobileServices.length > 0 && (
+        <div className="space-y-6">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Mobile Lines Add-ons</h4>
+          
+          {mobileServices.map((service, serviceIndex) => (
+            <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="mb-4">
+                <h5 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">
+                  Line {service.lineNumber}: {service.planName}
+                </h5>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
+                {service.device && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Device: {service.device}
+                  </p>
+                )}
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {Object.entries(productCatalog.Mobile.addOns).map(([addonName, addonData]) => (
-              <label
-                key={addonName}
-                className={`p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                  (service.addOns || []).includes(addonName)
-                    ? 'border-att-blue bg-att-blue text-white shadow-lg'
-                    : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={(service.addOns || []).includes(addonName)}
-                    onChange={(e) => updateServiceAddOns(serviceIndex, addonName, e.target.checked)}
-                    className="h-4 w-4 text-att-blue rounded"
-                  />
-                  <div className="flex-1">
-                    <div className="font-semibold">{addonName}</div>
-                    <div className={`text-sm ${(service.addOns || []).includes(addonName) ? 'text-white/90' : 'text-slate-500 dark:text-slate-400'}`}>
-                      {addonData.description}
+              {/* Add-ons Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {Object.entries(productCatalog.Mobile.addOns).map(([addonName, addonData]) => (
+                  <label
+                    key={addonName}
+                    className={`relative flex items-start p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
+                      service.addOns.includes(addonName)
+                        ? 'border-att-blue bg-att-blue text-white shadow-lg'
+                        : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={service.addOns.includes(addonName)}
+                      onChange={(e) => updateServiceAddOns(serviceIndex, addonName, e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div className="flex-1">
+                      <div className="font-semibold text-sm sm:text-base mb-1">{addonName}</div>
+                      <div className={`text-xs sm:text-sm mb-2 ${
+                        service.addOns.includes(addonName) ? 'text-white/80' : 'text-slate-500'
+                      }`}>
+                        {addonData.description}
+                      </div>
+                      <div className={`font-bold text-sm sm:text-base ${
+                        service.addOns.includes(addonName) ? 'text-white' : 'text-emerald-600'
+                      }`}>
+                        {addonData.price}
+                      </div>
                     </div>
-                    <div className={`font-bold ${(service.addOns || []).includes(addonName) ? 'text-white' : 'text-emerald-600'}`}>
-                      {addonData.price}
+                    <div className={`ml-3 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center ${
+                      service.addOns.includes(addonName)
+                        ? 'border-white bg-white'
+                        : 'border-slate-300 dark:border-slate-600'
+                    }`}>
+                      {service.addOns.includes(addonName) && (
+                        <Check className="w-3 h-3 text-att-blue" />
+                      )}
                     </div>
+                  </label>
+                ))}
+              </div>
+
+              {/* Selected Add-ons Summary */}
+              {service.addOns.length > 0 && (
+                <div className="mt-4 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                  <div className="text-sm sm:text-base font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                    Selected Add-ons:
+                  </div>
+                  <div className="space-y-1">
+                    {service.addOns.map(addonName => {
+                      const addonData = productCatalog.Mobile.addOns[addonName];
+                      return (
+                        <div key={addonName} className="flex justify-between text-sm">
+                          <span className="text-emerald-700 dark:text-emerald-300">{addonName}</span>
+                          <span className="font-medium text-emerald-600 dark:text-emerald-400">{addonData?.price}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </label>
-            ))}
-          </div>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
 
-      {selectedServices.filter(s => s.category !== 'Mobile').map((service, serviceIndex) => (
-        <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-6">
-          <div className="mb-4">
-            <h4 className="text-lg font-semibold">{service.planName}</h4>
-            <p className="text-sm text-slate-500">{service.planDescription}</p>
-            <p className="text-sm text-slate-400">No additional services available for this plan</p>
-          </div>
+      {/* Non-Mobile Services */}
+      {nonMobileServices.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Other Services</h4>
+          {nonMobileServices.map((service, serviceIndex) => (
+            <div key={serviceIndex} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="mb-4">
+                <h5 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">{service.planName}</h5>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</p>
+                <p className="text-sm text-slate-400 dark:text-slate-500">No add-ons available for this service</p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+
+      {/* No Mobile Services Message */}
+      {mobileServices.length === 0 && (
+        <div className="text-center py-8 sm:py-12">
+          <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🔧</div>
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
+            No Mobile Lines to Configure
+          </h3>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-500">
+            Go back to step 2 to add mobile plans that can have add-ons
+          </p>
+        </div>
+      )}
     </div>
   );
 };
@@ -1896,109 +2114,142 @@ const DiscountsFeesStep = ({ selectedDiscounts, setSelectedDiscounts, selectedFe
 };
 
 const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selectedFees, totals, productCatalog }) => {
+  const mobileServices = selectedServices.filter(s => s.category === 'Mobile' && s.isIndividualLine);
+  const nonMobileServices = selectedServices.filter(s => s.category !== 'Mobile' || !s.isIndividualLine);
+
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <div className="text-6xl mb-4">📊</div>
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Quote Summary</h3>
-        <p className="text-slate-600 dark:text-slate-400">Review your quote before saving</p>
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📊</div>
+        <h3 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white mb-2">Quote Summary</h3>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Review your quote before saving</p>
       </div>
 
       {/* Customer Info */}
-      <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-6">
-        <h4 className="text-lg font-semibold mb-4">Customer Information</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 sm:p-6">
+        <h4 className="text-lg sm:text-xl font-semibold mb-4 text-slate-800 dark:text-white">Customer Information</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <div className="text-sm text-slate-500">Name</div>
-            <div className="font-medium">{formData.customerName}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Name</div>
+            <div className="font-medium text-slate-800 dark:text-white">{formData.customerName}</div>
           </div>
           <div>
-            <div className="text-sm text-slate-500">Email</div>
-            <div className="font-medium">{formData.customerEmail || 'Not provided'}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Email</div>
+            <div className="font-medium text-slate-800 dark:text-white">{formData.customerEmail || 'Not provided'}</div>
           </div>
           <div>
-            <div className="text-sm text-slate-500">Phone</div>
-            <div className="font-medium">{formData.customerPhone || 'Not provided'}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Phone</div>
+            <div className="font-medium text-slate-800 dark:text-white">{formData.customerPhone || 'Not provided'}</div>
           </div>
           <div>
-            <div className="text-sm text-slate-500">Quote Date</div>
-            <div className="font-medium">{formData.saleDate}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Quote Date</div>
+            <div className="font-medium text-slate-800 dark:text-white">{formData.saleDate}</div>
           </div>
         </div>
         {formData.notes && (
           <div className="mt-4">
-            <div className="text-sm text-slate-500">Notes</div>
-            <div className="font-medium">{formData.notes}</div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">Notes</div>
+            <div className="font-medium text-slate-800 dark:text-white">{formData.notes}</div>
           </div>
         )}
       </div>
 
-      {/* Services */}
-      <div className="space-y-4">
-        <h4 className="text-lg font-semibold">Selected Services</h4>
-        {selectedServices.map((service, index) => (
-          <div key={index} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <div className="font-semibold">{service.planName}</div>
-                <div className="text-sm text-slate-500">{service.planDescription}</div>
-                {service.lines && <div className="text-sm text-slate-500">{service.lines} line(s)</div>}
+      {/* Mobile Lines */}
+      {mobileServices.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Mobile Lines</h4>
+          {mobileServices.map((service, index) => (
+            <div key={index} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                  <div className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base">
+                    Line {service.lineNumber}: {service.planName}
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-emerald-600 text-sm sm:text-base">{service.planPrice}</div>
+                </div>
               </div>
-              <div className="text-right">
-                <div className="font-bold text-emerald-600">{service.planPrice}</div>
+              
+              {service.device && service.deviceDetails && (
+                <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={service.deviceDetails.image} 
+                        alt={service.device}
+                        className="w-12 h-12 object-contain"
+                      />
+                      <div>
+                        <div className="font-medium text-slate-800 dark:text-white text-sm">{service.device}</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">
+                          {service.deviceDetails.storage} • {service.deviceDetails.color}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-slate-800 dark:text-white text-sm">{service.deviceDetails.price}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        ${service.deviceDetails.downPayment} down • ${service.deviceDetails.monthlyPayment}/mo
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {service.addOns && service.addOns.length > 0 && (
+                <div className="mt-3">
+                  <div className="text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Add-ons:</div>
+                  <div className="space-y-1">
+                    {service.addOns.map(addonName => {
+                      const addonData = productCatalog?.Mobile?.addOns?.[addonName];
+                      return (
+                        <div key={addonName} className="flex justify-between text-sm">
+                          <span className="text-slate-600 dark:text-slate-400">{addonName}</span>
+                          <span className="font-medium text-slate-700 dark:text-slate-300">{addonData?.price || 'N/A'}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Other Services */}
+      {nonMobileServices.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Other Services</h4>
+          {nonMobileServices.map((service, index) => (
+            <div key={index} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 sm:p-6">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <div className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base">{service.planName}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">{service.planDescription}</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-emerald-600 text-sm sm:text-base">{service.planPrice}</div>
+                </div>
               </div>
             </div>
-            
-            {service.device && service.deviceDetails && (
-              <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="font-medium">{service.device}</div>
-                    <div className="text-sm text-slate-500">
-                      {service.deviceDetails.storage} • {service.deviceDetails.color}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">{service.deviceDetails.price}</div>
-                    <div className="text-sm text-slate-500">
-                      ${service.deviceDetails.downPayment} down • ${service.deviceDetails.monthlyPayment}/mo
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {service.addOns && service.addOns.length > 0 && (
-              <div className="mt-3">
-                <div className="text-sm font-medium mb-2">Add-ons:</div>
-                <div className="space-y-1">
-                  {service.addOns.map(addonName => {
-                    const addonData = productCatalog?.Mobile?.addOns?.[addonName] || productCatalog?.Internet?.addOns?.[addonName] || productCatalog?.TV?.addOns?.[addonName];
-                    return (
-                      <div key={addonName} className="flex justify-between text-sm">
-                        <span>{addonName}</span>
-                        <span className="font-medium">{addonData?.price || 'N/A'}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Discounts & Fees */}
       {(selectedDiscounts.length > 0 || selectedFees.length > 0) && (
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold">Discounts & Fees</h4>
+          <h4 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white">Discounts & Fees</h4>
           
           {selectedDiscounts.length > 0 && (
             <div className="space-y-2">
               <div className="text-sm font-medium text-emerald-600">Discounts:</div>
               {selectedDiscounts.map((discount, index) => (
                 <div key={index} className="flex justify-between p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded">
-                  <span>{discount.name}</span>
+                  <span className="text-slate-700 dark:text-slate-300">{discount.name}</span>
                   <span className="font-medium text-emerald-600">-${discount.amount}</span>
                 </div>
               ))}
@@ -2010,7 +2261,7 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
               <div className="text-sm font-medium text-amber-600">Fees:</div>
               {selectedFees.map((fee, index) => (
                 <div key={index} className="flex justify-between p-2 bg-amber-50 dark:bg-amber-900/20 rounded">
-                  <span>{fee.name}</span>
+                  <span className="text-slate-700 dark:text-slate-300">{fee.name}</span>
                   <span className="font-medium text-amber-600">+${fee.amount}</span>
                 </div>
               ))}
@@ -2020,19 +2271,19 @@ const QuoteSummaryStep = ({ formData, selectedServices, selectedDiscounts, selec
       )}
 
       {/* Totals */}
-      <div className="bg-gradient-to-r from-att-blue to-att-blue-light text-white rounded-lg p-6">
-        <h4 className="text-lg font-semibold mb-4">Quote Summary</h4>
+      <div className="bg-gradient-to-r from-att-blue to-att-blue-light text-white rounded-lg p-4 sm:p-6">
+        <h4 className="text-lg sm:text-xl font-semibold mb-4">Quote Summary</h4>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span>Monthly Service Total:</span>
-            <span className="font-bold">${totals.monthlyTotal.toFixed(2)}/mo</span>
+            <span className="text-sm sm:text-base">Monthly Service Total:</span>
+            <span className="font-bold text-sm sm:text-base">${totals.monthlyTotal.toFixed(2)}/mo</span>
           </div>
           <div className="flex justify-between">
-            <span>One-Time Charges:</span>
-            <span className="font-bold">${totals.oneTimeTotal.toFixed(2)}</span>
+            <span className="text-sm sm:text-base">One-Time Charges:</span>
+            <span className="font-bold text-sm sm:text-base">${totals.oneTimeTotal.toFixed(2)}</span>
           </div>
           <div className="border-t border-white/20 pt-3">
-            <div className="flex justify-between text-lg">
+            <div className="flex justify-between text-lg sm:text-xl">
               <span>First Bill Total:</span>
               <span className="font-bold">${totals.firstBill.toFixed(2)}</span>
             </div>
