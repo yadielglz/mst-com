@@ -93,14 +93,99 @@ const PRODUCT_CATALOG = {
       'T-Mobile Data with DIGITS': { name: 'T-Mobile Data with DIGITS', price: '$10/mo', description: 'Use your phone number on multiple devices' },
     },
     devices: {
-      // iPhone Series 2025
+      // Apple Smartphones
+      'iPhone 16 Pro Max': { 
+        price: '$1299.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$45.83', 
+        storage: '256GB', 
+        color: 'Natural Titanium',
+        image: 'https://i.ibb.co/HTzSdF1C/i-Phone16-Pro-Max.jpg',
+        brand: 'Apple',
+        category: 'Premium',
+        specs: {
+          display: '6.9" Super Retina XDR OLED',
+          processor: 'A18 Pro chip',
+          camera: '48MP Main + 12MP Ultra Wide + 12MP Telephoto',
+          battery: 'Up to 30 hours video playback',
+          features: 'Action Button, USB-C, 5G, Face ID, Titanium design'
+        }
+      },
+      'iPhone 16 Pro': { 
+        price: '$1099.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$37.50', 
+        storage: '256GB', 
+        color: 'Natural Titanium',
+        image: 'https://i.ibb.co/hR0TPw28/i-Phone16-Pro.jpg',
+        brand: 'Apple',
+        category: 'Premium',
+        specs: {
+          display: '6.3" Super Retina XDR OLED',
+          processor: 'A18 Pro chip',
+          camera: '48MP Main + 12MP Ultra Wide + 12MP Telephoto',
+          battery: 'Up to 25 hours video playback',
+          features: 'Action Button, USB-C, 5G, Face ID, Titanium design'
+        }
+      },
+      'iPhone 16 Plus': { 
+        price: '$999.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$33.33', 
+        storage: '256GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/qLCxhCHX/i-Phone16-Plus.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '6.7" Super Retina XDR OLED',
+          processor: 'A18 chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 28 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
+        }
+      },
+      'iPhone 16': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/nKy4cXn/iPhone16.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '6.3" Super Retina XDR OLED',
+          processor: 'A18 chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 22 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
+        }
+      },
+      'iPhone 16e': { 
+        price: '$799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$25.00', 
+        storage: '128GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/xSPdxVMG/i-Phone16e.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '6.1" Super Retina XDR OLED',
+          processor: 'A18 chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 20 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
+        }
+      },
       'iPhone 15 Pro Max': { 
         price: '$1199.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$41.67', 
         storage: '256GB', 
         color: 'Natural Titanium',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/dJkcYGmh/Phone15-Pro-Max.jpg',
         brand: 'Apple',
         category: 'Premium',
         specs: {
@@ -117,7 +202,7 @@ const PRODUCT_CATALOG = {
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Natural Titanium',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/bM6YZ30f/i-Phone15-Pro.jpg',
         brand: 'Apple',
         category: 'Premium',
         specs: {
@@ -128,30 +213,13 @@ const PRODUCT_CATALOG = {
           features: 'Action Button, USB-C, 5G, Face ID'
         }
       },
-      'iPhone 15': { 
-        price: '$799.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$25.00', 
-        storage: '256GB', 
-        color: 'Black',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
-        brand: 'Apple',
-        category: 'Standard',
-        specs: {
-          display: '6.1" Super Retina XDR OLED',
-          processor: 'A16 Bionic chip',
-          camera: '48MP Main + 12MP Ultra Wide',
-          battery: 'Up to 20 hours video playback',
-          features: 'USB-C, 5G, Face ID, Dynamic Island'
-        }
-      },
       'iPhone 15 Plus': { 
         price: '$899.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$29.17', 
         storage: '256GB', 
         color: 'Black',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/jP256r82/i-Phone15-Plus.jpg',
         brand: 'Apple',
         category: 'Standard',
         specs: {
@@ -162,47 +230,30 @@ const PRODUCT_CATALOG = {
           features: 'USB-C, 5G, Face ID, Dynamic Island'
         }
       },
-      'iPhone 14': { 
-        price: '$699.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$20.83', 
-        storage: '256GB', 
-        color: 'Blue',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
-        brand: 'Apple',
-        category: 'Standard',
-        specs: {
-          display: '6.1" Super Retina XDR OLED',
-          processor: 'A15 Bionic chip',
-          camera: '12MP Main + 12MP Ultra Wide',
-          battery: 'Up to 20 hours video playback',
-          features: '5G, Face ID, Dynamic Island'
-        }
-      },
-      'iPhone 14 Plus': { 
+      'iPhone 15': { 
         price: '$799.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$25.00', 
         storage: '256GB', 
-        color: 'Blue',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
+        color: 'Black',
+        image: 'https://i.ibb.co/GvBt7vLh/iPhone15.jpg',
         brand: 'Apple',
         category: 'Standard',
         specs: {
-          display: '6.7" Super Retina XDR OLED',
-          processor: 'A15 Bionic chip',
-          camera: '12MP Main + 12MP Ultra Wide',
-          battery: 'Up to 26 hours video playback',
-          features: '5G, Face ID, Dynamic Island'
+          display: '6.1" Super Retina XDR OLED',
+          processor: 'A16 Bionic chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 20 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
         }
       },
-      'iPhone SE (3rd gen)': { 
+      'iPhone SE (3rd generation)': { 
         price: '$429.99', 
         downPayment: '$0', 
         monthlyPayment: '$17.92', 
         storage: '128GB', 
         color: 'Midnight',
-        image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/vxyHz2LG/i-Phone-SE3.jpg',
         brand: 'Apple',
         category: 'Budget',
         specs: {
@@ -214,14 +265,82 @@ const PRODUCT_CATALOG = {
         }
       },
       
-      // Samsung Series 2025
-      'Samsung Galaxy S24 Ultra': { 
+      // Samsung Smartphones
+      'Galaxy S25 Ultra': { 
+        price: '$1399.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$50.00', 
+        storage: '256GB', 
+        color: 'Titanium Gray',
+        image: 'https://i.ibb.co/4ndxNtCZ/S25Ultra.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '6.9" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '200MP Main + 12MP Ultra Wide + 50MP Telephoto + 10MP Telephoto',
+          battery: '5000mAh, 45W charging',
+          features: 'S Pen, 5G, Ultrasonic fingerprint, IP68'
+        }
+      },
+      'Galaxy S25+': { 
+        price: '$1099.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$37.50', 
+        storage: '256GB', 
+        color: 'Onyx Black',
+        image: 'https://i.ibb.co/5WyGnVXw/S25Plus.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '6.7" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4900mAh, 45W charging',
+          features: '5G, Ultrasonic fingerprint, IP68'
+        }
+      },
+      'Galaxy S25': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Onyx Black',
+        image: 'https://i.ibb.co/LDZ54tmk/S25.jpg',
+        brand: 'Samsung',
+        category: 'Standard',
+        specs: {
+          display: '6.2" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4000mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP68'
+        }
+      },
+      'Galaxy S25 Edge': { 
+        price: '$999.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$33.33', 
+        storage: '256GB', 
+        color: 'Onyx Black',
+        image: 'https://i.ibb.co/nqxfZ22y/S25Edge.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '6.6" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4500mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP68, Edge display'
+        }
+      },
+      'Galaxy S24 Ultra': { 
         price: '$1299.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$45.83', 
         storage: '256GB', 
         color: 'Titanium Gray',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/zhg37nNF/S24Ultra.jpg',
         brand: 'Samsung',
         category: 'Premium',
         specs: {
@@ -232,13 +351,13 @@ const PRODUCT_CATALOG = {
           features: 'S Pen, 5G, Ultrasonic fingerprint, IP68'
         }
       },
-      'Samsung Galaxy S24+': { 
+      'Galaxy S24+': { 
         price: '$999.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Onyx Black',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/fGQbCq1R/S24Plus.jpg',
         brand: 'Samsung',
         category: 'Premium',
         specs: {
@@ -249,13 +368,13 @@ const PRODUCT_CATALOG = {
           features: '5G, Ultrasonic fingerprint, IP68'
         }
       },
-      'Samsung Galaxy S24': { 
+      'Galaxy S24': { 
         price: '$799.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Onyx Black',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/NgJ6cR8N/S24.jpg',
         brand: 'Samsung',
         category: 'Standard',
         specs: {
@@ -266,13 +385,64 @@ const PRODUCT_CATALOG = {
           features: '5G, Ultrasonic fingerprint, IP68'
         }
       },
-      'Samsung Galaxy Z Fold6': { 
+      'Galaxy Z Fold7': { 
+        price: '$1899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$70.83', 
+        storage: '256GB', 
+        color: 'Phantom Black',
+        image: 'https://i.ibb.co/nNMH68P5/ZFold7.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '7.6" Dynamic AMOLED 2X (unfolded) / 6.3" Cover Display',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4400mAh, 25W charging',
+          features: 'S Pen, 5G, Ultrasonic fingerprint, IPX8'
+        }
+      },
+      'Galaxy Z Flip7': { 
+        price: '$1099.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$37.50', 
+        storage: '256GB', 
+        color: 'Mint',
+        image: 'https://i.ibb.co/Q3F7m27t/ZFlip7.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '6.7" Dynamic AMOLED 2X (unfolded) / 3.4" Cover Display',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 12MP Ultra Wide',
+          battery: '3700mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IPX8'
+        }
+      },
+      'Galaxy Z Flip7 FE': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '128GB', 
+        color: 'Mint',
+        image: 'https://i.ibb.co/hFdYSRsW/ZFlip7FE.jpg',
+        brand: 'Samsung',
+        category: 'Standard',
+        specs: {
+          display: '6.7" Dynamic AMOLED 2X (unfolded) / 3.4" Cover Display',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 12MP Ultra Wide',
+          battery: '3700mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IPX8'
+        }
+      },
+      'Galaxy Z Fold6': { 
         price: '$1799.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$66.67', 
         storage: '256GB', 
         color: 'Phantom Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/8LRdT53Z/ZFold6.jpg',
         brand: 'Samsung',
         category: 'Premium',
         specs: {
@@ -283,13 +453,13 @@ const PRODUCT_CATALOG = {
           features: 'S Pen, 5G, Ultrasonic fingerprint, IPX8'
         }
       },
-      'Samsung Galaxy Z Flip6': { 
+      'Galaxy Z Flip6': { 
         price: '$999.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Mint',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/1YjSdkqC/ZFlip6.jpg',
         brand: 'Samsung',
         category: 'Premium',
         specs: {
@@ -300,64 +470,13 @@ const PRODUCT_CATALOG = {
           features: '5G, Ultrasonic fingerprint, IPX8'
         }
       },
-      'Samsung Galaxy A15 5G': { 
-        price: '$199.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$8.33', 
-        storage: '128GB', 
-        color: 'Blue Black',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
-        brand: 'Samsung',
-        category: 'Budget',
-        specs: {
-          display: '6.5" Super AMOLED',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 25W charging',
-          features: '5G, Side fingerprint, IP67'
-        }
-      },
-      'Samsung Galaxy A25 5G': { 
-        price: '$299.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$12.50', 
-        storage: '128GB', 
-        color: 'Blue Black',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
-        brand: 'Samsung',
-        category: 'Budget',
-        specs: {
-          display: '6.5" Super AMOLED',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 25W charging',
-          features: '5G, Side fingerprint, IP67'
-        }
-      },
-      'Samsung Galaxy A35 5G': { 
-        price: '$399.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$16.67', 
-        storage: '128GB', 
-        color: 'Awesome Blue',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
-        brand: 'Samsung',
-        category: 'Standard',
-        specs: {
-          display: '6.6" Super AMOLED',
-          processor: 'Exynos 1380',
-          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 25W charging',
-          features: '5G, Ultrasonic fingerprint, IP67'
-        }
-      },
-      'Samsung Galaxy A55 5G': { 
+      'Galaxy A56 5G': { 
         price: '$499.99', 
         downPayment: '$0', 
         monthlyPayment: '$20.83', 
         storage: '128GB', 
         color: 'Awesome Blue',
-        image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/4wkhhSqn/A56.jpg',
         brand: 'Samsung',
         category: 'Standard',
         specs: {
@@ -368,66 +487,66 @@ const PRODUCT_CATALOG = {
           features: '5G, Ultrasonic fingerprint, IP67'
         }
       },
+      'Galaxy A36 5G': { 
+        price: '$399.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$16.67', 
+        storage: '128GB', 
+        color: 'Awesome Blue',
+        image: 'https://i.ibb.co/x8dbtLfM/image-2025-07-28-220041971.png',
+        brand: 'Samsung',
+        category: 'Standard',
+        specs: {
+          display: '6.6" Super AMOLED',
+          processor: 'Exynos 1380',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP67'
+        }
+      },
+      'Galaxy A16 5G': { 
+        price: '$199.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$8.33', 
+        storage: '128GB', 
+        color: 'Blue Black',
+        image: 'https://i.ibb.co/C3QMxXtt/A16.jpg',
+        brand: 'Samsung',
+        category: 'Budget',
+        specs: {
+          display: '6.5" Super AMOLED',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Side fingerprint, IP67'
+        }
+      },
       
-      // Google Series 2025
-      'Google Pixel 8 Pro': { 
-        price: '$999.99', 
+      // Google Smartphones
+      'Pixel 9 Pro Fold': { 
+        price: '$1799.99', 
         downPayment: '$199.99', 
-        monthlyPayment: '$33.33', 
+        monthlyPayment: '$66.67', 
         storage: '256GB', 
         color: 'Obsidian',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/rRsk56Tr/9ProFold.jpg',
         brand: 'Google',
         category: 'Premium',
         specs: {
-          display: '6.7" LTPO OLED',
-          processor: 'Google Tensor G3',
+          display: '7.6" LTPO OLED (unfolded) / 6.3" Cover Display',
+          processor: 'Google Tensor G4',
           camera: '50MP Main + 48MP Ultra Wide + 48MP Telephoto',
-          battery: '4950mAh, 30W charging',
-          features: '5G, Face unlock, IP68, Magic Eraser'
+          battery: '5000mAh, 30W charging',
+          features: '5G, Face unlock, IPX8, Advanced AI features'
         }
       },
-      'Google Pixel 8': { 
-        price: '$699.99', 
+      'Pixel 9 Pro XL': { 
+        price: '$1199.99', 
         downPayment: '$199.99', 
-        monthlyPayment: '$20.83', 
+        monthlyPayment: '$41.67', 
         storage: '256GB', 
         color: 'Obsidian',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Google',
-        category: 'Standard',
-        specs: {
-          display: '6.2" OLED',
-          processor: 'Google Tensor G3',
-          camera: '50MP Main + 12MP Ultra Wide',
-          battery: '4575mAh, 27W charging',
-          features: '5G, Face unlock, IP68, Magic Eraser'
-        }
-      },
-      'Google Pixel 7a': { 
-        price: '$449.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$18.75', 
-        storage: '128GB', 
-        color: 'Charcoal',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Google',
-        category: 'Budget',
-        specs: {
-          display: '6.1" OLED',
-          processor: 'Google Tensor G2',
-          camera: '64MP Main + 13MP Ultra Wide',
-          battery: '4385mAh, 18W charging',
-          features: '5G, Fingerprint sensor, IP67, Magic Eraser'
-        }
-      },
-      'Google Pixel 9 Pro': { 
-        price: '$1099.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$37.50', 
-        storage: '256GB', 
-        color: 'Obsidian',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/DPtjhNsm/9ProXL.jpg',
         brand: 'Google',
         category: 'Premium',
         specs: {
@@ -438,13 +557,30 @@ const PRODUCT_CATALOG = {
           features: '5G, Face unlock, IP68, Advanced AI features'
         }
       },
-      'Google Pixel 9': { 
+      'Pixel 9 Pro': { 
+        price: '$999.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$33.33', 
+        storage: '256GB', 
+        color: 'Obsidian',
+        image: 'https://i.ibb.co/s9W11pXq/9Pro.jpg',
+        brand: 'Google',
+        category: 'Premium',
+        specs: {
+          display: '6.7" LTPO OLED',
+          processor: 'Google Tensor G4',
+          camera: '50MP Main + 48MP Ultra Wide + 48MP Telephoto',
+          battery: '4950mAh, 30W charging',
+          features: '5G, Face unlock, IP68, Advanced AI features'
+        }
+      },
+      'Pixel 9': { 
         price: '$799.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$25.00', 
         storage: '256GB', 
         color: 'Obsidian',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/kgmQhDb6/Pixel9.jpg',
         brand: 'Google',
         category: 'Standard',
         specs: {
@@ -455,13 +591,13 @@ const PRODUCT_CATALOG = {
           features: '5G, Face unlock, IP68, Advanced AI features'
         }
       },
-      'Google Pixel 9a': { 
+      'Pixel 8a': { 
         price: '$499.99', 
         downPayment: '$0', 
         monthlyPayment: '$20.83', 
         storage: '128GB', 
         color: 'Charcoal',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/FLr7PStH/Pixel8a.jpg',
         brand: 'Google',
         category: 'Budget',
         specs: {
@@ -473,50 +609,31 @@ const PRODUCT_CATALOG = {
         }
       },
       
-      // OnePlus Series 2025
-      'OnePlus 12': { 
-        price: '$799.99', 
+      // Motorola Smartphones
+      'Motorola Razr Ultra (2025)': { 
+        price: '$1199.99', 
         downPayment: '$199.99', 
-        monthlyPayment: '$25.00', 
+        monthlyPayment: '$41.67', 
         storage: '256GB', 
-        color: 'Silk Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'OnePlus',
+        color: 'Viva Magenta',
+        image: 'https://i.ibb.co/cc7pYSgk/Razr-Ultra25.jpg',
+        brand: 'Motorola',
         category: 'Premium',
         specs: {
-          display: '6.82" LTPO AMOLED',
+          display: '6.9" pOLED (unfolded) / 3.6" pOLED (folded)',
           processor: 'Snapdragon 8 Gen 3',
-          camera: '50MP Main + 48MP Ultra Wide + 64MP Telephoto',
-          battery: '5400mAh, 100W charging',
-          features: '5G, Ultrasonic fingerprint, IP68, Hasselblad camera'
+          camera: '50MP Main + 13MP Ultra Wide',
+          battery: '4000mAh, 30W charging',
+          features: '5G, Side fingerprint, IP52, External display'
         }
       },
-      'OnePlus Nord N30 5G': { 
-        price: '$299.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$12.50', 
-        storage: '128GB', 
-        color: 'Chromatic Gray',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'OnePlus',
-        category: 'Budget',
-        specs: {
-          display: '6.7" AMOLED',
-          processor: 'Snapdragon 695',
-          camera: '108MP Main + 2MP Macro + 2MP Depth',
-          battery: '5000mAh, 67W charging',
-          features: '5G, Side fingerprint, Fast charging'
-        }
-      },
-      
-      // Motorola Series 2025 - Including New Razr Devices
-      'Motorola Razr+ (2024)': { 
+      'Motorola razr+ (2025)': { 
         price: '$999.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$33.33', 
         storage: '256GB', 
         color: 'Viva Magenta',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/xSkm99ft/Razr-Plus2025.jpg',
         brand: 'Motorola',
         category: 'Premium',
         specs: {
@@ -527,13 +644,13 @@ const PRODUCT_CATALOG = {
           features: '5G, Side fingerprint, IP52, External display'
         }
       },
-      'Motorola Razr (2024)': { 
+      'Motorola razr (2025)': { 
         price: '$699.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$20.83', 
         storage: '128GB', 
         color: 'Sage Green',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/SX6g2dkG/Razr25.jpg',
         brand: 'Motorola',
         category: 'Standard',
         specs: {
@@ -544,64 +661,13 @@ const PRODUCT_CATALOG = {
           features: '5G, Side fingerprint, IP52, External display'
         }
       },
-      'Motorola Edge+ (2024)': { 
-        price: '$899.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$29.17', 
-        storage: '256GB', 
-        color: 'Interstellar Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Motorola',
-        category: 'Premium',
-        specs: {
-          display: '6.7" pOLED',
-          processor: 'Snapdragon 8 Gen 2',
-          camera: '50MP Main + 50MP Ultra Wide + 60MP Telephoto',
-          battery: '5100mAh, 68W charging',
-          features: '5G, Ultrasonic fingerprint, IP68, Ready For'
-        }
-      },
-      'Motorola Edge (2024)': { 
-        price: '$599.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$16.67', 
-        storage: '128GB', 
-        color: 'Peacock Blue',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Motorola',
-        category: 'Standard',
-        specs: {
-          display: '6.6" pOLED',
-          processor: 'Snapdragon 7s Gen 2',
-          camera: '50MP Main + 13MP Ultra Wide',
-          battery: '5000mAh, 68W charging',
-          features: '5G, Side fingerprint, IP68, Ready For'
-        }
-      },
-      'Motorola Moto G 5G (2025)': { 
-        price: '$199.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$8.33', 
-        storage: '128GB', 
-        color: 'Sage Green',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Motorola',
-        category: 'Budget',
-        specs: {
-          display: '6.6" IPS LCD',
-          processor: 'Snapdragon 4 Gen 1',
-          camera: '50MP Main + 2MP Macro',
-          battery: '5000mAh, 15W charging',
-          features: '5G, Side fingerprint, IP52'
-        }
-      },
-      'Motorola Moto G Stylus 5G (2025)': { 
+      'Moto G Stylus 5G (2025)': { 
         price: '$299.99', 
         downPayment: '$0', 
         monthlyPayment: '$12.50', 
         storage: '128GB', 
         color: 'Steel Blue',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        image: 'https://i.ibb.co/sp0cVtrV/GStylus25.jpg',
         brand: 'Motorola',
         category: 'Budget',
         specs: {
@@ -612,182 +678,430 @@ const PRODUCT_CATALOG = {
           features: '5G, Side fingerprint, Stylus, IP52'
         }
       },
-      'Motorola Moto G Power 5G (2025)': { 
-        price: '$249.99', 
+      'Moto G 5G (2025)': { 
+        price: '$199.99', 
         downPayment: '$0', 
-        monthlyPayment: '$10.42', 
+        monthlyPayment: '$8.33', 
         storage: '128GB', 
-        color: 'Pearl White',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        color: 'Sage Green',
+        image: 'https://i.ibb.co/Cs7c6mdp/MotoG25.jpg',
         brand: 'Motorola',
         category: 'Budget',
         specs: {
-          display: '6.7" IPS LCD',
+          display: '6.6" IPS LCD',
           processor: 'Snapdragon 4 Gen 1',
           camera: '50MP Main + 2MP Macro',
-          battery: '6000mAh, 18W charging',
-          features: '5G, Side fingerprint, IP52, Long battery life'
-        }
-      },
-      
-      // TCL Series 2025
-      'TCL 50 XE 5G': { 
-        price: '$199.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$8.33', 
-        storage: '128GB', 
-        color: 'Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'TCL',
-        category: 'Budget',
-        specs: {
-          display: '6.6" IPS LCD',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 18W charging',
-          features: '5G, Side fingerprint, IP52'
-        }
-      },
-      'TCL 50 V 5G': { 
-        price: '$299.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$12.50', 
-        storage: '128GB', 
-        color: 'Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'TCL',
-        category: 'Budget',
-        specs: {
-          display: '6.7" IPS LCD',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 18W charging',
-          features: '5G, Side fingerprint, IP52'
-        }
-      },
-      
-      // REVVL Series (T-Mobile Brand) 2025
-      'REVVL 7x 5G': { 
-        price: '$199.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$8.33', 
-        storage: '128GB', 
-        color: 'Nebula Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'REVVL',
-        category: 'Budget',
-        specs: {
-          display: '6.5" IPS LCD',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
           battery: '5000mAh, 15W charging',
-          features: '5G, Side fingerprint, T-Mobile optimized'
+          features: '5G, Side fingerprint, IP52'
         }
       },
-      'REVVL 7x Pro 5G': { 
-        price: '$299.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$12.50', 
-        storage: '128GB', 
-        color: 'Nebula Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'REVVL',
-        category: 'Budget',
+      
+      // OnePlus Smartphones
+      'OnePlus 13 5G': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Silk Black',
+        image: 'https://i.ibb.co/KxphT2z0/One-Plus13.jpg',
+        brand: 'OnePlus',
+        category: 'Premium',
         specs: {
-          display: '6.7" IPS LCD',
-          processor: 'MediaTek Dimensity 6100+',
-          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 18W charging',
-          features: '5G, Side fingerprint, T-Mobile optimized'
+          display: '6.82" LTPO AMOLED',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '50MP Main + 48MP Ultra Wide + 64MP Telephoto',
+          battery: '5400mAh, 100W charging',
+          features: '5G, Ultrasonic fingerprint, IP68, Hasselblad camera'
         }
       },
-      'REVVL V+ 5G (2025)': { 
+      'OnePlus 12R 5G': { 
+        price: '$799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$25.00', 
+        storage: '256GB', 
+        color: 'Silk Black',
+        image: 'https://i.ibb.co/rfp6TC70/One-Plus12.jpg',
+        brand: 'OnePlus',
+        category: 'Premium',
+        specs: {
+          display: '6.82" LTPO AMOLED',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 48MP Ultra Wide + 64MP Telephoto',
+          battery: '5400mAh, 100W charging',
+          features: '5G, Ultrasonic fingerprint, IP68, Hasselblad camera'
+        }
+      },
+      'OnePlus Nord 5': { 
         price: '$399.99', 
         downPayment: '$0', 
         monthlyPayment: '$16.67', 
         storage: '128GB', 
-        color: 'Nebula Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'REVVL',
-        category: 'Standard',
-        specs: {
-          display: '6.8" IPS LCD',
-          processor: 'MediaTek Dimensity 7200',
-          camera: '64MP Main + 8MP Ultra Wide + 2MP Macro',
-          battery: '5000mAh, 25W charging',
-          features: '5G, Side fingerprint, T-Mobile optimized'
-        }
-      },
-      
-      // Nothing Phone Series
-      'Nothing Phone (2)': { 
-        price: '$599.99', 
-        downPayment: '$199.99', 
-        monthlyPayment: '$16.67', 
-        storage: '128GB', 
-        color: 'White',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Nothing',
-        category: 'Standard',
-        specs: {
-          display: '6.7" LTPO OLED',
-          processor: 'Snapdragon 8+ Gen 1',
-          camera: '50MP Main + 50MP Ultra Wide',
-          battery: '4500mAh, 45W charging',
-          features: '5G, In-display fingerprint, IP54, Glyph interface'
-        }
-      },
-      'Nothing Phone (2a)': { 
-        price: '$349.99', 
-        downPayment: '$0', 
-        monthlyPayment: '$14.58', 
-        storage: '128GB', 
-        color: 'White',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'Nothing',
+        color: 'Chromatic Gray',
+        image: 'https://i.ibb.co/8gLLvTRw/One-Plus-Nord5.jpg',
+        brand: 'OnePlus',
         category: 'Budget',
         specs: {
-          display: '6.7" OLED',
-          processor: 'MediaTek Dimensity 7200 Pro',
-          camera: '50MP Main + 50MP Ultra Wide',
-          battery: '5000mAh, 18W charging',
-          features: '5G, In-display fingerprint, IP54, Glyph interface'
+          display: '6.7" AMOLED',
+          processor: 'Snapdragon 7+ Gen 2',
+          camera: '108MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 67W charging',
+          features: '5G, Side fingerprint, Fast charging'
         }
       },
       
-      // ASUS Series
-      'ASUS ROG Phone 8': { 
+      // TCL Smartphones
+      'TCL 60 SE': { 
+        price: '$299.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$12.50', 
+        storage: '128GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/35s8QF8M/TCL60.jpg',
+        brand: 'TCL',
+        category: 'Budget',
+        specs: {
+          display: '6.7" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 18W charging',
+          features: '5G, Side fingerprint, IP52'
+        }
+      },
+      
+      // Apple Tablets
+      'iPad Pro 13-inch (M4)': { 
         price: '$1099.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$37.50', 
         storage: '256GB', 
-        color: 'Phantom Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'ASUS',
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/Ld9yjpFg/i-Pad-Pro13-M4.jpg',
+        brand: 'Apple',
         category: 'Premium',
         specs: {
-          display: '6.78" AMOLED',
-          processor: 'Snapdragon 8 Gen 3',
-          camera: '50MP Main + 13MP Ultra Wide + 32MP Telephoto',
-          battery: '5500mAh, 65W charging',
-          features: '5G, In-display fingerprint, IP68, Gaming features'
+          display: '13" Liquid Retina XDR',
+          processor: 'M4 chip',
+          camera: '12MP Ultra Wide + 10MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Face ID, Apple Pencil Pro, Magic Keyboard'
         }
       },
-      'ASUS Zenfone 11': { 
+      'iPad Pro 11-inch (M4)': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/Ld9yjpFg/i-Pad-Pro13-M4.jpg',
+        brand: 'Apple',
+        category: 'Premium',
+        specs: {
+          display: '11" Liquid Retina XDR',
+          processor: 'M4 chip',
+          camera: '12MP Ultra Wide + 10MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Face ID, Apple Pencil Pro, Magic Keyboard'
+        }
+      },
+      'iPad Air 13-inch (M3)': { 
+        price: '$799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$25.00', 
+        storage: '256GB', 
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/BV5cSvhr/i-Pad-Air13-M2.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '13" Liquid Retina',
+          processor: 'M3 chip',
+          camera: '12MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Touch ID, Apple Pencil, Smart Keyboard'
+        }
+      },
+      'iPad Air 11-inch (M3)': { 
+        price: '$599.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$16.67', 
+        storage: '256GB', 
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/j9VHZjw4/i-Pad-Air11-M3.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '11" Liquid Retina',
+          processor: 'M3 chip',
+          camera: '12MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Touch ID, Apple Pencil, Smart Keyboard'
+        }
+      },
+      'iPad (11th generation)': { 
+        price: '$449.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$18.75', 
+        storage: '128GB', 
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/xKWHKPPM/i-Pad11gen.jpg',
+        brand: 'Apple',
+        category: 'Budget',
+        specs: {
+          display: '10.9" Liquid Retina',
+          processor: 'A14 Bionic chip',
+          camera: '12MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Touch ID, Apple Pencil, Smart Keyboard'
+        }
+      },
+      'iPad mini (7th generation)': { 
+        price: '$499.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$20.83', 
+        storage: '128GB', 
+        color: 'Space Gray',
+        image: 'https://i.ibb.co/Df2Zg3wZ/i-Pad-Mini7.jpg',
+        brand: 'Apple',
+        category: 'Budget',
+        specs: {
+          display: '8.3" Liquid Retina',
+          processor: 'A15 Bionic chip',
+          camera: '12MP Ultra Wide',
+          battery: 'Up to 10 hours',
+          features: '5G, Touch ID, Apple Pencil, Compact design'
+        }
+      },
+      
+      // Samsung Tablets
+      'Galaxy Tab S10+': { 
+        price: '$899.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$29.17', 
+        storage: '256GB', 
+        color: 'Mystic Black',
+        image: 'https://i.ibb.co/5hrz9S4K/Tab-S10-Plus.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '14.6" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '13MP + 8MP',
+          battery: '11200mAh, 45W charging',
+          features: '5G, S Pen, Ultrasonic fingerprint, IP68'
+        }
+      },
+      'Galaxy Tab S10': { 
         price: '$699.99', 
         downPayment: '$199.99', 
         monthlyPayment: '$20.83', 
         storage: '256GB', 
-        color: 'Eternal Black',
-        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
-        brand: 'ASUS',
+        color: 'Mystic Black',
+        image: 'https://i.ibb.co/k2ymtrfg/TabS10.jpg',
+        brand: 'Samsung',
         category: 'Standard',
         specs: {
-          display: '6.78" AMOLED',
-          processor: 'Snapdragon 8 Gen 3',
-          camera: '50MP Main + 13MP Ultra Wide + 32MP Telephoto',
-          battery: '5000mAh, 30W charging',
-          features: '5G, In-display fingerprint, IP68, Compact design'
+          display: '12.4" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 4',
+          camera: '13MP + 8MP',
+          battery: '10090mAh, 45W charging',
+          features: '5G, S Pen, Ultrasonic fingerprint, IP68'
+        }
+      },
+      'Galaxy Tab S9 FE 5G': { 
+        price: '$499.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$20.83', 
+        storage: '128GB', 
+        color: 'Mystic Black',
+        image: 'https://i.ibb.co/608Bq6wH/TabS9FE.jpg',
+        brand: 'Samsung',
+        category: 'Budget',
+        specs: {
+          display: '12.4" LCD',
+          processor: 'Exynos 1380',
+          camera: '8MP + 8MP',
+          battery: '10090mAh, 25W charging',
+          features: '5G, S Pen, Side fingerprint'
+        }
+      },
+      
+      // TCL Tablets
+      'TCL TAB 10 5G': { 
+        price: '$299.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$12.50', 
+        storage: '128GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/8gyKwz9m/TCLTab10.jpg',
+        brand: 'TCL',
+        category: 'Budget',
+        specs: {
+          display: '10.1" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '8MP + 2MP',
+          battery: '6000mAh, 18W charging',
+          features: '5G, Side fingerprint, T-Mobile optimized'
+        }
+      },
+      
+      // Apple Smartwatches
+      'Apple Watch Ultra 2': { 
+        price: '$799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$25.00', 
+        storage: '32GB', 
+        color: 'Natural Titanium',
+        image: 'https://i.ibb.co/p60B9KNj/Ultra2.jpg',
+        brand: 'Apple',
+        category: 'Premium',
+        specs: {
+          display: '49mm Always-On Retina',
+          processor: 'S9 chip',
+          camera: 'N/A',
+          battery: 'Up to 36 hours',
+          features: 'Cellular, GPS, Heart rate, ECG, Blood oxygen'
+        }
+      },
+      'Apple Watch Series 10': { 
+        price: '$399.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$8.33', 
+        storage: '32GB', 
+        color: 'Midnight',
+        image: 'https://i.ibb.co/6L1xnQS/WatchS10.jpg',
+        brand: 'Apple',
+        category: 'Standard',
+        specs: {
+          display: '45mm Always-On Retina',
+          processor: 'S9 chip',
+          camera: 'N/A',
+          battery: 'Up to 18 hours',
+          features: 'Cellular, GPS, Heart rate, ECG, Blood oxygen'
+        }
+      },
+      'Apple Watch SE (3rd generation)': { 
+        price: '$249.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$10.42', 
+        storage: '32GB', 
+        color: 'Midnight',
+        image: 'https://i.ibb.co/C57q5Vsh/WatchSE3.jpg',
+        brand: 'Apple',
+        category: 'Budget',
+        specs: {
+          display: '44mm Retina',
+          processor: 'S9 chip',
+          camera: 'N/A',
+          battery: 'Up to 18 hours',
+          features: 'Cellular, GPS, Heart rate, Fall detection'
+        }
+      },
+      
+      // Samsung Smartwatches
+      'Galaxy Watch7': { 
+        price: '$299.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$12.50', 
+        storage: '16GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/C5FfV23n/Galaxy-Watch7.jpg',
+        brand: 'Samsung',
+        category: 'Standard',
+        specs: {
+          display: '44mm Super AMOLED',
+          processor: 'Exynos W1000',
+          camera: 'N/A',
+          battery: 'Up to 40 hours',
+          features: 'Cellular, GPS, Heart rate, ECG, Blood pressure'
+        }
+      },
+      'Galaxy Watch7 Ultra': { 
+        price: '$649.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$18.75', 
+        storage: '32GB', 
+        color: 'Titanium Gray',
+        image: 'https://i.ibb.co/sdF0KmWy/Galaxy-Watch-Ultra.jpg',
+        brand: 'Samsung',
+        category: 'Premium',
+        specs: {
+          display: '47mm Super AMOLED',
+          processor: 'Exynos W1000',
+          camera: 'N/A',
+          battery: 'Up to 100 hours',
+          features: 'Cellular, GPS, Heart rate, ECG, Blood pressure, Diving'
+        }
+      },
+      'Galaxy Watch FE': { 
+        price: '$199.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$8.33', 
+        storage: '16GB', 
+        color: 'Black',
+        image: 'https://i.ibb.co/gbwFYtW3/Galaxy-Watch-FE.jpg',
+        brand: 'Samsung',
+        category: 'Budget',
+        specs: {
+          display: '40mm Super AMOLED',
+          processor: 'Exynos W920',
+          camera: 'N/A',
+          battery: 'Up to 30 hours',
+          features: 'Cellular, GPS, Heart rate, Sleep tracking'
+        }
+      },
+      
+      // Google Smartwatches
+      'Pixel Watch 3': { 
+        price: '$349.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$14.58', 
+        storage: '32GB', 
+        color: 'Obsidian',
+        image: 'https://i.ibb.co/sdDD6ngV/Pixel-Watch3.jpg',
+        brand: 'Google',
+        category: 'Standard',
+        specs: {
+          display: '41mm AMOLED',
+          processor: 'Google Tensor G3',
+          camera: 'N/A',
+          battery: 'Up to 24 hours',
+          features: 'Cellular, GPS, Heart rate, ECG, Blood oxygen'
+        }
+      },
+      
+      // T-Mobile Hotspots & Internet
+      'T-Mobile 5G Hotspot': { 
+        price: '$199.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$8.33', 
+        storage: 'N/A', 
+        color: 'Black',
+        image: 'https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png',
+        brand: 'T-Mobile',
+        category: 'Budget',
+        specs: {
+          display: '2.4" LCD',
+          processor: 'Qualcomm Snapdragon X55',
+          camera: 'N/A',
+          battery: 'Up to 8 hours',
+          features: '5G, Wi-Fi 6, 15+ connected devices, 4,000mAh battery'
+        }
+      },
+      'T-Mobile Internet Gateway': { 
+        price: '$0', 
+        downPayment: '$0', 
+        monthlyPayment: '$0', 
+        storage: 'N/A', 
+        color: 'White',
+        image: 'https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png',
+        brand: 'T-Mobile',
+        category: 'Budget',
+        specs: {
+          display: 'N/A',
+          processor: 'Qualcomm Snapdragon X55',
+          camera: 'N/A',
+          battery: 'N/A',
+          features: '5G Home Internet, Wi-Fi 6, Unlimited data, No equipment fees'
         }
       }
     }
