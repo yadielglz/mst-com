@@ -408,7 +408,17 @@ const PRODUCT_CATALOG = {
 };
 
 function App() {
-  console.log('App: Component rendering... - UI Overhaul v2.0');
+  // Add debugging for mobile view
+  useEffect(() => {
+    console.log('App: Component rendering...');
+    console.log('App: User state:', user);
+    console.log('App: Show auth modal:', showAuthModal);
+    console.log('App: Show splash:', showSplash);
+    console.log('App: Show OOBE:', showOOBE);
+    console.log('App: Show pin modal:', showPinModal);
+    console.log('App: Window width:', window.innerWidth);
+    console.log('App: Is mobile view:', window.innerWidth < 640);
+  }, [user, showAuthModal, showSplash, showOOBE, showPinModal]);
   
   // Authentication state
   const [user, setUser] = useState(null);

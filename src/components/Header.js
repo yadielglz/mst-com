@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings, LogOut, Moon, Sun, History, Menu, X } from 'lucide-react';
 
 const Header = ({ 
@@ -9,10 +9,22 @@ const Header = ({
   onShowQuoteHistory 
 }) => {
   const isDark = document.documentElement.classList.contains('dark');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobileMenuOpen && !event.target.closest('.mobile-menu-container')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobileMenuOpen]);
 
   return (
-    <header className="bg-white dark:bg-slate-800 shadow-lg border-b border-slate-200 dark:border-slate-700">
+    <header className="bg-white dark:bg-slate-800 shadow-lg border-b border-slate-200 dark:border-slate-700 mobile-menu-container">
       <div className="container mx-auto px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
@@ -92,7 +104,10 @@ const Header = ({
           {/* Mobile Menu Button */}
           <div className="sm:hidden">
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => {
+                console.log('Mobile menu toggle clicked, current state:', isMobileMenuOpen);
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }}
               className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-200"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -107,6 +122,7 @@ const Header = ({
               {/* Quote History Button */}
               <button
                 onClick={() => {
+                  console.log('Quote History clicked');
                   onShowQuoteHistory();
                   setIsMobileMenuOpen(false);
                 }}
@@ -119,6 +135,7 @@ const Header = ({
               {/* Settings Button */}
               <button
                 onClick={() => {
+                  console.log('Settings clicked');
                   onShowSettings();
                   setIsMobileMenuOpen(false);
                 }}
@@ -130,7 +147,10 @@ const Header = ({
 
               {/* Theme Toggle */}
               <button
-                onClick={onToggleTheme}
+                onClick={() => {
+                  console.log('Theme toggle clicked');
+                  onToggleTheme();
+                }}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors duration-200"
               >
                 {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -150,6 +170,7 @@ const Header = ({
                   </div>
                   <button
                     onClick={() => {
+                      console.log('Sign out clicked');
                       onSignOut();
                       setIsMobileMenuOpen(false);
                     }}
