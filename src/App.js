@@ -1240,6 +1240,24 @@ function App() {
     }
   }, []);
 
+  // Additional check for authenticated user on mount
+  useEffect(() => {
+    const checkCurrentUser = () => {
+      const currentUser = getCurrentUser();
+      console.log('App: Checking current user:', currentUser);
+      if (currentUser && !user) {
+        console.log('App: Found authenticated user, updating state');
+        setUser(currentUser);
+        setIsLoading(false);
+        loadUserData();
+      }
+    };
+    
+    // Check after a short delay to ensure Firebase is initialized
+    const timer = setTimeout(checkCurrentUser, 1000);
+    return () => clearTimeout(timer);
+  }, [user]);
+
   // Load user data from Firebase
   const loadUserData = async () => {
     console.log('App: Loading user data...');
@@ -1272,14 +1290,17 @@ function App() {
 
   // Handle authentication success
   const handleAuthSuccess = async (user) => {
+    console.log('App: Auth success, user:', user);
     setUser(user);
     setShowAuthModal(false);
     
     // Check if this is a new user
     const settingsResult = await getUserSettings();
     if (!settingsResult.success || !settingsResult.settings) {
+      console.log('App: New user, showing OOBE');
       setShowOOBE(true);
     } else {
+      console.log('App: Existing user, hiding splash');
       setShowSplash(false);
     }
   };
@@ -1657,6 +1678,7 @@ function App() {
 
   // Show loading screen
   if (isLoading) {
+    console.log('App: Showing loading screen');
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
@@ -1673,6 +1695,7 @@ function App() {
 
   // Show auth modal if no user
   if (!user && showAuthModal) {
+    console.log('App: Showing auth modal');
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
         <AuthModal onAuthSuccess={handleAuthSuccess} />
@@ -1683,6 +1706,7 @@ function App() {
 
   // Fallback UI - Always show something
   if (showSplash) {
+    console.log('App: Showing splash screen');
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
@@ -1704,7 +1728,14 @@ function App() {
           
           <div className="space-y-3">
             <button 
-              onClick={() => setShowSplash(false)}
+              onClick={() => {
+                console.log('App: Disclaimer dismissed, user:', user, 'showAuthModal:', showAuthModal);
+                setShowSplash(false);
+                // If no user, show auth modal after disclaimer
+                if (!user) {
+                  setShowAuthModal(true);
+                }
+              }}
               className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
             >
               I Understand and Agree
@@ -1719,11 +1750,41 @@ function App() {
   }
 
   if (showOOBE) {
+    console.log('App: Showing OOBE screen');
     return <OOBEScreen onComplete={handleOOBEComplete} />;
   }
 
   if (showPinModal) {
+    console.log('App: Showing pin modal');
     return <PinModal onUnlock={handlePinUnlock} pinLock={pinLock} />;
+  }
+
+  // Debug logging for main content
+  console.log('App: Rendering main content - user:', user, 'showAuthModal:', showAuthModal, 'showSplash:', showSplash);
+
+  // Fallback: If no user and no auth modal showing, show auth modal
+  if (!user && !showAuthModal) {
+    console.log('App: Fallback - showing auth modal');
+    setShowAuthModal(true);
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center p-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Loading...</h1>
+          <p className="text-slate-600 dark:text-slate-300">Please wait while we set up your session.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Ultimate fallback - if we somehow get here, show auth modal
+  if (!user) {
+    console.log('App: Ultimate fallback - forcing auth modal');
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+        <AuthModal onAuthSuccess={handleAuthSuccess} />
+        <Toaster position="top-right" />
+      </div>
+    );
   }
 
   return (
