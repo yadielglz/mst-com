@@ -1565,10 +1565,10 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
                       />
                       <div className="flex-1">
                         <div className="font-medium text-sm">{line.device}</div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-slate-500 dark:text-slate-400">
                           {line.deviceDetails.storage} • {line.deviceDetails.color}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-slate-500 dark:text-slate-400">
                           ${line.deviceDetails.downPayment} down • ${line.deviceDetails.monthlyPayment}/mo
                         </div>
                       </div>
@@ -1624,6 +1624,7 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
 const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCatalog }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedDeviceForSpecs, setSelectedDeviceForSpecs] = useState(null);
 
   const brands = ['Apple', 'Samsung', 'Google', 'OnePlus', 'Motorola', 'TCL', 'REVVL'];
   const categories = ['Premium', 'Standard', 'Budget'];
@@ -1761,6 +1762,23 @@ const DeviceSelectionStep = ({ selectedServices, setSelectedServices, productCat
                           </div>
                           <div className={`text-xs ${service.device === deviceName ? 'text-white/80' : 'text-slate-400'}`}>
                             ${deviceData.downPayment} down • ${deviceData.monthlyPayment}/mo
+                          </div>
+                          
+                          {/* View Specs Button */}
+                          <div className="mt-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedDeviceForSpecs({ name: deviceName, ...deviceData });
+                              }}
+                              className={`w-full py-1 px-2 rounded text-xs font-medium transition-colors ${
+                                service.device === deviceName
+                                  ? 'bg-white/20 text-white hover:bg-white/30'
+                                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                              }`}
+                            >
+                              View Specs
+                            </button>
                           </div>
                         </button>
                       ))}
@@ -2325,3 +2343,114 @@ const DeviceImage = ({ src, alt, className = "w-16 h-16 object-cover rounded-lg"
     />
   );
 };
+
+// Device Specifications Modal
+export const DeviceSpecsModal = ({ device, onClose }) => {
+  if (!device || !device.specs) return null;
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Device Specifications</h2>
+          <button
+            onClick={onClose}
+            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          {/* Device Header */}
+          <div className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+            <DeviceImage 
+              src={device.image} 
+              alt={device.name}
+              className="w-16 h-16 object-contain"
+            />
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 dark:text-white">{device.name}</h3>
+              <p className="text-slate-600 dark:text-slate-400">{device.brand} • {device.category}</p>
+              <p className="text-emerald-600 font-semibold">{device.price}</p>
+            </div>
+          </div>
+
+          {/* Specifications Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Display</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.specs.display}</p>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Processor</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.specs.processor}</p>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Battery</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.specs.battery}</p>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Camera</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.specs.camera}</p>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Key Features</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.specs.features}</p>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">Storage & Color</h4>
+                <p className="text-slate-600 dark:text-slate-400">{device.storage} • {device.color}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Pricing Information */}
+          <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-emerald-200 dark:border-emerald-800">
+            <h4 className="font-semibold text-emerald-800 dark:text-emerald-200 mb-2">Pricing Information</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+              <div>
+                <span className="text-slate-600 dark:text-slate-400">Full Price:</span>
+                <p className="font-semibold text-slate-800 dark:text-white">{device.price}</p>
+              </div>
+              <div>
+                <span className="text-slate-600 dark:text-slate-400">Down Payment:</span>
+                <p className="font-semibold text-slate-800 dark:text-white">{device.downPayment}</p>
+              </div>
+              <div>
+                <span className="text-slate-600 dark:text-slate-400">Monthly Payment:</span>
+                <p className="font-semibold text-slate-800 dark:text-white">{device.monthlyPayment}/mo</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Close Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={onClose}
+              className="bg-att-blue text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-800 transition-colors duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+{/* Device Specs Modal */}
+{selectedDeviceForSpecs && (
+  <DeviceSpecsModal
+    device={selectedDeviceForSpecs}
+    onClose={() => setSelectedDeviceForSpecs(null)}
+  />
+)}

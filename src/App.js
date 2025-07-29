@@ -56,7 +56,8 @@ import {
   OOBEScreen,
   SettingsModal,
   QuoteHistoryModal,
-  MultiStepQuoteModal
+  MultiStepQuoteModal,
+  DeviceSpecsModal
 } from './components/Modals';
 
 // Product catalog data for T-Mobile Sales Quote Tool
@@ -101,7 +102,14 @@ const PRODUCT_CATALOG = {
         color: 'Natural Titanium',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.7" Super Retina XDR OLED',
+          processor: 'A17 Pro chip',
+          camera: '48MP Main + 12MP Ultra Wide + 12MP Telephoto',
+          battery: 'Up to 29 hours video playback',
+          features: 'Action Button, USB-C, 5G, Face ID'
+        }
       },
       'iPhone 15 Pro': { 
         price: '$999.99', 
@@ -111,7 +119,14 @@ const PRODUCT_CATALOG = {
         color: 'Natural Titanium',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.1" Super Retina XDR OLED',
+          processor: 'A17 Pro chip',
+          camera: '48MP Main + 12MP Ultra Wide + 12MP Telephoto',
+          battery: 'Up to 23 hours video playback',
+          features: 'Action Button, USB-C, 5G, Face ID'
+        }
       },
       'iPhone 15': { 
         price: '$799.99', 
@@ -121,7 +136,14 @@ const PRODUCT_CATALOG = {
         color: 'Black',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.1" Super Retina XDR OLED',
+          processor: 'A16 Bionic chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 20 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
+        }
       },
       'iPhone 15 Plus': { 
         price: '$899.99', 
@@ -131,7 +153,14 @@ const PRODUCT_CATALOG = {
         color: 'Black',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.7" Super Retina XDR OLED',
+          processor: 'A16 Bionic chip',
+          camera: '48MP Main + 12MP Ultra Wide',
+          battery: 'Up to 26 hours video playback',
+          features: 'USB-C, 5G, Face ID, Dynamic Island'
+        }
       },
       'iPhone 14': { 
         price: '$699.99', 
@@ -141,7 +170,14 @@ const PRODUCT_CATALOG = {
         color: 'Blue',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.1" Super Retina XDR OLED',
+          processor: 'A15 Bionic chip',
+          camera: '12MP Main + 12MP Ultra Wide',
+          battery: 'Up to 20 hours video playback',
+          features: '5G, Face ID, Dynamic Island'
+        }
       },
       'iPhone 14 Plus': { 
         price: '$799.99', 
@@ -151,7 +187,14 @@ const PRODUCT_CATALOG = {
         color: 'Blue',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.7" Super Retina XDR OLED',
+          processor: 'A15 Bionic chip',
+          camera: '12MP Main + 12MP Ultra Wide',
+          battery: 'Up to 26 hours video playback',
+          features: '5G, Face ID, Dynamic Island'
+        }
       },
       'iPhone SE (3rd gen)': { 
         price: '$429.99', 
@@ -161,7 +204,14 @@ const PRODUCT_CATALOG = {
         color: 'Midnight',
         image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&h=400&fit=crop',
         brand: 'Apple',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '4.7" Retina HD LCD',
+          processor: 'A15 Bionic chip',
+          camera: '12MP Main',
+          battery: 'Up to 15 hours video playback',
+          features: '5G, Touch ID, Home button'
+        }
       },
       
       // Samsung Series 2025
@@ -173,7 +223,14 @@ const PRODUCT_CATALOG = {
         color: 'Titanium Gray',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.8" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '200MP Main + 12MP Ultra Wide + 50MP Telephoto + 10MP Telephoto',
+          battery: '5000mAh, 45W charging',
+          features: 'S Pen, 5G, Ultrasonic fingerprint, IP68'
+        }
       },
       'Samsung Galaxy S24+': { 
         price: '$999.99', 
@@ -183,7 +240,14 @@ const PRODUCT_CATALOG = {
         color: 'Onyx Black',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.7" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4900mAh, 45W charging',
+          features: '5G, Ultrasonic fingerprint, IP68'
+        }
       },
       'Samsung Galaxy S24': { 
         price: '$799.99', 
@@ -193,7 +257,14 @@ const PRODUCT_CATALOG = {
         color: 'Onyx Black',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.2" Dynamic AMOLED 2X',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4000mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP68'
+        }
       },
       'Samsung Galaxy Z Fold6': { 
         price: '$1799.99', 
@@ -203,7 +274,14 @@ const PRODUCT_CATALOG = {
         color: 'Phantom Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '7.6" Dynamic AMOLED 2X (unfolded) / 6.3" Cover Display',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 12MP Ultra Wide + 10MP Telephoto',
+          battery: '4400mAh, 25W charging',
+          features: 'S Pen, 5G, Ultrasonic fingerprint, IPX8'
+        }
       },
       'Samsung Galaxy Z Flip6': { 
         price: '$999.99', 
@@ -213,7 +291,14 @@ const PRODUCT_CATALOG = {
         color: 'Mint',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.7" Dynamic AMOLED 2X (unfolded) / 3.4" Cover Display',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 12MP Ultra Wide',
+          battery: '3700mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IPX8'
+        }
       },
       'Samsung Galaxy A15 5G': { 
         price: '$199.99', 
@@ -223,7 +308,14 @@ const PRODUCT_CATALOG = {
         color: 'Blue Black',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.5" Super AMOLED',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Side fingerprint, IP67'
+        }
       },
       'Samsung Galaxy A25 5G': { 
         price: '$299.99', 
@@ -233,7 +325,14 @@ const PRODUCT_CATALOG = {
         color: 'Blue Black',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.5" Super AMOLED',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Side fingerprint, IP67'
+        }
       },
       'Samsung Galaxy A35 5G': { 
         price: '$399.99', 
@@ -243,7 +342,14 @@ const PRODUCT_CATALOG = {
         color: 'Awesome Blue',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.6" Super AMOLED',
+          processor: 'Exynos 1380',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP67'
+        }
       },
       'Samsung Galaxy A55 5G': { 
         price: '$499.99', 
@@ -253,7 +359,14 @@ const PRODUCT_CATALOG = {
         color: 'Awesome Blue',
         image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop',
         brand: 'Samsung',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.6" Super AMOLED',
+          processor: 'Exynos 1480',
+          camera: '50MP Main + 12MP Ultra Wide + 5MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Ultrasonic fingerprint, IP67'
+        }
       },
       
       // Google Series 2025
@@ -265,7 +378,14 @@ const PRODUCT_CATALOG = {
         color: 'Obsidian',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.7" LTPO OLED',
+          processor: 'Google Tensor G3',
+          camera: '50MP Main + 48MP Ultra Wide + 48MP Telephoto',
+          battery: '4950mAh, 30W charging',
+          features: '5G, Face unlock, IP68, Magic Eraser'
+        }
       },
       'Google Pixel 8': { 
         price: '$699.99', 
@@ -275,7 +395,14 @@ const PRODUCT_CATALOG = {
         color: 'Obsidian',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.2" OLED',
+          processor: 'Google Tensor G3',
+          camera: '50MP Main + 12MP Ultra Wide',
+          battery: '4575mAh, 27W charging',
+          features: '5G, Face unlock, IP68, Magic Eraser'
+        }
       },
       'Google Pixel 7a': { 
         price: '$449.99', 
@@ -285,7 +412,65 @@ const PRODUCT_CATALOG = {
         color: 'Charcoal',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Google',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.1" OLED',
+          processor: 'Google Tensor G2',
+          camera: '64MP Main + 13MP Ultra Wide',
+          battery: '4385mAh, 18W charging',
+          features: '5G, Fingerprint sensor, IP67, Magic Eraser'
+        }
+      },
+      'Google Pixel 9 Pro': { 
+        price: '$1099.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$37.50', 
+        storage: '256GB', 
+        color: 'Obsidian',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Google',
+        category: 'Premium',
+        specs: {
+          display: '6.7" LTPO OLED',
+          processor: 'Google Tensor G4',
+          camera: '50MP Main + 48MP Ultra Wide + 48MP Telephoto',
+          battery: '5000mAh, 30W charging',
+          features: '5G, Face unlock, IP68, Advanced AI features'
+        }
+      },
+      'Google Pixel 9': { 
+        price: '$799.99', 
+        downPayment: '$199.99', 
+        monthlyPayment: '$25.00', 
+        storage: '256GB', 
+        color: 'Obsidian',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Google',
+        category: 'Standard',
+        specs: {
+          display: '6.2" OLED',
+          processor: 'Google Tensor G4',
+          camera: '50MP Main + 12MP Ultra Wide',
+          battery: '4600mAh, 27W charging',
+          features: '5G, Face unlock, IP68, Advanced AI features'
+        }
+      },
+      'Google Pixel 9a': { 
+        price: '$499.99', 
+        downPayment: '$0', 
+        monthlyPayment: '$20.83', 
+        storage: '128GB', 
+        color: 'Charcoal',
+        image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
+        brand: 'Google',
+        category: 'Budget',
+        specs: {
+          display: '6.1" OLED',
+          processor: 'Google Tensor G3',
+          camera: '64MP Main + 13MP Ultra Wide',
+          battery: '4500mAh, 18W charging',
+          features: '5G, Fingerprint sensor, IP67, AI features'
+        }
       },
       
       // OnePlus Series 2025
@@ -297,7 +482,14 @@ const PRODUCT_CATALOG = {
         color: 'Silk Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'OnePlus',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.82" LTPO AMOLED',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 48MP Ultra Wide + 64MP Telephoto',
+          battery: '5400mAh, 100W charging',
+          features: '5G, Ultrasonic fingerprint, IP68, Hasselblad camera'
+        }
       },
       'OnePlus Nord N30 5G': { 
         price: '$299.99', 
@@ -307,7 +499,14 @@ const PRODUCT_CATALOG = {
         color: 'Chromatic Gray',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'OnePlus',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.7" AMOLED',
+          processor: 'Snapdragon 695',
+          camera: '108MP Main + 2MP Macro + 2MP Depth',
+          battery: '5000mAh, 67W charging',
+          features: '5G, Side fingerprint, Fast charging'
+        }
       },
       
       // Motorola Series 2025 - Including New Razr Devices
@@ -319,7 +518,14 @@ const PRODUCT_CATALOG = {
         color: 'Viva Magenta',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.9" pOLED (unfolded) / 3.6" pOLED (folded)',
+          processor: 'Snapdragon 8+ Gen 1',
+          camera: '12MP Main + 13MP Ultra Wide',
+          battery: '3800mAh, 30W charging',
+          features: '5G, Side fingerprint, IP52, External display'
+        }
       },
       'Motorola Razr (2024)': { 
         price: '$699.99', 
@@ -329,7 +535,14 @@ const PRODUCT_CATALOG = {
         color: 'Sage Green',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.9" pOLED (unfolded) / 1.5" OLED (folded)',
+          processor: 'Snapdragon 7 Gen 1',
+          camera: '64MP Main + 13MP Ultra Wide',
+          battery: '4200mAh, 30W charging',
+          features: '5G, Side fingerprint, IP52, External display'
+        }
       },
       'Motorola Edge+ (2024)': { 
         price: '$899.99', 
@@ -339,7 +552,14 @@ const PRODUCT_CATALOG = {
         color: 'Interstellar Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.7" pOLED',
+          processor: 'Snapdragon 8 Gen 2',
+          camera: '50MP Main + 50MP Ultra Wide + 60MP Telephoto',
+          battery: '5100mAh, 68W charging',
+          features: '5G, Ultrasonic fingerprint, IP68, Ready For'
+        }
       },
       'Motorola Edge (2024)': { 
         price: '$599.99', 
@@ -349,7 +569,14 @@ const PRODUCT_CATALOG = {
         color: 'Peacock Blue',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.6" pOLED',
+          processor: 'Snapdragon 7s Gen 2',
+          camera: '50MP Main + 13MP Ultra Wide',
+          battery: '5000mAh, 68W charging',
+          features: '5G, Side fingerprint, IP68, Ready For'
+        }
       },
       'Motorola Moto G 5G (2025)': { 
         price: '$199.99', 
@@ -359,7 +586,14 @@ const PRODUCT_CATALOG = {
         color: 'Sage Green',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.6" IPS LCD',
+          processor: 'Snapdragon 4 Gen 1',
+          camera: '50MP Main + 2MP Macro',
+          battery: '5000mAh, 15W charging',
+          features: '5G, Side fingerprint, IP52'
+        }
       },
       'Motorola Moto G Stylus 5G (2025)': { 
         price: '$299.99', 
@@ -369,7 +603,14 @@ const PRODUCT_CATALOG = {
         color: 'Steel Blue',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.6" IPS LCD',
+          processor: 'Snapdragon 6 Gen 1',
+          camera: '50MP Main + 8MP Ultra Wide',
+          battery: '5000mAh, 20W charging',
+          features: '5G, Side fingerprint, Stylus, IP52'
+        }
       },
       'Motorola Moto G Power 5G (2025)': { 
         price: '$249.99', 
@@ -379,7 +620,14 @@ const PRODUCT_CATALOG = {
         color: 'Pearl White',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Motorola',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.7" IPS LCD',
+          processor: 'Snapdragon 4 Gen 1',
+          camera: '50MP Main + 2MP Macro',
+          battery: '6000mAh, 18W charging',
+          features: '5G, Side fingerprint, IP52, Long battery life'
+        }
       },
       
       // TCL Series 2025
@@ -391,7 +639,14 @@ const PRODUCT_CATALOG = {
         color: 'Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'TCL',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.6" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 18W charging',
+          features: '5G, Side fingerprint, IP52'
+        }
       },
       'TCL 50 V 5G': { 
         price: '$299.99', 
@@ -401,7 +656,14 @@ const PRODUCT_CATALOG = {
         color: 'Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'TCL',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.7" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 18W charging',
+          features: '5G, Side fingerprint, IP52'
+        }
       },
       
       // REVVL Series (T-Mobile Brand) 2025
@@ -413,7 +675,14 @@ const PRODUCT_CATALOG = {
         color: 'Nebula Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.5" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 5MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 15W charging',
+          features: '5G, Side fingerprint, T-Mobile optimized'
+        }
       },
       'REVVL 7x Pro 5G': { 
         price: '$299.99', 
@@ -423,7 +692,14 @@ const PRODUCT_CATALOG = {
         color: 'Nebula Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.7" IPS LCD',
+          processor: 'MediaTek Dimensity 6100+',
+          camera: '50MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 18W charging',
+          features: '5G, Side fingerprint, T-Mobile optimized'
+        }
       },
       'REVVL V+ 5G (2025)': { 
         price: '$399.99', 
@@ -433,7 +709,14 @@ const PRODUCT_CATALOG = {
         color: 'Nebula Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'REVVL',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.8" IPS LCD',
+          processor: 'MediaTek Dimensity 7200',
+          camera: '64MP Main + 8MP Ultra Wide + 2MP Macro',
+          battery: '5000mAh, 25W charging',
+          features: '5G, Side fingerprint, T-Mobile optimized'
+        }
       },
       
       // Nothing Phone Series
@@ -445,7 +728,14 @@ const PRODUCT_CATALOG = {
         color: 'White',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Nothing',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.7" LTPO OLED',
+          processor: 'Snapdragon 8+ Gen 1',
+          camera: '50MP Main + 50MP Ultra Wide',
+          battery: '4500mAh, 45W charging',
+          features: '5G, In-display fingerprint, IP54, Glyph interface'
+        }
       },
       'Nothing Phone (2a)': { 
         price: '$349.99', 
@@ -455,7 +745,14 @@ const PRODUCT_CATALOG = {
         color: 'White',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'Nothing',
-        category: 'Budget'
+        category: 'Budget',
+        specs: {
+          display: '6.7" OLED',
+          processor: 'MediaTek Dimensity 7200 Pro',
+          camera: '50MP Main + 50MP Ultra Wide',
+          battery: '5000mAh, 18W charging',
+          features: '5G, In-display fingerprint, IP54, Glyph interface'
+        }
       },
       
       // ASUS Series
@@ -467,7 +764,14 @@ const PRODUCT_CATALOG = {
         color: 'Phantom Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'ASUS',
-        category: 'Premium'
+        category: 'Premium',
+        specs: {
+          display: '6.78" AMOLED',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 13MP Ultra Wide + 32MP Telephoto',
+          battery: '5500mAh, 65W charging',
+          features: '5G, In-display fingerprint, IP68, Gaming features'
+        }
       },
       'ASUS Zenfone 11': { 
         price: '$699.99', 
@@ -477,7 +781,14 @@ const PRODUCT_CATALOG = {
         color: 'Eternal Black',
         image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop',
         brand: 'ASUS',
-        category: 'Standard'
+        category: 'Standard',
+        specs: {
+          display: '6.78" AMOLED',
+          processor: 'Snapdragon 8 Gen 3',
+          camera: '50MP Main + 13MP Ultra Wide + 32MP Telephoto',
+          battery: '5000mAh, 30W charging',
+          features: '5G, In-display fingerprint, IP68, Compact design'
+        }
       }
     }
   },
