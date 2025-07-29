@@ -2313,56 +2313,10 @@ function App() {
             {isBuildingQuote ? (
               /* Quote Building Interface - Multi-Line AT&T Style */
               <div className="space-y-6">
-                {/* Step 1: Plan Selection */}
+                {/* Step 1: Lines Management */}
                 <div>
                   <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
                     <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                    <h3 className="text-lg font-semibold">Plan</h3>
-                  </div>
-                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Plan</h4>
-                      <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
-                        <span className="w-4 h-4 bg-slate-300 rounded-full flex items-center justify-center text-xs">i</span>
-                        <span>Prices reflect discounts applied and total number of lines</span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
-                        <label 
-                          key={planName} 
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
-                            currentQuote.plan?.name === planName 
-                              ? 'border-att-blue bg-att-blue/5' 
-                              : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="plan"
-                            value={planName}
-                            checked={currentQuote.plan?.name === planName}
-                            onChange={() => selectPlan(planName, planData)}
-                            className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
-                          />
-                          <div className="ml-3 flex-1">
-                            <div className="font-semibold text-slate-800 dark:text-white">{planName}</div>
-                            <div className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-att-blue">{planData.price}</div>
-                            <div className="text-xs text-slate-500">per phone line</div>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 2: Lines Management */}
-                <div>
-                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
-                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">2</div>
                     <h3 className="text-lg font-semibold">Lines & Devices</h3>
                   </div>
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
@@ -2444,6 +2398,52 @@ function App() {
                         <p>No lines added yet. Click "Add Line" to get started.</p>
                       </div>
                     )}
+                  </div>
+                </div>
+
+                {/* Step 2: Plan Selection */}
+                <div>
+                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <h3 className="text-lg font-semibold">Plan</h3>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Plan</h4>
+                      <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
+                        <span className="w-4 h-4 bg-slate-300 rounded-full flex items-center justify-center text-xs">i</span>
+                        <span>Prices reflect discounts applied and total number of lines</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
+                        <label 
+                          key={planName} 
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
+                            currentQuote.plan?.name === planName 
+                              ? 'border-att-blue bg-att-blue/5' 
+                              : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="plan"
+                            value={planName}
+                            checked={currentQuote.plan?.name === planName}
+                            onChange={() => selectPlan(planName, planData)}
+                            className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
+                          />
+                          <div className="ml-3 flex-1">
+                            <div className="font-semibold text-slate-800 dark:text-white">{planName}</div>
+                            <div className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-bold text-att-blue">{planData.price}</div>
+                            <div className="text-xs text-slate-500">per phone line</div>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
