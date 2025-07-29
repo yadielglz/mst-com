@@ -170,35 +170,46 @@ function App() {
 
   // Firebase authentication listener
   useEffect(() => {
-    const unsubscribe = onAuthChange((user) => {
-      setUser(user);
-      setIsLoading(false);
-      
-      if (user) {
-        // User is signed in, load their data
-        loadUserData();
-      } else {
-        // User is signed out, show auth modal
-        setShowAuthModal(true);
-        setSales([]);
-        setUserSettings({
-          name: '',
-          theme: 'light',
-          tempUnit: 'F',
-          initialSetupComplete: false
-        });
-        setCurrentGoals({
-          weekly: { mobile: 0, internet: 0, tv: 0 },
-          monthly: { mobile: 0, internet: 0, tv: 0 }
-        });
-      }
-    });
+    console.log('App: Initializing Firebase auth listener...');
+    
+    try {
+      const unsubscribe = onAuthChange((user) => {
+        console.log('App: Auth state changed:', user ? 'User logged in' : 'User logged out');
+        setUser(user);
+        setIsLoading(false);
+        
+        if (user) {
+          // User is signed in, load their data
+          loadUserData();
+        } else {
+          // User is signed out, show auth modal
+          setShowAuthModal(true);
+          setSales([]);
+          setUserSettings({
+            name: '',
+            theme: 'light',
+            tempUnit: 'F',
+            initialSetupComplete: false
+          });
+          setCurrentGoals({
+            weekly: { mobile: 0, internet: 0, tv: 0 },
+            monthly: { mobile: 0, internet: 0, tv: 0 }
+          });
+        }
+      });
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    } catch (error) {
+      console.error('App: Firebase auth error:', error);
+      // Fallback: show auth modal even if Firebase fails
+      setIsLoading(false);
+      setShowAuthModal(true);
+    }
   }, []);
 
   // Load user data from Firebase
   const loadUserData = async () => {
+    console.log('App: Loading user data...');
     try {
       // Load settings
       const settingsResult = await getUserSettings();
@@ -220,8 +231,9 @@ function App() {
 
       return unsubscribe;
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error('App: Error loading user data:', error);
       toast.error('Failed to load user data');
+      // Continue with default settings even if Firebase fails
     }
   };
 
