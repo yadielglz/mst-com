@@ -79,207 +79,212 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Customer Name</label>
-              <input
-                type="text"
-                value={formData.customerName}
-                onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
-                className="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Sale Date</label>
-              <input
-                type="date"
-                value={formData.saleDate}
-                onChange={(e) => setFormData(prev => ({ ...prev, saleDate: e.target.value }))}
-                className="form-input"
-                required
-              />
-            </div>
-          </div>
-
-          <hr className="my-4 dark:border-slate-700" />
-
-          <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
-            <h3 className="font-semibold text-lg mb-2">Add Service(s)</h3>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">1. Select Category</label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="form-input"
-              >
-                <option value="">-- Select --</option>
-                <option value="Mobile">Mobile</option>
-                <option value="Internet">Internet</option>
-                <option value="DirecTV">DirecTV</option>
-              </select>
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Customer Name</label>
+                <input
+                  type="text"
+                  value={formData.customerName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, customerName: e.target.value }))}
+                  className="form-input"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Sale Date</label>
+                <input
+                  type="date"
+                  value={formData.saleDate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, saleDate: e.target.value }))}
+                  className="form-input"
+                  required
+                />
+              </div>
             </div>
 
-            {selectedCategory && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">2. Configure Service</label>
-                  <select
-                    value={selectedPlan}
-                    onChange={(e) => setSelectedPlan(e.target.value)}
-                    className="form-input"
-                  >
-                    <option value="">-- Select Plan --</option>
-                    {Object.keys(productCatalog[selectedCategory].plans).map(planName => (
-                      <option key={planName} value={planName}>{planName} - {productCatalog[selectedCategory].plans[planName].price}</option>
-                    ))}
-                  </select>
-                </div>
+            <hr className="my-4 dark:border-slate-700" />
 
-                {selectedCategory === 'Mobile' && selectedPlan && (
+            <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-2">Add Service(s)</h3>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">1. Select Category</label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="form-input"
+                >
+                  <option value="">-- Select --</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Internet">Internet</option>
+                  <option value="TV">TV</option>
+                </select>
+              </div>
+
+              {selectedCategory && (
+                <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">3. Select Device (Optional)</label>
+                    <label className="block text-sm font-medium mb-1">2. Configure Service</label>
                     <select
-                      value={selectedDevice}
-                      onChange={(e) => setSelectedDevice(e.target.value)}
+                      value={selectedPlan}
+                      onChange={(e) => setSelectedPlan(e.target.value)}
                       className="form-input"
                     >
-                      <option value="">-- No Device (BYOD) --</option>
-                      {Object.keys(productCatalog.Mobile.devices || {}).map(deviceName => (
-                        <option key={deviceName} value={deviceName}>
-                          {deviceName} - {productCatalog.Mobile.devices[deviceName].price} 
-                          (${productCatalog.Mobile.devices[deviceName].downPayment} down, ${productCatalog.Mobile.devices[deviceName].monthlyPayment}/mo)
-                        </option>
+                      <option value="">-- Select Plan --</option>
+                      {Object.keys(productCatalog[selectedCategory].plans).map(planName => (
+                        <option key={planName} value={planName}>{planName} - {productCatalog[selectedCategory].plans[planName].price}</option>
                       ))}
                     </select>
                   </div>
-                )}
 
-                {selectedCategory === 'Mobile' && selectedPlan && productCatalog.Mobile.plans[selectedPlan]?.hasLines && (
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Number of Lines</label>
-                    <input
-                      type="number"
-                      value={lines}
-                      onChange={(e) => setLines(parseInt(e.target.value) || 1)}
-                      className="form-input"
-                      min="1"
-                    />
-                  </div>
-                )}
-
-                {selectedCategory === 'Mobile' && (
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Add-ons</label>
-                    <div className="space-y-2">
-                      {Object.keys(productCatalog.Mobile.addOns).map(addonName => (
-                        <div key={addonName} className="flex items-center">
-                          <input
-                            type="checkbox"
-                            id={`addon-${addonName}`}
-                            checked={selectedAddons.includes(addonName)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setSelectedAddons(prev => [...prev, addonName]);
-                              } else {
-                                setSelectedAddons(prev => prev.filter(a => a !== addonName));
-                              }
-                            }}
-                            className="h-4 w-4 text-att-blue rounded"
-                          />
-                          <label htmlFor={`addon-${addonName}`} className="ml-2 text-sm">
-                            {addonName}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <button
-              type="button"
-              onClick={addServiceToSale}
-              disabled={!selectedCategory || !selectedPlan}
-              className="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Service to Quote
-            </button>
-          </div>
-
-          <hr className="my-4 dark:border-slate-700" />
-
-          <div>
-            <h3 className="font-semibold text-lg mb-2">Services in this Quote</h3>
-            <div className="space-y-2">
-              {currentServices.length === 0 ? (
-                <p className="text-sm text-center py-4">No services added yet.</p>
-              ) : (
-                currentServices.map((service, index) => (
-                  <div key={index} className="bg-slate-100 dark:bg-slate-700/50 p-3 rounded-lg">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <p className="font-semibold text-slate-800 dark:text-slate-100">
-                          {service.planName} - {service.planPrice}
-                          {service.lines ? ` (${service.lines} lines)` : ''}
-                        </p>
-                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                          {service.planDescription}
-                        </p>
-                        {service.device && (
-                          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                            📱 {service.device} - {service.devicePrice}
-                            {service.deviceDetails && (
-                              <span className="text-xs text-slate-500 ml-2">
-                                ({service.deviceDetails.storage}, {service.deviceDetails.color})
-                              </span>
-                            )}
-                          </p>
-                        )}
-                        <p className="text-sm text-slate-500 dark:text-slate-400">{service.category}</p>
-                        {service.addOns && service.addOns.length > 0 && (
-                          <p className="text-xs text-slate-400 mt-1">
-                            Add-ons: {service.addOns.join(', ')}
-                          </p>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeService(index)}
-                        className="p-1 text-red-500 hover:text-red-700"
+                  {selectedCategory === 'Mobile' && selectedPlan && (
+                    <div>
+                      <label className="block text-sm font-medium mb-1">3. Select Device (Optional)</label>
+                      <select
+                        value={selectedDevice}
+                        onChange={(e) => setSelectedDevice(e.target.value)}
+                        className="form-input"
                       >
-                        <X className="w-4 h-4" />
-                      </button>
+                        <option value="">-- No Device (BYOD) --</option>
+                        {Object.keys(productCatalog.Mobile.devices || {}).map(deviceName => (
+                          <option key={deviceName} value={deviceName}>
+                            {deviceName} - {productCatalog.Mobile.devices[deviceName].price} 
+                            (${productCatalog.Mobile.devices[deviceName].downPayment} down, ${productCatalog.Mobile.devices[deviceName].monthlyPayment}/mo)
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  </div>
-                ))
+                  )}
+
+                  {selectedCategory === 'Mobile' && selectedPlan && productCatalog.Mobile.plans[selectedPlan]?.hasLines && (
+                    <div>
+                      <label className="block text-sm font-medium mb-1">4. Number of Lines</label>
+                      <input
+                        type="number"
+                        value={lines}
+                        onChange={(e) => setLines(parseInt(e.target.value) || 1)}
+                        className="form-input"
+                        min="1"
+                        max="10"
+                      />
+                    </div>
+                  )}
+
+                  {selectedCategory === 'Mobile' && selectedPlan && (
+                    <div>
+                      <label className="block text-sm font-medium mb-1">5. Add-ons (Optional)</label>
+                      <div className="space-y-2">
+                        {Object.keys(productCatalog.Mobile.addOns || {}).map(addonName => (
+                          <div key={addonName} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id={`addon-${addonName}`}
+                              checked={selectedAddons.includes(addonName)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedAddons(prev => [...prev, addonName]);
+                                } else {
+                                  setSelectedAddons(prev => prev.filter(a => a !== addonName));
+                                }
+                              }}
+                              className="h-4 w-4 text-att-blue rounded"
+                            />
+                            <label htmlFor={`addon-${addonName}`} className="ml-2 text-sm">
+                              {addonName}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={addServiceToSale}
+                    disabled={!selectedCategory || !selectedPlan}
+                    className="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Service to Quote
+                  </button>
+                </div>
               )}
             </div>
-          </div>
 
-          <div className="mt-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex justify-between items-center">
-            <span className="text-lg font-bold">Total Commission:</span>
-            <span className="text-2xl font-bold text-emerald-600">${tempTotalCommission.toFixed(2)}</span>
-          </div>
+            <hr className="my-4 dark:border-slate-700" />
 
-          <div className="mt-4">
-            <label className="block text-sm font-medium mb-1">Notes</label>
-            <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-              rows="3"
-              className="form-input"
-            />
-          </div>
+            <div>
+              <h3 className="font-semibold text-lg mb-2">Services in this Quote</h3>
+              <div className="space-y-2">
+                {currentServices.length === 0 ? (
+                  <p className="text-sm text-center py-4">No services added yet.</p>
+                ) : (
+                  currentServices.map((service, index) => (
+                    <div key={index} className="bg-slate-100 dark:bg-slate-700/50 p-3 rounded-lg">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="font-semibold text-slate-800 dark:text-slate-100">
+                            {service.planName} - {service.planPrice}
+                            {service.lines ? ` (${service.lines} lines)` : ''}
+                          </p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                            {service.planDescription}
+                          </p>
+                          {service.device && (
+                            <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                              📱 {service.device} - {service.devicePrice}
+                              {service.deviceDetails && (
+                                <span className="text-xs text-slate-500 ml-2">
+                                  ({service.deviceDetails.storage}, {service.deviceDetails.color})
+                                </span>
+                              )}
+                            </p>
+                          )}
+                          <p className="text-sm text-slate-500 dark:text-slate-400">{service.category}</p>
+                          {service.addOns && service.addOns.length > 0 && (
+                            <p className="text-xs text-slate-400 mt-1">
+                              Add-ons: {service.addOns.join(', ')}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeService(index)}
+                          className="p-1 text-red-500 hover:text-red-700"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
 
-          <div className="flex justify-end space-x-3 mt-6">
-            <button type="button" onClick={onClose} className="btn btn-secondary">
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Save Sale
-            </button>
+            <div className="mt-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg flex justify-between items-center">
+              <span className="text-lg font-bold">Total Monthly:</span>
+              <span className="text-2xl font-bold text-emerald-600">${tempTotalCommission.toFixed(2)}/mo</span>
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-1">Notes</label>
+              <textarea
+                value={formData.notes}
+                onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                rows="3"
+                className="form-input"
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-6">
+              <button type="button" onClick={onClose} className="btn btn-secondary">
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Save Quote
+              </button>
+            </div>
           </div>
         </form>
       </div>
