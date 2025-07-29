@@ -1105,6 +1105,90 @@ const PRODUCT_CATALOG = {
           features: '5G Home Internet, Wi-Fi 6, Unlimited data, No equipment fees'
         }
       }
+    },
+    discounts: {
+      'AutoPay Discount': { 
+        amount: '$5.00', 
+        type: 'monthly', 
+        description: 'Automatic payment discount applied monthly' 
+      },
+      'Paperless Billing': { 
+        amount: '$2.00', 
+        type: 'monthly', 
+        description: 'Go paperless and save monthly' 
+      },
+      'Military Discount': { 
+        amount: '$15.00', 
+        type: 'monthly', 
+        description: 'Active duty military and veterans discount' 
+      },
+      '55+ Discount': { 
+        amount: '$10.00', 
+        type: 'monthly', 
+        description: 'Senior discount for customers 55 and older' 
+      },
+      'First Responder Discount': { 
+        amount: '$10.00', 
+        type: 'monthly', 
+        description: 'Discount for police, fire, and EMS personnel' 
+      },
+      'Teacher Discount': { 
+        amount: '$10.00', 
+        type: 'monthly', 
+        description: 'Discount for K-12 teachers and staff' 
+      },
+      'Nurse Discount': { 
+        amount: '$10.00', 
+        type: 'monthly', 
+        description: 'Discount for healthcare workers and nurses' 
+      },
+      'Student Discount': { 
+        amount: '$5.00', 
+        type: 'monthly', 
+        description: 'Discount for college students with valid ID' 
+      }
+    },
+    fees: {
+      'Activation Fee': { 
+        amount: '$35.00', 
+        type: 'one-time', 
+        description: 'One-time activation fee for new lines' 
+      },
+      'SIM Card Fee': { 
+        amount: '$10.00', 
+        type: 'one-time', 
+        description: 'SIM card replacement or new SIM fee' 
+      },
+      'Upgrade Fee': { 
+        amount: '$20.00', 
+        type: 'one-time', 
+        description: 'Device upgrade processing fee' 
+      },
+      'Restocking Fee': { 
+        amount: '$50.00', 
+        type: 'one-time', 
+        description: 'Device return restocking fee' 
+      },
+      'Late Payment Fee': { 
+        amount: '$5.00', 
+        type: 'monthly', 
+        description: 'Fee for late payment processing' 
+      },
+      'International Roaming': { 
+        amount: '$15.00', 
+        type: 'monthly', 
+        description: 'Monthly international roaming fee' 
+      },
+      'Premium Support': { 
+        amount: '$5.00', 
+        type: 'monthly', 
+        description: 'Premium customer support service' 
+      },
+      'Device Insurance Deductible': { 
+        amount: '$25.00', 
+        type: 'one-time', 
+        description: 'Deductible for device insurance claims' 
+      }
     }
   },
   Internet: {
@@ -1189,12 +1273,15 @@ function App() {
     plan: null,
     device: null,
     addOns: [],
+    discounts: [],
+    fees: [],
     customerInfo: {}
   });
   const [collapsedSections, setCollapsedSections] = useState({
     plans: false,
     devices: false,
-    addOns: false
+    addOns: false,
+    discounts: false
   });
 
   // Mobile detection and responsive handling
@@ -1768,6 +1855,8 @@ function App() {
       plan: null,
       device: null,
       addOns: [],
+      discounts: [],
+      fees: [],
       customerInfo: {}
     });
   };
@@ -1819,6 +1908,8 @@ function App() {
         plan: null,
         device: null,
         addOns: [],
+        discounts: [],
+        fees: [],
         customerInfo: {}
       });
     }
@@ -1848,10 +1939,30 @@ function App() {
       totalMonthly += addonPrice;
     });
 
+    // Add fees
+    currentQuote.fees.forEach(fee => {
+      const feeAmount = parseFloat(fee.amount.replace('$', ''));
+      if (fee.type === 'monthly') {
+        totalMonthly += feeAmount;
+      } else {
+        totalOneTime += feeAmount;
+      }
+    });
+
+    // Subtract discounts
+    currentQuote.discounts.forEach(discount => {
+      const discountAmount = parseFloat(discount.amount.replace('$', ''));
+      if (discount.type === 'monthly') {
+        totalMonthly -= discountAmount;
+      } else {
+        totalOneTime -= discountAmount;
+      }
+    });
+
     return {
       totalMonthly: Math.max(0, totalMonthly),
-      totalOneTime,
-      totalFirstMonth: Math.max(0, totalMonthly) + totalOneTime
+      totalOneTime: Math.max(0, totalOneTime),
+      totalFirstMonth: Math.max(0, totalMonthly) + Math.max(0, totalOneTime)
     };
   };
 
@@ -1861,6 +1972,8 @@ function App() {
       plan: null,
       device: null,
       addOns: [],
+      discounts: [],
+      fees: [],
       customerInfo: {}
     });
   };
@@ -1870,6 +1983,8 @@ function App() {
       plan: null,
       device: null,
       addOns: [],
+      discounts: [],
+      fees: [],
       customerInfo: {}
     });
   };
@@ -1879,6 +1994,40 @@ function App() {
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  const toggleDiscount = (discountName, discountData) => {
+    setCurrentQuote(prev => {
+      const existingDiscount = prev.discounts.find(discount => discount.name === discountName);
+      if (existingDiscount) {
+        return {
+          ...prev,
+          discounts: prev.discounts.filter(discount => discount.name !== discountName)
+        };
+      } else {
+        return {
+          ...prev,
+          discounts: [...prev.discounts, { name: discountName, ...discountData }]
+        };
+      }
+    });
+  };
+
+  const toggleFee = (feeName, feeData) => {
+    setCurrentQuote(prev => {
+      const existingFee = prev.fees.find(fee => fee.name === feeName);
+      if (existingFee) {
+        return {
+          ...prev,
+          fees: prev.fees.filter(fee => fee.name !== feeName)
+        };
+      } else {
+        return {
+          ...prev,
+          fees: [...prev.fees, { name: feeName, ...feeData }]
+        };
+      }
+    });
   };
 
   // Show loading screen
@@ -2195,6 +2344,81 @@ function App() {
                     </div>
                   )}
                 </div>
+
+                {/* Discounts and Fees */}
+                <div>
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('discounts')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Discounts & Fees</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {currentQuote.discounts.length + currentQuote.fees.length} selected
+                      </span>
+                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        {collapsedSections.discounts ? '▼' : '▲'}
+                      </button>
+                    </div>
+                  </div>
+                  {!collapsedSections.discounts && (
+                    <div className="space-y-4">
+                      {/* Discounts */}
+                      <div>
+                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Available Discounts</h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.discounts || {}).slice(0, 4).map(([discountName, discountData]) => {
+                            const isSelected = currentQuote.discounts.some(discount => discount.name === discountName);
+                            return (
+                              <div 
+                                key={discountName} 
+                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-green-500 transition-colors cursor-pointer ${
+                                  isSelected ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-600'
+                                }`}
+                                onClick={() => toggleDiscount(discountName, discountData)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex-1">
+                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{discountName}</h5>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{discountData.description}</p>
+                                  </div>
+                                  <div className="text-sm font-bold text-green-600 dark:text-green-400">-{discountData.amount}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Fees */}
+                      <div>
+                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Additional Fees</h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.fees || {}).slice(0, 4).map(([feeName, feeData]) => {
+                            const isSelected = currentQuote.fees.some(fee => fee.name === feeName);
+                            return (
+                              <div 
+                                key={feeName} 
+                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-red-500 transition-colors cursor-pointer ${
+                                  isSelected ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-600'
+                                }`}
+                                onClick={() => toggleFee(feeName, feeData)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex-1">
+                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{feeName}</h5>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{feeData.description}</p>
+                                  </div>
+                                  <div className="text-sm font-bold text-red-600 dark:text-red-400">+{feeData.amount}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               /* Default View - Show sample content */
@@ -2295,6 +2519,81 @@ function App() {
                     </div>
                   )}
                 </div>
+
+                {/* Discounts and Fees */}
+                <div>
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('discounts')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Discounts & Fees</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {currentQuote.discounts.length + currentQuote.fees.length} selected
+                      </span>
+                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        {collapsedSections.discounts ? '▼' : '▲'}
+                      </button>
+                    </div>
+                  </div>
+                  {!collapsedSections.discounts && (
+                    <div className="space-y-4">
+                      {/* Discounts */}
+                      <div>
+                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Available Discounts</h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.discounts || {}).slice(0, 4).map(([discountName, discountData]) => {
+                            const isSelected = currentQuote.discounts.some(discount => discount.name === discountName);
+                            return (
+                              <div 
+                                key={discountName} 
+                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-green-500 transition-colors cursor-pointer ${
+                                  isSelected ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-600'
+                                }`}
+                                onClick={() => toggleDiscount(discountName, discountData)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex-1">
+                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{discountName}</h5>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{discountData.description}</p>
+                                  </div>
+                                  <div className="text-sm font-bold text-green-600 dark:text-green-400">-{discountData.amount}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Fees */}
+                      <div>
+                        <h4 className="text-md font-medium text-slate-700 dark:text-slate-300 mb-3">Additional Fees</h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.fees || {}).slice(0, 4).map(([feeName, feeData]) => {
+                            const isSelected = currentQuote.fees.some(fee => fee.name === feeName);
+                            return (
+                              <div 
+                                key={feeName} 
+                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-red-500 transition-colors cursor-pointer ${
+                                  isSelected ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-600'
+                                }`}
+                                onClick={() => toggleFee(feeName, feeData)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex-1">
+                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{feeName}</h5>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{feeData.description}</p>
+                                  </div>
+                                  <div className="text-sm font-bold text-red-600 dark:text-red-400">+{feeData.amount}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -2307,7 +2606,7 @@ function App() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Quote Summary</h2>
               <div className="flex gap-2">
-                {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0) && (
+                {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) && (
                   <button
                     onClick={clearQuote}
                     className="px-3 py-1 bg-slate-500 text-white rounded-lg text-sm font-medium hover:bg-slate-600 transition-colors"
@@ -2325,7 +2624,7 @@ function App() {
 
             {/* Dynamic Quote Summary */}
             <div className="space-y-4">
-              {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0) ? (
+              {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) ? (
                 /* Live Quote Summary */
                 <>
                   {/* Plan Summary */}
@@ -2416,6 +2715,36 @@ function App() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Discounts Summary */}
+                  {currentQuote.discounts.length > 0 && (
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Applied Discounts</h4>
+                      <div className="space-y-2">
+                        {currentQuote.discounts.map((discount, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">{discount.name}</span>
+                            <span className="font-semibold text-green-600 dark:text-green-400">-{discount.amount}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fees Summary */}
+                  {currentQuote.fees.length > 0 && (
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Additional Fees</h4>
+                      <div className="space-y-2">
+                        {currentQuote.fees.map((fee, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">{fee.name}</span>
+                            <span className="font-semibold text-red-600 dark:text-red-400">+{fee.amount}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : isBuildingQuote ? (
                 /* Empty State when Building Quote */
@@ -2503,6 +2832,57 @@ function App() {
                         <div className="flex justify-between items-center">
                           <span className="font-semibold">First Month Total</span>
                           <span className="font-bold text-xl">$358.82</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Discounts Summary */}
+                  {currentQuote.discounts.length > 0 && (
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Applied Discounts</h4>
+                      <div className="space-y-2">
+                        {currentQuote.discounts.map((discount, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">{discount.name}</span>
+                            <span className="font-semibold text-green-600 dark:text-green-400">-{discount.amount}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fees Summary */}
+                  {currentQuote.fees.length > 0 && (
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Additional Fees</h4>
+                      <div className="space-y-2">
+                        {currentQuote.fees.map((fee, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">{fee.name}</span>
+                            <span className="font-semibold text-red-600 dark:text-red-400">+{fee.amount}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Total Summary */}
+                  <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-4 text-white">
+                    <h4 className="font-semibold mb-3">Monthly Total</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm opacity-90">Plan + Device + Add-ons</span>
+                        <span className="font-bold text-lg">${calculateQuoteTotals().totalMonthly.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm opacity-90">One-time Costs</span>
+                        <span className="font-semibold">${calculateQuoteTotals().totalOneTime.toFixed(2)}</span>
+                      </div>
+                      <div className="border-t border-white border-opacity-20 pt-2 mt-2">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold">First Month Total</span>
+                          <span className="font-bold text-xl">${calculateQuoteTotals().totalFirstMonth.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
