@@ -57,7 +57,8 @@ import {
   SettingsModal,
   QuoteHistoryModal,
   MultiStepQuoteModal,
-  DeviceSpecsModal
+  DeviceSpecsModal,
+  DeviceShowcaseModal
 } from './components/Modals';
 
 // Product catalog data for T-Mobile Sales Quote Tool
@@ -1173,6 +1174,10 @@ function App() {
   const [lastDeletedSale, setLastDeletedSale] = useState(null);
   const [undoTimeout, setUndoTimeout] = useState(null);
 
+  // Modal states
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
+  const [showDeviceShowcase, setShowDeviceShowcase] = useState(false);
+
   // Add debugging for mobile view - MOVED AFTER STATE DECLARATIONS
   useEffect(() => {
     console.log('App: Component rendering...');
@@ -1740,122 +1745,202 @@ function App() {
             </p>
           </div>
 
-          {/* Quick Actions Grid - Mobile Optimized */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            {/* Create New Quote */}
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <button
-              onClick={() => setShowSaleModal(true)}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
+              onClick={() => setShowQuoteModal(true)}
+              className="btn-fun bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
-              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-              <div className="relative z-10">
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">✨</div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">Create New Quote</h3>
-                <p className="text-sm sm:text-base text-att-blue-100">Build a professional quote with our fun interface</p>
-              </div>
+              <div className="text-3xl mb-2">📝</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-1">Create New Quote</h3>
+              <p className="text-sm sm:text-base opacity-90">Start a professional quote</p>
             </button>
-
-            {/* Quote History */}
-            <button
-              onClick={() => setShowQuoteHistory(true)}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
-            >
-              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-              <div className="relative z-10">
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📋</div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">Quote History</h3>
-                <p className="text-sm sm:text-base text-emerald-100">View and manage all your previous quotes</p>
-              </div>
-            </button>
-
-            {/* Settings */}
+            
             <button
               onClick={() => setShowSettingsModal(true)}
-              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
+              className="btn-fun bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
             >
-              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-              <div className="relative z-10">
-                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚙️</div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">Settings</h3>
-                <p className="text-sm sm:text-base text-purple-100">Customize your experience and manage goals</p>
-              </div>
+              <div className="text-3xl mb-2">⚙️</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-1">Settings</h3>
+              <p className="text-sm sm:text-base opacity-90">Configure app & view history</p>
+            </button>
+            
+            <button
+              onClick={() => setShowDeviceShowcase(true)}
+              className="btn-fun bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
+            >
+              <div className="text-3xl mb-2">📱</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-1">Device Showcase</h3>
+              <p className="text-sm sm:text-base opacity-90">Browse devices & plans</p>
             </button>
           </div>
 
-          {/* Dashboard Stats - Mobile Optimized */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+          {/* Dashboard Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Total Quotes</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{quotesWithPricing.length}</p>
                 </div>
-                <div className="text-2xl sm:text-3xl">📊</div>
+                <div className="text-3xl sm:text-4xl">📊</div>
               </div>
             </div>
             
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">This Month</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
+                    {quotesWithPricing.filter(quote => {
+                      const quoteDate = new Date(quote.date);
+                      const now = new Date();
+                      return quoteDate.getMonth() === now.getMonth() && quoteDate.getFullYear() === now.getFullYear();
+                    }).length}
+                  </p>
                 </div>
-                <div className="text-2xl sm:text-3xl">💰</div>
+                <div className="text-3xl sm:text-4xl">📅</div>
               </div>
             </div>
             
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg sm:col-span-2 lg:col-span-1">
+            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Avg Quote Value</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
+                    ${quotesWithPricing.length > 0 
+                      ? Math.round(quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0) / quotesWithPricing.length)
+                      : 0}/mo
+                  </p>
                 </div>
-                <div className="text-2xl sm:text-3xl">🎯</div>
+                <div className="text-3xl sm:text-4xl">💰</div>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Total Monthly</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
+                    ${quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="text-3xl sm:text-4xl">📈</div>
               </div>
             </div>
           </div>
 
-          {/* Recent Quotes Preview - Mobile Optimized */}
-          {filteredAndSortedQuotes.length > 0 && (
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
-                <button
-                  onClick={() => setShowQuoteHistory(true)}
-                  className="text-att-blue hover:text-att-blue-light font-medium text-sm sm:text-base"
-                >
-                  View All →
-                </button>
+          {/* Device and Plans Showcase */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Featured Devices & Plans</h2>
+              <button
+                onClick={() => setShowDeviceShowcase(true)}
+                className="text-att-blue hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-sm sm:text-base transition-colors"
+              >
+                View All →
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Featured Smartphones */}
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Premium Smartphones</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone 16 Pro Max, Galaxy S25 Ultra</p>
+                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $45.83/mo</p>
+                </div>
               </div>
-              <div className="space-y-3">
-                {filteredAndSortedQuotes.slice(0, 3).map((quote) => (
-                  <div key={quote.id} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-slate-800 dark:text-white text-sm sm:text-base truncate">{quote.customerName}</p>
-                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                        {format(new Date(quote.saleDate), 'MMM dd, yyyy')}
-                      </p>
-                    </div>
-                    <div className="text-right ml-3">
-                      <p className="font-bold text-emerald-600 text-sm sm:text-base">${quote.totalMonthly.toFixed(2)}/mo</p>
-                      {quote.totalOneTime > 0 && (
-                        <p className="text-xs sm:text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Foldable Devices</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">Galaxy Z Fold7, Pixel 9 Pro Fold</p>
+                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $66.67/mo</p>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Budget Options</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPhone SE, Galaxy A16, Moto G</p>
+                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $8.33/mo</p>
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <h3 className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base mb-1">Tablets & Watches</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-2">iPad Pro, Galaxy Tab, Apple Watch</p>
+                  <p className="text-xs sm:text-sm font-semibold text-emerald-600">From $8.33/mo</p>
+                </div>
               </div>
             </div>
-          )}
+          </div>
+
+          {/* Recent Quotes Preview */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                className="text-att-blue hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-sm sm:text-base transition-colors"
+              >
+                View All →
+              </button>
+            </div>
+            
+            {quotesWithPricing.slice(0, 3).map((quote, index) => (
+              <div key={index} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg mb-3 last:mb-0">
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base truncate">
+                    {quote.customerName || 'Customer'}
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">
+                    {quote.services.map(service => service.name).join(', ')}
+                  </p>
+                </div>
+                <div className="text-right ml-4">
+                  <p className="font-semibold text-slate-800 dark:text-white text-sm sm:text-base">
+                    ${quote.totalMonthly}/mo
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                    {format(new Date(quote.date), 'MMM d')}
+                  </p>
+                </div>
+              </div>
+            ))}
+            
+            {quotesWithPricing.length === 0 && (
+              <div className="text-center py-8 sm:py-12">
+                <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📝</div>
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-600 dark:text-slate-400 mb-2">
+                  No Quotes Yet
+                </h3>
+                <p className="text-sm sm:text-base text-slate-500 dark:text-slate-500">
+                  Create your first quote to get started
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Modals */}
-        {showSaleModal && (
+        {showQuoteModal && (
           <MultiStepQuoteModal
-            onClose={() => setShowSaleModal(false)}
+            onClose={() => setShowQuoteModal(false)}
             onSave={handleAddSale}
-            currentServices={currentSaleServices}
-            setCurrentServices={setCurrentSaleServices}
+            productCatalog={PRODUCT_CATALOG}
+          />
+        )}
+
+        {showDeviceShowcase && (
+          <DeviceShowcaseModal
+            onClose={() => setShowDeviceShowcase(false)}
             productCatalog={PRODUCT_CATALOG}
           />
         )}
@@ -1884,6 +1969,7 @@ function App() {
             onSignOut={handleSignOut}
             user={user}
             onShowGoals={() => setShowGoalsModal(true)}
+            onShowQuoteHistory={() => setShowQuoteHistory(true)}
           />
         )}
 

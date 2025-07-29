@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun, Check, Smartphone } from 'lucide-react';
+import { X, Plus, Lock, User, Target, Download, Upload, LogOut, Trash2, Moon, Sun, Check, Smartphone, FileText } from 'lucide-react';
 
 // Sale Modal
 export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices, productCatalog }) => {
@@ -788,7 +788,8 @@ export const SettingsModal = ({
   onToggleTempUnit,
   onSignOut,
   user,
-  onShowGoals
+  onShowGoals,
+  onShowQuoteHistory
 }) => {
   const isDark = document.documentElement.classList.contains('dark');
 
@@ -829,6 +830,21 @@ export const SettingsModal = ({
               <div className="text-left">
                 <div className="font-medium text-slate-800 dark:text-white">Manage Goals</div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">Set and track your sales goals</div>
+              </div>
+            </button>
+          </div>
+
+          {/* Quote History Section */}
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
+            <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4">Quote Management</h3>
+            <button
+              onClick={onShowQuoteHistory}
+              className="flex items-center gap-3 w-full p-4 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+            >
+              <FileText className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <div className="text-left">
+                <div className="font-medium text-slate-800 dark:text-white">Quote History</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">View and manage all your quotes</div>
               </div>
             </button>
           </div>
@@ -2449,6 +2465,126 @@ export const DeviceSpecsModal = ({ device, onClose }) => {
               Close
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const DeviceShowcaseModal = ({ onClose, productCatalog }) => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedBrand, setSelectedBrand] = useState('all');
+
+  const categories = ['all', 'Premium', 'Standard', 'Budget'];
+  const brands = ['all', 'Apple', 'Samsung', 'Google', 'Motorola', 'OnePlus', 'TCL'];
+
+  const filteredDevices = Object.entries(productCatalog.Mobile.devices).filter(([name, device]) => {
+    const categoryMatch = selectedCategory === 'all' || device.category === selectedCategory;
+    const brandMatch = selectedBrand === 'all' || device.brand === selectedBrand;
+    return categoryMatch && brandMatch;
+  });
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-content max-w-7xl" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">Device & Plans Showcase</h2>
+          <button
+            onClick={onClose}
+            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="form-input"
+            >
+              {categories.map(category => (
+                <option key={category} value={category}>
+                  {category === 'all' ? 'All Categories' : category}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Brand</label>
+            <select
+              value={selectedBrand}
+              onChange={(e) => setSelectedBrand(e.target.value)}
+              className="form-input"
+            >
+              {brands.map(brand => (
+                <option key={brand} value={brand}>
+                  {brand === 'all' ? 'All Brands' : brand}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Device Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
+          {filteredDevices.map(([deviceName, device]) => (
+            <div key={deviceName} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-shadow">
+              <div className="text-center">
+                <DeviceImage
+                  src={device.image}
+                  alt={deviceName}
+                  className="w-16 h-16 mx-auto mb-3 object-contain"
+                />
+                <h3 className="font-semibold text-slate-800 dark:text-white text-sm mb-1 truncate">{deviceName}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">{device.brand} • {device.category}</p>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-emerald-600">{device.price}</p>
+                  <p className="text-xs text-slate-500">Down: {device.downPayment}</p>
+                  <p className="text-xs text-slate-500">{device.monthlyPayment}/mo</p>
+                </div>
+                <div className="mt-3">
+                  <button
+                    onClick={() => {
+                      // This could open a detailed view or add to quote
+                      console.log('View device:', deviceName);
+                    }}
+                    className="w-full py-1 px-3 bg-att-blue text-white text-xs rounded hover:bg-blue-700 transition-colors"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Plans Section */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Available Plans</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(productCatalog.Mobile.plans).map(([planName, plan]) => (
+              <div key={planName} className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                <h4 className="font-semibold text-slate-800 dark:text-white mb-2">{planName}</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{plan.description}</p>
+                <p className="text-lg font-bold text-emerald-600">{plan.price}/mo</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <div className="flex justify-end mt-6">
+          <button
+            onClick={onClose}
+            className="bg-att-blue text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-800 transition-colors duration-200"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
