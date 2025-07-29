@@ -1759,7 +1759,11 @@ function App() {
     console.log('App: Showing auth modal');
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <AuthModal onAuthSuccess={handleAuthSuccess} />
+        <AuthModal 
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess} 
+        />
         <Toaster position="top-right" />
       </div>
     );
@@ -1842,7 +1846,11 @@ function App() {
     console.log('App: Ultimate fallback - forcing auth modal');
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-        <AuthModal onAuthSuccess={handleAuthSuccess} />
+        <AuthModal 
+          isOpen={true}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess} 
+        />
         <Toaster position="top-right" />
       </div>
     );
