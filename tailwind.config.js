@@ -16,7 +16,7 @@ module.exports = {
         'att-light-gray': '#f5f5f5',
       },
       fontFamily: {
-        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['"Product Sans"', '"Google Sans"', 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       animation: {
         'slide-up': 'slide-up 0.4s ease-out',

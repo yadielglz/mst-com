@@ -1730,6 +1730,8 @@ function App() {
           onSignOut={handleSignOut}
           onToggleTheme={toggleTheme}
           onShowSettings={() => setShowSettingsModal(true)}
+          weather={weather}
+          tempUnit={userSettings.tempUnit}
         />
 
         {/* Main Content */}

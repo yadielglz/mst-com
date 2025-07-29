@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, LogOut, Moon, Sun, Menu, X } from 'lucide-react';
+import { Settings, LogOut, Moon, Sun, Menu, X, Clock, Cloud } from 'lucide-react';
 
 const Header = ({ 
   user, 
   onSignOut, 
   onToggleTheme, 
-  onShowSettings
+  onShowSettings,
+  weather,
+  tempUnit
 }) => {
   const isDark = document.documentElement.classList.contains('dark');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -21,6 +33,24 @@ const Header = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobileMenuOpen]);
+
+  // Format time
+  const formatTime = (date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  // Format date
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
   return (
     <header className="bg-white dark:bg-slate-800 shadow-lg border-b border-slate-200 dark:border-slate-700 mobile-menu-container">
@@ -46,6 +76,29 @@ const Header = ({
                 Quote Tool
               </h1>
             </div>
+          </div>
+
+          {/* Clock and Weather - Desktop */}
+          <div className="hidden sm:flex items-center gap-4">
+            {/* Clock */}
+            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+              <Clock className="w-4 h-4" />
+              <div className="text-right">
+                <div className="text-sm font-medium">{formatTime(currentTime)}</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
+              </div>
+            </div>
+
+            {/* Weather */}
+            {weather && weather.temp && (
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                <span className="text-lg">{weather.condition}</span>
+                <div className="text-right">
+                  <div className="text-sm font-medium">{weather.temp}°{tempUnit || 'F'}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">Weather</div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Desktop Action Buttons */}
@@ -109,6 +162,25 @@ const Header = ({
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
             <div className="space-y-3">
+              {/* Clock and Weather - Mobile */}
+              <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                  <div>
+                    <div className="text-sm font-medium text-slate-800 dark:text-white">{formatTime(currentTime)}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">{formatDate(currentTime)}</div>
+                  </div>
+                </div>
+                {weather && weather.temp && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{weather.condition}</span>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-slate-800 dark:text-white">{weather.temp}°{tempUnit || 'F'}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Settings Button */}
               <button
                 onClick={() => {
