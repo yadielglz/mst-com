@@ -1866,269 +1866,382 @@ function App() {
   }
 
   return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-white dark:bg-slate-900">
       <Toaster position="top-right" />
       
-        {/* Header */}
+      {/* Header */}
       <Header 
         user={user}
-          onSignOut={handleSignOut}
-          onToggleTheme={toggleTheme}
-          onShowSettings={() => setShowSettingsModal(true)}
-          weather={weather}
-          tempUnit={userSettings.tempUnit}
-        />
+        onSignOut={handleSignOut}
+        onToggleTheme={toggleTheme}
+        onShowSettings={() => setShowSettingsModal(true)}
+        weather={weather}
+        tempUnit={userSettings.tempUnit}
+      />
 
-        {/* Main Content */}
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          {/* Welcome Section */}
-          <div className="mb-6 sm:mb-8 text-center">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white mb-2">
-              T-Mobile Sales Tool! 🚀
-            </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-slate-300 px-2">
-              Create amazing quotes for your customers with our fun and easy interface
-            </p>
-          </div>
-
-          {/* Quick Actions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <button
-              onClick={() => setShowQuoteModal(true)}
-              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
-            >
-              <div className="text-2xl sm:text-3xl mb-2">📝</div>
-              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Create New Quote</h3>
-              <p className="text-xs sm:text-sm lg:text-base opacity-90">Start a professional quote</p>
-            </button>
-            
-            <button
-              onClick={() => setShowSettingsModal(true)}
-              className="btn-fun bg-gradient-to-r from-[#4A4A4A] to-[#6B7280] hover:from-[#2D2D2D] hover:to-[#4B5563] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation"
-            >
-              <div className="text-2xl sm:text-3xl mb-2">⚙️</div>
-              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Settings</h3>
-              <p className="text-xs sm:text-sm lg:text-base opacity-90">Configure app & view history</p>
-            </button>
-            
-            <button
-              onClick={() => setShowDeviceShowcase(true)}
-              className="btn-fun bg-gradient-to-r from-[#E20074] to-[#FF6B9D] hover:from-[#B8005C] hover:to-[#E55A8A] text-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
-            >
-              <div className="text-2xl sm:text-3xl mb-2">📱</div>
-              <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-1">Device Showcase</h3>
-              <p className="text-xs sm:text-sm lg:text-base opacity-90">Browse devices & plans</p>
-            </button>
-          </div>
-          
-          {/* Dashboard Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Available Plans</p>
-                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">15+</p>
+      {/* Modern Quote Builder Interface */}
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)]">
+        
+        {/* Left Sidebar - Quote Builder */}
+        <div className="w-full lg:w-1/3 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700">
+          <div className="p-4">
+            {/* Quote Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-att-blue rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">Q</span>
                 </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl">📋</div>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Device Options</p>
-                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">50+</p>
+                  <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Current Quote</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Consumer</p>
                 </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl">📱</div>
               </div>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">5G Coverage</p>
-                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">99%</p>
-                </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl">📶</div>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 lg:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm lg:text-base text-slate-600 dark:text-slate-400">Customer Support</p>
-                  <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-800 dark:text-white">24/7</p>
-                </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl">🛟</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Device and Plans Showcase */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Device & Plans Showcase</h3>
               <button
-                onClick={() => setShowDeviceShowcase(true)}
-                className="text-[#E20074] hover:text-[#B8005C] font-medium text-sm transition-colors"
+                onClick={() => setShowQuoteModal(true)}
+                className="px-4 py-2 bg-att-blue text-white rounded-lg font-medium hover:bg-att-blue-dark transition-colors"
               >
-                View All
+                START NEW
               </button>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Premium Smartphones */}
-              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">📱</div>
-                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Premium Smartphones</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">iPhone 15, Samsung S24</p>
-                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
-                </div>
-              </div>
 
-              {/* Foldable Devices */}
-              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">📱</div>
-                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Foldable Devices</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Z Fold6, Z Flip6, Razr+</p>
-                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
-                </div>
+            {/* Plan Tabs */}
+            <div className="flex gap-2 mb-6 overflow-x-auto">
+              <div className="flex items-center gap-2 px-3 py-2 bg-att-blue text-white rounded-lg text-sm font-medium">
+                <span>UNLIMITED(1)</span>
+                <button className="w-4 h-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-xs">×</button>
               </div>
-
-              {/* Budget Options */}
-              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">📱</div>
-                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Budget Options</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">Moto G, REVVL, A-Series</p>
-                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
-                </div>
+              <div className="flex items-center gap-2 px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium">
+                <span>VALUE PLUS VL(0)</span>
+                <button className="w-4 h-4 bg-slate-400 rounded-full flex items-center justify-center text-xs">×</button>
               </div>
-
-              {/* Tablets & Watches */}
-              <div className="bg-gradient-to-br from-[#F8E6F0] to-[#FFF0F5] dark:from-slate-700 dark:to-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
-                <div className="text-center">
-                  <div className="text-3xl mb-2">⌚</div>
-                  <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">Tablets & Watches</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">iPad, Galaxy Tab, Apple Watch</p>
-                  <p className="text-sm font-semibold text-[#E20074]">From $0/mo</p>
-                </div>
+              <div className="flex items-center gap-2 px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium">
+                <span>55+ PLAN(0)</span>
+                <button className="w-4 h-4 bg-slate-400 rounded-full flex items-center justify-center text-xs">×</button>
               </div>
+              <div className="flex items-center gap-2 px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium">
+                <span>INTERNET(0)</span>
+                <button className="w-4 h-4 bg-slate-400 rounded-full flex items-center justify-center text-xs">×</button>
+              </div>
+              <button className="px-3 py-2 text-att-blue border border-att-blue rounded-lg text-sm font-medium hover:bg-att-blue hover:text-white transition-colors">
+                + Add Tabs
+              </button>
             </div>
-          </div>
 
-          {/* Promotional Banners */}
-          <div className="space-y-4">
-            {/* Current Promotions Banner */}
-            <div className="bg-gradient-to-r from-[#E20074] to-[#FF6B9D] rounded-xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2">🎉 Current Promotions</h3>
-                  <p className="text-sm sm:text-base opacity-90 mb-3">
-                    Get up to $800 off when you switch to T-Mobile! Plus, enjoy 3 months of Netflix on us.
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Switch & Save</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Netflix on Us</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">5G Included</span>
-                  </div>
+            {/* Plan Discounts */}
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <button className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white">
+                  PLAN DISCOUNTS ▼
+                </button>
+              </div>
+              <div className="flex gap-2 mb-3">
+                <div className="flex-1 bg-att-blue text-white px-3 py-2 rounded-lg text-sm font-medium">
+                  $10 ABP Discount - Pay by Bank Acco... ▼
                 </div>
-                <div className="text-4xl sm:text-5xl ml-4">📱</div>
+                <div className="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-3 py-2 rounded-lg text-sm">
+                  No additional discounts applied
+                </div>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                $ T-Mobile Unlimited 1 phone line tier
+              </p>
+              <div className="flex items-center gap-4 mb-3">
+                <span className="text-sm font-medium text-att-blue">Premium PL | $85.99</span>
+                <span className="text-sm text-slate-500">Extra EL | $75.99</span>
+                <span className="text-sm text-slate-500">Starter SL | $65.99</span>
+                <button className="text-sm text-att-blue border border-att-blue px-2 py-1 rounded hover:bg-att-blue hover:text-white transition-colors">
+                  COMPARE PLANS
+                </button>
               </div>
             </div>
 
-            {/* 5G Network Banner */}
-            <div className="bg-gradient-to-r from-[#4A90E2] to-[#7BB3F0] rounded-xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2">🚀 America's Largest 5G Network</h3>
-                  <p className="text-sm sm:text-base opacity-90 mb-3">
-                    Experience lightning-fast speeds with our nationwide 5G coverage. No extra charges!
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Nationwide 5G</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">No Extra Cost</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Ultra Capacity</span>
-                  </div>
+            {/* Device Selection */}
+            <div className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 mb-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">📱</span>
                 </div>
-                <div className="text-4xl sm:text-5xl ml-4">📶</div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-slate-800 dark:text-white">iPhone 16 Pro</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">256GB Natural Titanium</p>
+                </div>
+                <div className="relative">
+                  <div className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    1
+                  </div>
+                  <button className="w-6 h-6 bg-slate-200 dark:bg-slate-600 rounded-full flex items-center justify-center text-slate-500 hover:bg-red-100 hover:text-red-600 transition-colors">
+                    ×
+                  </button>
+                </div>
               </div>
-            </div>
+              
+              <div className="flex gap-2 mb-4">
+                <button className="flex-1 bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                  <span className="text-xs">★</span>
+                  NEW
+                </button>
+                <button className="flex-1 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 px-3 py-2 rounded-lg text-sm font-medium">
+                  DUPLICATE
+                </button>
+                <button className="flex-1 bg-att-blue text-white px-3 py-2 rounded-lg text-sm font-medium">
+                  EDIT OPTIONS
+                </button>
+              </div>
 
-            {/* Family Plans Banner */}
-            <div className="bg-gradient-to-r from-[#50C878] to-[#7DCEA0] rounded-xl p-6 text-white shadow-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2">👨‍👩‍👧‍👦 Family Plans Starting at $120/mo</h3>
-                  <p className="text-sm sm:text-base opacity-90 mb-3">
-                    Up to 4 lines with unlimited data, talk & text. The more lines, the more you save!
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">4 Lines $120</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Unlimited Data</span>
-                    <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full">Family Savings</span>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <button className="w-8 h-8 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors">-</button>
+                  <span className="w-8 text-center font-medium">1</span>
+                  <button className="w-8 h-8 bg-slate-200 dark:bg-slate-600 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors">+</button>
+                </div>
+                <button className="flex-1 bg-att-blue text-white px-3 py-2 rounded-lg text-sm font-medium">
+                  ADD DEVICES ▼
+                </button>
+              </div>
+
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">1/10 devices added</p>
+
+              {/* Device Categories */}
+              <div className="flex gap-1 mb-4">
+                <button className="flex-1 bg-att-blue text-white px-3 py-2 rounded-lg text-sm font-medium">Top Devices</button>
+                <button className="flex-1 bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-3 py-2 rounded-lg text-sm">Connected</button>
+                <button className="flex-1 bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-3 py-2 rounded-lg text-sm">FirstNet</button>
+              </div>
+
+              {/* Device Types */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-slate-100 dark:bg-slate-600 rounded-lg p-3 relative">
+                  <div className="w-6 h-6 bg-att-blue text-white rounded-full flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    1
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">📱</div>
+                    <p className="text-sm font-medium text-slate-800 dark:text-white">Smartphone</p>
+                    <button className="w-6 h-6 bg-att-blue text-white rounded-full flex items-center justify-center text-xs mx-auto mt-2 hover:bg-att-blue-dark transition-colors">+</button>
                   </div>
                 </div>
-                <div className="text-4xl sm:text-5xl ml-4">👨‍👩‍👧‍👦</div>
+                <div className="bg-slate-100 dark:bg-slate-600 rounded-lg p-3 relative">
+                  <div className="w-6 h-6 bg-slate-400 text-white rounded-full flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    0
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">📱</div>
+                    <p className="text-sm font-medium text-slate-800 dark:text-white">Tablet</p>
+                    <button className="w-6 h-6 bg-att-blue text-white rounded-full flex items-center justify-center text-xs mx-auto mt-2 hover:bg-att-blue-dark transition-colors">+</button>
+                  </div>
+                </div>
+                <div className="bg-slate-100 dark:bg-slate-600 rounded-lg p-3 relative">
+                  <div className="w-6 h-6 bg-slate-400 text-white rounded-full flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    0
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">⌚</div>
+                    <p className="text-sm font-medium text-slate-800 dark:text-white">Wearable</p>
+                    <button className="w-6 h-6 bg-att-blue text-white rounded-full flex items-center justify-center text-xs mx-auto mt-2 hover:bg-att-blue-dark transition-colors">+</button>
+                  </div>
+                </div>
+                <div className="bg-slate-100 dark:bg-slate-600 rounded-lg p-3 relative">
+                  <div className="w-6 h-6 bg-slate-400 text-white rounded-full flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    0
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">📞</div>
+                    <p className="text-sm font-medium text-slate-800 dark:text-white">Basic Phone</p>
+                    <button className="w-6 h-6 bg-att-blue text-white rounded-full flex items-center justify-center text-xs mx-auto mt-2 hover:bg-att-blue-dark transition-colors">+</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Right Sidebar - Plan Review */}
+        <div className="w-full lg:w-1/3 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700">
+          <div className="p-4">
+            {/* Review Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Plan Review</h2>
+              <button className="px-3 py-1 bg-orange-500 text-white rounded-lg text-sm font-medium">
+                Try the new grid view! 🎯
+              </button>
+            </div>
+
+            {/* Plan Details */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-slate-800 dark:text-white">T-Mobile Unlimited Premium® PL</h3>
+                <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">▼</button>
+              </div>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Cost</span>
+                  <span className="font-semibold text-slate-800 dark:text-white">$85.99</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400">1 phone line price tier</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Device Details */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+              <h4 className="font-medium text-slate-800 dark:text-white mb-3">Smartphone</h4>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Cost</span>
+                  <span className="font-semibold text-slate-800 dark:text-white">$45.83</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">One-time Cost</span>
+                  <span className="font-semibold text-slate-800 dark:text-white">$199.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 bg-slate-50 dark:bg-slate-800 p-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-2">
+                T-Mobile Sales Tool
+              </h1>
+              <p className="text-slate-600 dark:text-slate-400">
+                Professional quote builder for your customers
+              </p>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <button
+                onClick={() => setShowQuoteModal(true)}
+                className="bg-gradient-to-r from-att-blue to-att-blue-light text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <div className="text-3xl mb-3">📝</div>
+                <h3 className="text-xl font-bold mb-2">Create New Quote</h3>
+                <p className="text-sm opacity-90">Start building a professional quote</p>
+              </button>
+              
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <div className="text-3xl mb-3">⚙️</div>
+                <h3 className="text-xl font-bold mb-2">Settings & History</h3>
+                <p className="text-sm opacity-90">Manage quotes and settings</p>
+              </button>
+              
+              <button
+                onClick={() => setShowDeviceShowcase(true)}
+                className="bg-gradient-to-r from-att-blue to-att-blue-light text-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <div className="text-3xl mb-3">📱</div>
+                <h3 className="text-xl font-bold mb-2">Device Showcase</h3>
+                <p className="text-sm opacity-90">Browse devices and plans</p>
+              </button>
+            </div>
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white dark:bg-slate-700 p-4 rounded-xl shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Available Plans</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-white">15+</p>
+                  </div>
+                  <div className="text-2xl">📋</div>
+                </div>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-700 p-4 rounded-xl shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Device Options</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-white">50+</p>
+                  </div>
+                  <div className="text-2xl">📱</div>
+                </div>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-700 p-4 rounded-xl shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">5G Coverage</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-white">99%</p>
+                  </div>
+                  <div className="text-2xl">🌐</div>
+                </div>
+              </div>
+              
+              <div className="bg-white dark:bg-slate-700 p-4 rounded-xl shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Customer Support</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-white">24/7</p>
+                  </div>
+                  <div className="text-2xl">🎧</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Modals */}
-        {showQuoteModal && (
-          <MultiStepQuoteModal
-            onClose={() => setShowQuoteModal(false)}
-            onSave={handleAddSale}
-            productCatalog={PRODUCT_CATALOG}
-          />
-        )}
+      {showQuoteModal && (
+        <MultiStepQuoteModal
+          onClose={() => setShowQuoteModal(false)}
+          onSave={handleAddSale}
+          productCatalog={PRODUCT_CATALOG}
+        />
+      )}
 
-        {showDeviceShowcase && (
-          <DeviceShowcaseModal
-            onClose={() => setShowDeviceShowcase(false)}
-            productCatalog={PRODUCT_CATALOG}
-          />
-        )}
+      {showDeviceShowcase && (
+        <DeviceShowcaseModal
+          onClose={() => setShowDeviceShowcase(false)}
+          productCatalog={PRODUCT_CATALOG}
+        />
+      )}
 
-        {showQuoteHistory && (
-          <QuoteHistoryModal
-            onClose={() => setShowQuoteHistory(false)}
-            quotes={filteredAndSortedQuotes}
-            onDeleteSale={handleDeleteSale}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            filterProduct={filterProduct}
-            onFilterChange={setFilterProduct}
-            sortSales={sortSales}
-            onSortChange={setSortSales}
-          />
-        )}
+      {showQuoteHistory && (
+        <QuoteHistoryModal
+          onClose={() => setShowQuoteHistory(false)}
+          quotes={filteredAndSortedQuotes}
+          onDeleteSale={handleDeleteSale}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterProduct={filterProduct}
+          onFilterChange={setFilterProduct}
+          sortSales={sortSales}
+          onSortChange={setSortSales}
+        />
+      )}
 
-        {showSettingsModal && (
-          <SettingsModal
-            isOpen={showSettingsModal}
-            onClose={() => setShowSettingsModal(false)}
-            onSetProfile={() => setShowProfileModal(true)}
-            onToggleTheme={toggleTheme}
-            onToggleTempUnit={toggleTempUnit}
-            onSignOut={handleSignOut}
-            user={user}
-            onShowGoals={() => setShowGoalsModal(true)}
-            onShowQuoteHistory={() => {
-              setShowSettingsModal(false);
-              setShowQuoteHistory(true);
-            }}
-            quotesWithPricing={quotesWithPricing}
-          />
-        )}
+      {showSettingsModal && (
+        <SettingsModal
+          isOpen={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          onSetProfile={() => setShowProfileModal(true)}
+          onToggleTheme={toggleTheme}
+          onToggleTempUnit={toggleTempUnit}
+          onSignOut={handleSignOut}
+          user={user}
+          onShowGoals={() => setShowGoalsModal(true)}
+          onShowQuoteHistory={() => {
+            setShowSettingsModal(false);
+            setShowQuoteHistory(true);
+          }}
+          quotesWithPricing={quotesWithPricing}
+        />
+      )}
 
       {showGoalsModal && (
         <GoalsModal 
           goals={currentGoals}
-            onSave={handleSaveGoals}
+          onSave={handleSaveGoals}
           onClose={() => setShowGoalsModal(false)}
         />
       )}
@@ -2136,17 +2249,17 @@ function App() {
       {showProfileModal && (
         <ProfileModal 
           name={userSettings.name}
-            onSave={handleSaveProfile}
+          onSave={handleSaveProfile}
           onClose={() => setShowProfileModal(false)}
         />
       )}
 
-        {showPinModal && (
-          <PinModal
-            onUnlock={handlePinUnlock}
-            pinLock={pinLock}
-          />
-        )}
+      {showPinModal && (
+        <PinModal
+          onUnlock={handlePinUnlock}
+          pinLock={pinLock}
+        />
+      )}
 
       {showSearchPopout && (
         <SearchPopout 
@@ -2156,26 +2269,26 @@ function App() {
         />
       )}
 
-        {showOOBE && (
-          <OOBEScreen onComplete={handleOOBEComplete} />
-        )}
+      {showOOBE && (
+        <OOBEScreen onComplete={handleOOBEComplete} />
+      )}
 
-        {/* Undo Toast */}
+      {/* Undo Toast */}
       {lastDeletedSale && (
-          <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
-            <div className="flex items-center gap-2">
-              <span>Quote deleted</span>
-        <button
-          onClick={handleUndoDelete}
-                className="text-att-blue hover:text-att-blue-light font-medium"
-        >
-                Undo
-        </button>
-            </div>
+        <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
+          <div className="flex items-center gap-2">
+            <span>Quote deleted</span>
+            <button
+              onClick={handleUndoDelete}
+              className="text-att-blue hover:text-att-blue-light font-medium"
+            >
+              Undo
+            </button>
           </div>
-        )}
-      </div>
-    );
-  }
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default App;
