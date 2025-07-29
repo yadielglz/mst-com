@@ -1191,6 +1191,11 @@ function App() {
     addOns: [],
     customerInfo: {}
   });
+  const [collapsedSections, setCollapsedSections] = useState({
+    plans: false,
+    devices: false,
+    addOns: false
+  });
 
   // Mobile detection and responsive handling
   useEffect(() => {
@@ -1860,6 +1865,22 @@ function App() {
     });
   };
 
+  const clearQuote = () => {
+    setCurrentQuote({
+      plan: null,
+      device: null,
+      addOns: [],
+      customerInfo: {}
+    });
+  };
+
+  const toggleSection = (section) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
   // Show loading screen
   if (isLoading) {
     console.log('App: Showing loading screen');
@@ -2044,71 +2065,224 @@ function App() {
               <div className="space-y-6">
                 {/* Plan Selection */}
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Select Your Plan</h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
-                      <div 
-                        key={planName} 
-                        className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
-                          currentQuote.plan?.name === planName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
-                        }`}
-                        onClick={() => selectPlan(planName, planData)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
-                            <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-att-blue">{planData.price}</div>
-                            <div className="text-xs text-slate-500">per line</div>
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('plans')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Select Your Plan</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {currentQuote.plan ? '1 selected' : '0 selected'}
+                      </span>
+                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        {collapsedSections.plans ? '▼' : '▲'}
+                      </button>
+                    </div>
+                  </div>
+                  {!collapsedSections.plans && (
+                    <div className="grid grid-cols-1 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
+                        <div 
+                          key={planName} 
+                          className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
+                            currentQuote.plan?.name === planName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
+                          }`}
+                          onClick={() => selectPlan(planName, planData)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
+                              <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-att-blue">{planData.price}</div>
+                              <div className="text-xs text-slate-500">per line</div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Device Selection */}
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Choose Your Device</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
-                      <div 
-                        key={deviceName} 
-                        className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
-                          currentQuote.device?.name === deviceName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
-                        }`}
-                        onClick={() => selectDevice(deviceName, deviceData)}
-                      >
-                        <div className="text-center">
-                          <div className="text-3xl mb-2">📱</div>
-                          <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
-                          <div className="space-y-1">
-                            <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
-                            <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('devices')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Your Device</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {currentQuote.device ? '1 selected' : '0 selected'}
+                      </span>
+                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        {collapsedSections.devices ? '▼' : '▲'}
+                      </button>
+                    </div>
+                  </div>
+                  {!collapsedSections.devices && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
+                        <div 
+                          key={deviceName} 
+                          className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
+                            currentQuote.device?.name === deviceName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
+                          }`}
+                          onClick={() => selectDevice(deviceName, deviceData)}
+                        >
+                          <div className="text-center">
+                            {deviceData.image ? (
+                              <img 
+                                src={deviceData.image} 
+                                alt={deviceName}
+                                className="w-16 h-16 mx-auto mb-2 object-contain rounded-lg"
+                              />
+                            ) : (
+                              <div className="text-3xl mb-2">📱</div>
+                            )}
+                            <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
+                            <div className="space-y-1">
+                              <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
+                              <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Add-ons */}
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Add Protection & Features</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => {
-                      const isSelected = currentQuote.addOns.some(addon => addon.name === addonName);
-                      return (
-                        <div 
-                          key={addonName} 
-                          className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-att-blue transition-colors cursor-pointer ${
-                            isSelected ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
-                          }`}
-                          onClick={() => toggleAddOn(addonName, addonData)}
-                        >
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('addOns')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Add Protection & Features</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {currentQuote.addOns.length} selected
+                      </span>
+                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        {collapsedSections.addOns ? '▼' : '▲'}
+                      </button>
+                    </div>
+                  </div>
+                  {!collapsedSections.addOns && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => {
+                        const isSelected = currentQuote.addOns.some(addon => addon.name === addonName);
+                        return (
+                          <div 
+                            key={addonName} 
+                            className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-att-blue transition-colors cursor-pointer ${
+                              isSelected ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
+                            }`}
+                            onClick={() => toggleAddOn(addonName, addonData)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</h4>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</p>
+                              </div>
+                              <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              /* Default View - Show sample content */
+              <div className="space-y-6">
+                {/* Plan Selection */}
+                <div className="mb-6">
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('plans')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Select Your Plan</h3>
+                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      {collapsedSections.plans ? '▼' : '▲'}
+                    </button>
+                  </div>
+                  {!collapsedSections.plans && (
+                    <div className="grid grid-cols-1 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
+                        <div key={planName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
+                              <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-att-blue">{planData.price}</div>
+                              <div className="text-xs text-slate-500">per line</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Device Selection */}
+                <div className="mb-6">
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('devices')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Your Device</h3>
+                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      {collapsedSections.devices ? '▼' : '▲'}
+                    </button>
+                  </div>
+                  {!collapsedSections.devices && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
+                        <div key={deviceName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
+                          <div className="text-center">
+                            {deviceData.image ? (
+                              <img 
+                                src={deviceData.image} 
+                                alt={deviceName}
+                                className="w-16 h-16 mx-auto mb-2 object-contain rounded-lg"
+                              />
+                            ) : (
+                              <div className="text-3xl mb-2">📱</div>
+                            )}
+                            <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
+                            <div className="space-y-1">
+                              <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
+                              <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Add-ons */}
+                <div className="mb-6">
+                  <div 
+                    className="flex items-center justify-between mb-4 cursor-pointer"
+                    onClick={() => toggleSection('addOns')}
+                  >
+                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Add Protection & Features</h3>
+                    <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      {collapsedSections.addOns ? '▼' : '▲'}
+                    </button>
+                  </div>
+                  {!collapsedSections.addOns && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => (
+                        <div key={addonName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-3 hover:border-att-blue transition-colors cursor-pointer">
                           <div className="flex items-center justify-between">
                             <div className="flex-1">
                               <h4 className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</h4>
@@ -2117,71 +2291,9 @@ function App() {
                             <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              /* Default View - Show sample content */
-              <div className="space-y-6">
-                {/* Plan Selection */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Select Your Plan</h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
-                      <div key={planName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
-                            <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-att-blue">{planData.price}</div>
-                            <div className="text-xs text-slate-500">per line</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Device Selection */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Choose Your Device</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
-                      <div key={deviceName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-4 hover:border-att-blue transition-colors cursor-pointer">
-                        <div className="text-center">
-                          <div className="text-3xl mb-2">📱</div>
-                          <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
-                          <div className="space-y-1">
-                            <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
-                            <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Add-ons */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">Add Protection & Features</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => (
-                      <div key={addonName} className="bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 p-3 hover:border-att-blue transition-colors cursor-pointer">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</h4>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</p>
-                          </div>
-                          <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -2194,40 +2306,68 @@ function App() {
             {/* Quote Summary Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Quote Summary</h2>
-              {isBuildingQuote && currentQuote.plan && (
-                <button className="px-3 py-1 bg-orange-500 text-white rounded-lg text-sm font-medium">
-                  Save Quote 💾
-                </button>
-              )}
+              <div className="flex gap-2">
+                {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0) && (
+                  <button
+                    onClick={clearQuote}
+                    className="px-3 py-1 bg-slate-500 text-white rounded-lg text-sm font-medium hover:bg-slate-600 transition-colors"
+                  >
+                    Clear Quote
+                  </button>
+                )}
+                {isBuildingQuote && currentQuote.plan && (
+                  <button className="px-3 py-1 bg-orange-500 text-white rounded-lg text-sm font-medium">
+                    Save Quote 💾
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Dynamic Quote Summary */}
             <div className="space-y-4">
-              {isBuildingQuote && currentQuote.plan ? (
+              {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0) ? (
                 /* Live Quote Summary */
                 <>
                   {/* Plan Summary */}
-                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.name}</h3>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">▼</button>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Plan Cost</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.price}</span>
+                  {currentQuote.plan && (
+                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.name}</h3>
+                        <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">▼</button>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                        <span className="text-sm text-slate-600 dark:text-slate-400">{currentQuote.plan.description}</span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Plan Cost</span>
+                          <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.price}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
+                          <span className="text-sm text-slate-600 dark:text-slate-400">{currentQuote.plan.description}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Device Summary */}
                   {currentQuote.device && (
                     <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">{currentQuote.device.name}</h4>
+                      <div className="flex items-center gap-3 mb-3">
+                        {currentQuote.device.image ? (
+                          <img 
+                            src={currentQuote.device.image} 
+                            alt={currentQuote.device.name}
+                            className="w-12 h-12 object-contain rounded-lg"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center">
+                            <span className="text-xl">📱</span>
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-medium text-slate-800 dark:text-white">{currentQuote.device.name}</h4>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{currentQuote.device.storage} • {currentQuote.device.color}</p>
+                        </div>
+                      </div>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Device Payment</span>
@@ -2236,10 +2376,6 @@ function App() {
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-slate-600 dark:text-slate-400">One-time Down Payment</span>
                           <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.device.downPayment}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                          <span className="text-sm text-slate-600 dark:text-slate-400">{currentQuote.device.storage} • {currentQuote.device.color}</span>
                         </div>
                       </div>
                     </div>
@@ -2281,6 +2417,15 @@ function App() {
                     </div>
                   </div>
                 </>
+              ) : isBuildingQuote ? (
+                /* Empty State when Building Quote */
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">📋</div>
+                  <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">No Quote Items Selected</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    Select a plan, device, or add-ons to see your quote summary here.
+                  </p>
+                </div>
               ) : (
                 /* Sample Quote */
                 <>
@@ -2304,7 +2449,17 @@ function App() {
 
                   {/* Device Summary */}
                   <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                    <h4 className="font-medium text-slate-800 dark:text-white mb-3">iPhone 16 Pro Max</h4>
+                    <div className="flex items-center gap-3 mb-3">
+                      <img 
+                        src="https://i.ibb.co/HTzSdF1C/i-Phone16-Pro-Max.jpg" 
+                        alt="iPhone 16 Pro Max"
+                        className="w-12 h-12 object-contain rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-slate-800 dark:text-white">iPhone 16 Pro Max</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">256GB • Natural Titanium</p>
+                      </div>
+                    </div>
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Device Payment</span>
@@ -2313,10 +2468,6 @@ function App() {
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-slate-600 dark:text-slate-400">One-time Down Payment</span>
                         <span className="font-semibold text-slate-800 dark:text-white">$199.99</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                        <span className="text-sm text-slate-600 dark:text-slate-400">256GB Natural Titanium</span>
                       </div>
                     </div>
                   </div>
