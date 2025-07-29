@@ -477,7 +477,7 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
@@ -492,7 +492,7 @@ function App() {
     return (
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">

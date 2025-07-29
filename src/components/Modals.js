@@ -529,7 +529,7 @@ export const OOBEScreen = ({ onComplete }) => {
       title: 'Welcome!',
       content: (
         <div className="text-center">
-          <img src="https://i.ibb.co/1tYMnVRF/ATTLogo-Main.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">
             Welcome to T-Mobile Commission Tracker
           </h1>
