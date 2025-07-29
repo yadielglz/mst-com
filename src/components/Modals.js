@@ -1014,46 +1014,64 @@ export const MultiStepQuoteModal = ({ onClose, onSave, productCatalog }) => {
     let totalMonthly = 0;
     let totalOneTime = 0;
 
+    console.log('MultiStepQuoteModal: Calculating totals for services:', selectedServices);
+
     // Calculate services
     selectedServices.forEach(service => {
-      // Find the plan/add-on in the catalog with proper null checks
-      const plan = (productCatalog.Mobile?.plans?.[service.name]) || 
-                   (productCatalog.Internet?.plans?.[service.name]) || 
-                   (productCatalog.TV?.plans?.[service.name]);
+      console.log('MultiStepQuoteModal: Processing service:', service);
       
-      const addOn = (productCatalog.Mobile?.addOns?.[service.name]) || 
-                    (productCatalog.Internet?.addOns?.[service.name]) || 
-                    (productCatalog.TV?.addOns?.[service.name]);
-
-      if (plan) {
-        totalMonthly += parseFloat(plan.price) * service.lines;
-      } else if (addOn) {
-        totalMonthly += parseFloat(addOn.price) * service.lines;
+      // Use planPrice directly from the service object
+      if (service.planPrice) {
+        const planPrice = parseFloat(service.planPrice.replace('$', '').replace('/mo', ''));
+        const lineCount = service.lines || 1;
+        totalMonthly += planPrice * lineCount;
+        console.log('MultiStepQuoteModal: Added plan price:', planPrice, 'x', lineCount, 'lines =', planPrice * lineCount);
       }
 
-      // Add device monthly payments (but not down payments)
+      // Add device monthly payments
       if (service.device && service.device !== 'show-devices' && service.device !== '') {
         const device = productCatalog.Mobile?.devices?.[service.device];
-        if (device) {
-          totalMonthly += parseFloat(device.monthlyPayment.replace('$', '').replace('/mo', ''));
-          // Note: Down payment is now handled as a fee, not automatically added
+        if (device && device.monthlyPayment) {
+          const devicePayment = parseFloat(device.monthlyPayment.replace('$', '').replace('/mo', ''));
+          totalMonthly += devicePayment;
+          console.log('MultiStepQuoteModal: Added device payment:', devicePayment);
         }
+      }
+
+      // Add add-ons
+      if (service.addOns && service.addOns.length > 0) {
+        service.addOns.forEach(addonName => {
+          const addon = (productCatalog.Mobile?.addOns?.[addonName]) || 
+                        (productCatalog.Internet?.addOns?.[addonName]) || 
+                        (productCatalog.TV?.addOns?.[addonName]);
+          
+          if (addon && addon.price) {
+            const addonPrice = parseFloat(addon.price.replace('$', '').replace('/mo', ''));
+            totalMonthly += addonPrice;
+            console.log('MultiStepQuoteModal: Added addon:', addonName, 'price:', addonPrice);
+          }
+        });
       }
     });
 
     // Apply discounts (subtract from monthly)
     const totalDiscounts = selectedDiscounts.reduce((sum, discount) => sum + Math.abs(discount.amount), 0);
     totalMonthly -= totalDiscounts;
+    console.log('MultiStepQuoteModal: Applied discounts:', totalDiscounts);
 
     // Add fees (one-time costs)
     const totalFees = selectedFees.reduce((sum, fee) => sum + fee.amount, 0);
     totalOneTime += totalFees;
+    console.log('MultiStepQuoteModal: Added fees:', totalFees);
 
-    return {
+    const result = {
       totalMonthly: Math.max(0, totalMonthly), // Ensure monthly total doesn't go negative
       totalOneTime,
       totalFirstMonth: Math.max(0, totalMonthly) + totalOneTime
     };
+
+    console.log('MultiStepQuoteModal: Final totals:', result);
+    return result;
   };
 
   const renderStepContent = () => {
@@ -1299,6 +1317,8 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
   const addService = () => {
     if (!selectedCategory || !selectedPlan) return;
 
+    console.log('PlanSelectionStep: Adding service. Category:', selectedCategory, 'Plan:', selectedPlan, 'Lines:', lines);
+
     const categoryData = productCatalog[selectedCategory];
     const planData = categoryData.plans[selectedPlan];
     
@@ -1306,7 +1326,7 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
       // For mobile plans with lines, create individual line entries
       const newLines = [];
       for (let i = 0; i < lines; i++) {
-        newLines.push({
+        const newLine = {
           id: Date.now() + i,
           category: selectedCategory,
           planName: selectedPlan,
@@ -1317,9 +1337,15 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
           addOns: [],
           lineNumber: i + 1,
           isIndividualLine: true
-        });
+        };
+        newLines.push(newLine);
+        console.log('PlanSelectionStep: Created mobile line:', newLine);
       }
-      setMobileLines(prev => [...prev, ...newLines]);
+      setMobileLines(prev => {
+        const updatedLines = [...prev, ...newLines];
+        console.log('PlanSelectionStep: Updated mobileLines:', updatedLines);
+        return updatedLines;
+      });
     } else {
       // For non-mobile or single-line services
       const service = {
@@ -1333,7 +1359,12 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
         lines: null,
         isIndividualLine: false
       };
-      setSelectedServices(prev => [...prev, service]);
+      console.log('PlanSelectionStep: Created service:', service);
+      setSelectedServices(prev => {
+        const updatedServices = [...prev, service];
+        console.log('PlanSelectionStep: Updated selectedServices:', updatedServices);
+        return updatedServices;
+      });
     }
     
     setSelectedPlan('');
@@ -1355,8 +1386,13 @@ const PlanSelectionStep = ({ selectedServices, setSelectedServices, productCatal
   };
 
   const addMobileLinesToServices = () => {
+    console.log('PlanSelectionStep: Adding mobile lines to services. Current mobileLines:', mobileLines);
     if (mobileLines.length > 0) {
-      setSelectedServices(prev => [...prev, ...mobileLines]);
+      setSelectedServices(prev => {
+        const newServices = [...prev, ...mobileLines];
+        console.log('PlanSelectionStep: Updated selectedServices:', newServices);
+        return newServices;
+      });
       setMobileLines([]);
     }
   };
