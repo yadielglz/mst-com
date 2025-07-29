@@ -33,7 +33,7 @@ const SalesLog = ({
     <div className="card p-0">
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 p-4">
         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-          Sales Log
+          Quote History
         </h3>
         <div className="flex items-center space-x-2 mt-3 md:mt-0">
           <select
@@ -44,7 +44,7 @@ const SalesLog = ({
             <option value="all">All</option>
             <option value="Mobile">Mobile</option>
             <option value="Internet">Internet</option>
-            <option value="DirecTV">TV</option>
+            <option value="TV">TV</option>
           </select>
           <select
             value={sortSales}
@@ -53,8 +53,8 @@ const SalesLog = ({
           >
             <option value="date_desc">Newest</option>
             <option value="date_asc">Oldest</option>
-            <option value="commission_desc">High Comm.</option>
-            <option value="commission_asc">Low Comm.</option>
+            <option value="total_desc">High Value</option>
+            <option value="total_asc">Low Value</option>
           </select>
         </div>
       </div>
@@ -103,13 +103,20 @@ const SalesLog = ({
                   </div>
                 </div>
                 <div className="flex items-center gap-4 mt-3 md:mt-0 w-full md:w-auto">
-                  <span className="font-semibold text-emerald-600 text-lg">
-                    ${sale.totalCommission.toFixed(2)}
-                  </span>
+                  <div className="text-right">
+                    <div className="font-semibold text-emerald-600 text-lg">
+                      ${sale.totalMonthly.toFixed(2)}/mo
+                    </div>
+                    {sale.totalOneTime > 0 && (
+                      <div className="text-sm text-slate-500">
+                        +${sale.totalOneTime.toFixed(2)} one-time
+                      </div>
+                    )}
+                  </div>
                   <button
                     onClick={() => onDeleteSale(sale.id)}
                     className="p-2 text-slate-500 hover:text-red-600 dark:hover:text-red-400"
-                    title="Delete sale"
+                    title="Delete quote"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>

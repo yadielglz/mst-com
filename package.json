@@ -1,7 +1,7 @@
 {
-  "name": "tmobile-commission-tracker",
+  "name": "tmobile-sales-quote-tool",
   "version": "1.0.0",
-  "description": "T-Mobile Commission Tracker - A React-based sales tracking application",
+  "description": "T-Mobile Sales Quote Tool - A React-based quote generation application",
   "main": "index.js",
   "homepage": "https://yadielglz.github.io/mst-com",
   "scripts": {

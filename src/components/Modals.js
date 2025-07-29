@@ -14,7 +14,6 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
   const [selectedDevice, setSelectedDevice] = useState('');
   const [lines, setLines] = useState(1);
   const [selectedAddons, setSelectedAddons] = useState([]);
-  const [manualCommission, setManualCommission] = useState('');
 
   const addServiceToSale = () => {
     if (!selectedCategory || !selectedPlan) return;
@@ -26,8 +25,9 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
       planName: selectedPlan, 
       device: selectedDevice,
       planPrice: planData.price,
+      planDescription: planData.description,
       devicePrice: selectedDevice ? categoryData.devices?.[selectedDevice]?.price : null,
-      manualCommission: parseFloat(manualCommission) || 0,
+      deviceDetails: selectedDevice ? categoryData.devices?.[selectedDevice] : null,
       addOns: [], 
       lines: null 
     };
@@ -44,7 +44,6 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
     setSelectedDevice('');
     setSelectedAddons([]);
     setLines(1);
-    setManualCommission('');
   };
 
   const removeService = (index) => {
@@ -73,7 +72,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
     <div className="modal-backdrop">
       <div className="modal-content">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Log New Sale</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create New Quote</h2>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
             <X className="w-6 h-6" />
           </button>
@@ -198,36 +197,21 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                   </div>
                 )}
 
-                <div>
-                  <label className="block text-sm font-medium mb-1">Manual Commission ($)</label>
-                  <input
-                    type="number"
-                    value={manualCommission}
-                    onChange={(e) => setManualCommission(e.target.value)}
-                    className="form-input"
-                    placeholder="0.00"
-                    step="0.01"
-                    min="0"
-                  />
-                </div>
-              </div>
-            )}
-
-            <button
+                <button
               type="button"
               onClick={addServiceToSale}
               disabled={!selectedCategory || !selectedPlan}
               className="mt-4 w-full flex items-center justify-center bg-att-blue-light text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Service
+              Add Service to Quote
             </button>
           </div>
 
           <hr className="my-4 dark:border-slate-700" />
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">Services in this Sale</h3>
+            <h3 className="font-semibold text-lg mb-2">Services in this Quote</h3>
             <div className="space-y-2">
               {currentServices.length === 0 ? (
                 <p className="text-sm text-center py-4">No services added yet.</p>
@@ -240,9 +224,17 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                           {service.planName} - {service.planPrice}
                           {service.lines ? ` (${service.lines} lines)` : ''}
                         </p>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                          {service.planDescription}
+                        </p>
                         {service.device && (
                           <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
                             📱 {service.device} - {service.devicePrice}
+                            {service.deviceDetails && (
+                              <span className="text-xs text-slate-500 ml-2">
+                                ({service.deviceDetails.storage}, {service.deviceDetails.color})
+                              </span>
+                            )}
                           </p>
                         )}
                         <p className="text-sm text-slate-500 dark:text-slate-400">{service.category}</p>
@@ -252,16 +244,13 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                           </p>
                         )}
                       </div>
-                      <div className="flex items-center gap-4">
-                        <span className="font-medium text-emerald-500">${(service.manualCommission || 0).toFixed(2)}</span>
-                        <button
-                          type="button"
-                          onClick={() => removeService(index)}
-                          className="p-1 text-red-500 hover:text-red-700"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeService(index)}
+                        className="p-1 text-red-500 hover:text-red-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 ))
@@ -567,16 +556,16 @@ export const OOBEScreen = ({ onComplete }) => {
         <div className="text-center">
           <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-att-gray dark:text-slate-200 mb-2">
-            Welcome to T-Mobile Commission Tracker
+            Welcome to T-Mobile Sales Quote Tool
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mb-4">
-            Track your sales, set goals, and stay motivated. Your data is private and never leaves your device.
+            Create professional quotes for T-Mobile services, devices, and plans. Your data is private and never leaves your device.
           </p>
           <ul className="text-left text-sm text-slate-600 dark:text-slate-300 mb-6 list-disc list-inside">
             <li>✔️ Local, private storage</li>
-            <li>✔️ Set and track weekly, monthly, quarterly, and yearly goals</li>
+            <li>✔️ Create detailed quotes with all T-Mobile services</li>
             <li>✔️ PIN lock for extra privacy</li>
-            <li>✔️ Export/import your data anytime</li>
+            <li>✔️ Export/import your quotes anytime</li>
           </ul>
         </div>
       )

@@ -57,78 +57,77 @@ import {
   SettingsModal
 } from './components/Modals';
 
-// Product catalog data
+// Product catalog data for T-Mobile Sales Quote Tool
 const PRODUCT_CATALOG = {
   Mobile: {
     plans: {
-      'T-Mobile Essentials': { hasLines: true, price: '$60/mo' },
-      'T-Mobile Magenta': { hasLines: true, price: '$70/mo' },
-      'T-Mobile Magenta MAX': { hasLines: true, price: '$85/mo' },
-      'T-Mobile Go5G': { hasLines: true, price: '$75/mo' },
-      'T-Mobile Go5G Plus': { hasLines: true, price: '$90/mo' },
-      'T-Mobile Go5G Next': { hasLines: true, price: '$95/mo' },
-      'T-Mobile Go5G Military': { hasLines: true, price: '$55/mo' },
-      'T-Mobile Go5G 55+': { hasLines: true, price: '$55/mo' },
-      'T-Mobile Go5G Plus Military': { hasLines: true, price: '$70/mo' },
-      'T-Mobile Go5G Plus 55+': { hasLines: true, price: '$70/mo' },
-      'BYOD w/ T-Mobile Essentials': { hasLines: false, price: '$60/mo' },
-      'BYOD w/ T-Mobile Magenta': { hasLines: false, price: '$70/mo' },
-      'BYOD w/ T-Mobile Magenta MAX': { hasLines: false, price: '$85/mo' },
-      'T-Mobile Device Upgrade': { hasLines: false, price: 'Varies' },
-      'T-Mobile Prepaid': { hasLines: true, price: '$40/mo' },
-      'T-Mobile Prepaid Unlimited': { hasLines: true, price: '$50/mo' },
+      'T-Mobile Essentials': { hasLines: true, price: '$60/mo', description: 'Unlimited talk, text & data' },
+      'T-Mobile Magenta': { hasLines: true, price: '$70/mo', description: 'Unlimited talk, text & data with Netflix' },
+      'T-Mobile Magenta MAX': { hasLines: true, price: '$85/mo', description: 'Unlimited talk, text & data with Netflix & Apple TV+' },
+      'T-Mobile Go5G': { hasLines: true, price: '$75/mo', description: 'Unlimited talk, text & data with Netflix' },
+      'T-Mobile Go5G Plus': { hasLines: true, price: '$90/mo', description: 'Unlimited talk, text & data with Netflix & Apple TV+' },
+      'T-Mobile Go5G Next': { hasLines: true, price: '$95/mo', description: 'Unlimited talk, text & data with Netflix & Apple TV+ & annual upgrade' },
+      'T-Mobile Go5G Military': { hasLines: true, price: '$55/mo', description: 'Military discount - Unlimited talk, text & data' },
+      'T-Mobile Go5G 55+': { hasLines: true, price: '$55/mo', description: '55+ discount - Unlimited talk, text & data' },
+      'T-Mobile Go5G Plus Military': { hasLines: true, price: '$70/mo', description: 'Military discount - Unlimited talk, text & data with Netflix & Apple TV+' },
+      'T-Mobile Go5G Plus 55+': { hasLines: true, price: '$70/mo', description: '55+ discount - Unlimited talk, text & data with Netflix & Apple TV+' },
+      'BYOD w/ T-Mobile Essentials': { hasLines: false, price: '$60/mo', description: 'Bring your own device' },
+      'BYOD w/ T-Mobile Magenta': { hasLines: false, price: '$70/mo', description: 'Bring your own device' },
+      'BYOD w/ T-Mobile Magenta MAX': { hasLines: false, price: '$85/mo', description: 'Bring your own device' },
+      'T-Mobile Prepaid': { hasLines: true, price: '$40/mo', description: 'Prepaid unlimited plan' },
+      'T-Mobile Prepaid Unlimited': { hasLines: true, price: '$50/mo', description: 'Prepaid unlimited plan with hotspot' },
     },
     addOns: {
-      'T-Mobile Protection': { name: 'T-Mobile Protection', price: '$7/mo' },
-      'T-Mobile Protection Plus': { name: 'T-Mobile Protection Plus', price: '$11/mo' },
-      'T-Mobile Protection Premium': { name: 'T-Mobile Protection Premium', price: '$15/mo' },
-      'T-Mobile JUMP!': { name: 'T-Mobile JUMP!', price: '$12/mo' },
-      'T-Mobile JUMP! On Demand': { name: 'T-Mobile JUMP! On Demand', price: '$10/mo' },
-      'T-Mobile Plus': { name: 'T-Mobile Plus', price: '$15/mo' },
-      'T-Mobile Plus Up': { name: 'T-Mobile Plus Up', price: '$20/mo' },
-      'T-Mobile International': { name: 'T-Mobile International', price: '$15/mo' },
-      'T-Mobile Global Plus': { name: 'T-Mobile Global Plus', price: '$50/mo' },
-      'T-Mobile Data with DIGITS': { name: 'T-Mobile Data with DIGITS', price: '$10/mo' },
+      'T-Mobile Protection': { name: 'T-Mobile Protection', price: '$7/mo', description: 'Basic device protection' },
+      'T-Mobile Protection Plus': { name: 'T-Mobile Protection Plus', price: '$11/mo', description: 'Enhanced device protection with screen repair' },
+      'T-Mobile Protection Premium': { name: 'T-Mobile Protection Premium', price: '$15/mo', description: 'Premium device protection with unlimited screen repairs' },
+      'T-Mobile JUMP!': { name: 'T-Mobile JUMP!', price: '$12/mo', description: 'Upgrade your phone every 2 years' },
+      'T-Mobile JUMP! On Demand': { name: 'T-Mobile JUMP! On Demand', price: '$10/mo', description: 'Upgrade your phone up to 3 times per year' },
+      'T-Mobile Plus': { name: 'T-Mobile Plus', price: '$15/mo', description: 'Add 20GB hotspot data' },
+      'T-Mobile Plus Up': { name: 'T-Mobile Plus Up', price: '$20/mo', description: 'Add 40GB hotspot data' },
+      'T-Mobile International': { name: 'T-Mobile International', price: '$15/mo', description: 'International calling and data' },
+      'T-Mobile Global Plus': { name: 'T-Mobile Global Plus', price: '$50/mo', description: 'Premium international features' },
+      'T-Mobile Data with DIGITS': { name: 'T-Mobile Data with DIGITS', price: '$10/mo', description: 'Use your phone number on multiple devices' },
     },
     devices: {
-      'iPhone 15 Pro Max': { price: '$1199.99', downPayment: '$199.99', monthlyPayment: '$41.67' },
-      'iPhone 15 Pro': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33' },
-      'iPhone 15': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00' },
-      'iPhone 15 Plus': { price: '$899.99', downPayment: '$199.99', monthlyPayment: '$29.17' },
-      'Samsung Galaxy S24 Ultra': { price: '$1299.99', downPayment: '$199.99', monthlyPayment: '$45.83' },
-      'Samsung Galaxy S24+': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33' },
-      'Samsung Galaxy S24': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00' },
-      'Google Pixel 8 Pro': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33' },
-      'Google Pixel 8': { price: '$699.99', downPayment: '$199.99', monthlyPayment: '$20.83' },
-      'OnePlus 12': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00' },
+      'iPhone 15 Pro Max': { price: '$1199.99', downPayment: '$199.99', monthlyPayment: '$41.67', storage: '256GB', color: 'Natural Titanium' },
+      'iPhone 15 Pro': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33', storage: '256GB', color: 'Natural Titanium' },
+      'iPhone 15': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00', storage: '256GB', color: 'Black' },
+      'iPhone 15 Plus': { price: '$899.99', downPayment: '$199.99', monthlyPayment: '$29.17', storage: '256GB', color: 'Black' },
+      'Samsung Galaxy S24 Ultra': { price: '$1299.99', downPayment: '$199.99', monthlyPayment: '$45.83', storage: '256GB', color: 'Titanium Gray' },
+      'Samsung Galaxy S24+': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33', storage: '256GB', color: 'Onyx Black' },
+      'Samsung Galaxy S24': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00', storage: '256GB', color: 'Onyx Black' },
+      'Google Pixel 8 Pro': { price: '$999.99', downPayment: '$199.99', monthlyPayment: '$33.33', storage: '256GB', color: 'Obsidian' },
+      'Google Pixel 8': { price: '$699.99', downPayment: '$199.99', monthlyPayment: '$20.83', storage: '256GB', color: 'Obsidian' },
+      'OnePlus 12': { price: '$799.99', downPayment: '$199.99', monthlyPayment: '$25.00', storage: '256GB', color: 'Silk Black' },
     }
   },
   Internet: {
     plans: {
-      'T-Mobile Home Internet': { name: 'T-Mobile Home Internet', price: '$50/mo' },
-      'T-Mobile Home Internet Plus': { name: 'T-Mobile Home Internet Plus', price: '$70/mo' },
-      'T-Mobile 5G Home Internet': { name: 'T-Mobile 5G Home Internet', price: '$50/mo' },
-      'T-Mobile Home Internet Lite': { name: 'T-Mobile Home Internet Lite', price: '$30/mo' },
-      'T-Mobile Business Internet': { name: 'T-Mobile Business Internet', price: '$70/mo' },
+      'T-Mobile Home Internet': { name: 'T-Mobile Home Internet', price: '$50/mo', description: 'Unlimited 5G home internet' },
+      'T-Mobile Home Internet Plus': { name: 'T-Mobile Home Internet Plus', price: '$70/mo', description: 'Enhanced 5G home internet with priority data' },
+      'T-Mobile 5G Home Internet': { name: 'T-Mobile 5G Home Internet', price: '$50/mo', description: '5G home internet service' },
+      'T-Mobile Home Internet Lite': { name: 'T-Mobile Home Internet Lite', price: '$30/mo', description: 'Basic home internet service' },
+      'T-Mobile Business Internet': { name: 'T-Mobile Business Internet', price: '$70/mo', description: 'Business-grade internet service' },
     },
     equipment: {
-      'T-Mobile 5G Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0' },
-      'T-Mobile 4G LTE Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0' },
-      'T-Mobile Business Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0' },
+      'T-Mobile 5G Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0', description: '5G home internet gateway included' },
+      'T-Mobile 4G LTE Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0', description: '4G LTE home internet gateway included' },
+      'T-Mobile Business Gateway': { price: '$0', deposit: '$0', monthlyPayment: '$0', description: 'Business internet gateway included' },
     }
   },
   TV: {
     plans: {
-      'T-Mobile TVision': { name: 'T-Mobile TVision', price: '$40/mo' },
-      'T-Mobile TVision VIBE': { name: 'T-Mobile TVision VIBE', price: '$10/mo' },
-      'T-Mobile TVision LIVE TV': { name: 'T-Mobile TVision LIVE TV', price: '$64.99/mo' },
-      'T-Mobile TVision LIVE TV+': { name: 'T-Mobile TVision LIVE TV+', price: '$84.99/mo' },
-      'T-Mobile TVision CHANNELS': { name: 'T-Mobile TVision CHANNELS', price: '$29.99/mo' },
+      'T-Mobile TVision': { name: 'T-Mobile TVision', price: '$40/mo', description: 'Streaming TV service' },
+      'T-Mobile TVision VIBE': { name: 'T-Mobile TVision VIBE', price: '$10/mo', description: 'Basic streaming channels' },
+      'T-Mobile TVision LIVE TV': { name: 'T-Mobile TVision LIVE TV', price: '$64.99/mo', description: 'Live TV streaming service' },
+      'T-Mobile TVision LIVE TV+': { name: 'T-Mobile TVision LIVE TV+', price: '$84.99/mo', description: 'Premium live TV streaming service' },
+      'T-Mobile TVision CHANNELS': { name: 'T-Mobile TVision CHANNELS', price: '$29.99/mo', description: 'Channel streaming service' },
     },
     addOns: {
-      'T-Mobile TVision Premium': { name: 'T-Mobile TVision Premium', price: '$9.99/mo' },
-      'T-Mobile TVision Sports': { name: 'T-Mobile TVision Sports', price: '$9.99/mo' },
-      'T-Mobile TVision Entertainment': { name: 'T-Mobile TVision Entertainment', price: '$9.99/mo' },
+      'T-Mobile TVision Premium': { name: 'T-Mobile TVision Premium', price: '$9.99/mo', description: 'Premium channel package' },
+      'T-Mobile TVision Sports': { name: 'T-Mobile TVision Sports', price: '$9.99/mo', description: 'Sports channel package' },
+      'T-Mobile TVision Entertainment': { name: 'T-Mobile TVision Entertainment', price: '$9.99/mo', description: 'Entertainment channel package' },
     }
   }
 };
@@ -307,28 +306,81 @@ function App() {
     }
   }, [userSettings.tempUnit]);
 
-  // Process sales with manual commission amounts
-  const salesWithManualCommissions = React.useMemo(() => {
+  // Process quotes with pricing calculations
+  const quotesWithPricing = React.useMemo(() => {
     if (!sales || sales.length === 0) return [];
 
-    // Return sales as-is since commissions are now manual
+    // Return sales as quotes with calculated totals
     return sales.map(sale => {
-      const totalCommission = sale.services.reduce((sum, service) => {
-        return sum + (service.manualCommission || 0);
+      const totalMonthly = sale.services.reduce((sum, service) => {
+        let serviceTotal = 0;
+        
+        // Add plan price
+        if (service.planPrice) {
+          const planPrice = parseFloat(service.planPrice.replace('$', '').replace('/mo', ''));
+          serviceTotal += planPrice * (service.lines || 1);
+        }
+        
+        // Add device monthly payment
+        if (service.devicePrice && service.device) {
+          const deviceData = PRODUCT_CATALOG.Mobile.devices[service.device];
+          if (deviceData) {
+            serviceTotal += parseFloat(deviceData.monthlyPayment.replace('$', ''));
+          }
+        }
+        
+        // Add add-on prices
+        if (service.addOns && service.addOns.length > 0) {
+          service.addOns.forEach(addonName => {
+            const addonData = PRODUCT_CATALOG.Mobile.addOns[addonName];
+            if (addonData) {
+              const addonPrice = parseFloat(addonData.price.replace('$', '').replace('/mo', ''));
+              serviceTotal += addonPrice;
+            }
+          });
+        }
+        
+        return sum + serviceTotal;
       }, 0);
 
-      return { ...sale, totalCommission };
+      const totalOneTime = sale.services.reduce((sum, service) => {
+        let oneTimeTotal = 0;
+        
+        // Add device down payment
+        if (service.device && service.devicePrice) {
+          const deviceData = PRODUCT_CATALOG.Mobile.devices[service.device];
+          if (deviceData) {
+            oneTimeTotal += parseFloat(deviceData.downPayment.replace('$', ''));
+          }
+        }
+        
+        return sum + oneTimeTotal;
+      }, 0);
+
+      return { 
+        ...sale, 
+        totalMonthly: parseFloat(totalMonthly.toFixed(2)),
+        totalOneTime: parseFloat(totalOneTime.toFixed(2)),
+        totalFirstMonth: totalMonthly + totalOneTime
+      };
     });
   }, [sales]);
 
   // Calculate dashboard metrics
   const dashboardMetrics = React.useMemo(() => {
-    const totalSales = salesWithManualCommissions.length;
-    const totalCommission = salesWithManualCommissions.reduce((sum, sale) => sum + sale.totalCommission, 0);
-    const avgCommission = totalSales > 0 ? totalCommission / totalSales : 0;
+    const totalQuotes = quotesWithPricing.length;
+    const totalMonthlyRevenue = quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0);
+    const totalOneTimeRevenue = quotesWithPricing.reduce((sum, quote) => sum + quote.totalOneTime, 0);
+    const avgMonthlyPerQuote = totalQuotes > 0 ? totalMonthlyRevenue / totalQuotes : 0;
     
-    return { totalSales, totalCommission, avgCommission };
-  }, [salesWithManualCommissions]);
+    return { 
+      totalQuotes, 
+      totalMonthlyRevenue, 
+      totalOneTimeRevenue, 
+      avgMonthlyPerQuote,
+      totalFirstMonthRevenue: totalMonthlyRevenue + totalOneTimeRevenue
+    };
+  }, [quotesWithPricing]);
 
   // Calculate progress
   const progress = React.useMemo(() => {
@@ -356,41 +408,41 @@ function App() {
     return { weeklyProgress, monthlyProgress };
   }, [sales]);
 
-  // Filter and sort sales
-  const filteredAndSortedSales = React.useMemo(() => {
-    let processedSales = [...salesWithManualCommissions];
+  // Filter and sort quotes
+  const filteredAndSortedQuotes = React.useMemo(() => {
+    let processedQuotes = [...quotesWithPricing];
     
     // Filter by product
     if (filterProduct !== 'all') {
-      processedSales = processedSales.filter(sale => 
-        sale.services.some(s => s.category === filterProduct)
+      processedQuotes = processedQuotes.filter(quote => 
+        quote.services.some(s => s.category === filterProduct)
       );
     }
     
     // Search filter
     if (searchQuery) {
-      processedSales = processedSales.filter(sale =>
-        sale.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (sale.notes && sale.notes.toLowerCase().includes(searchQuery.toLowerCase()))
+      processedQuotes = processedQuotes.filter(quote =>
+        quote.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (quote.notes && quote.notes.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
     
     // Sort
-    processedSales.sort((a, b) => {
+    processedQuotes.sort((a, b) => {
       switch(sortSales) {
         case 'date_asc':
           return new Date(a.saleDate) - new Date(b.saleDate);
-        case 'commission_desc':
-          return b.totalCommission - a.totalCommission;
-        case 'commission_asc':
-          return a.totalCommission - b.totalCommission;
+        case 'total_desc':
+          return b.totalMonthly - a.totalMonthly;
+        case 'total_asc':
+          return a.totalMonthly - b.totalMonthly;
         default:
           return new Date(b.saleDate) - new Date(a.saleDate);
       }
     });
     
-    return processedSales;
-  }, [salesWithManualCommissions, filterProduct, searchQuery, sortSales]);
+    return processedQuotes;
+  }, [quotesWithPricing, filterProduct, searchQuery, sortSales]);
 
   // Event handlers
   const handleAddSale = async (saleData) => {
@@ -472,10 +524,10 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `tmobile-commission-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
+    a.download = `tmobile-quotes-${format(new Date(), 'yyyy-MM-dd')}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Data exported successfully');
+    toast.success('Quotes exported successfully');
   };
 
   const importData = (event) => {
@@ -503,7 +555,7 @@ function App() {
     setUserSettings(prev => ({ ...prev, initialSetupComplete: true }));
     setShowOOBE(false);
     setShowSplash(false);
-    toast.success('Welcome to T-Mobile Commission Tracker!');
+    toast.success('Welcome to T-Mobile Sales Quote Tool!');
   };
 
   // Render components
@@ -512,7 +564,7 @@ function App() {
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
           <div className="flex justify-center mt-6">
             <div className="w-8 h-8 border-4 border-att-blue border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -527,7 +579,7 @@ function App() {
       <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
         <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
           <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Commission Tracker</h1>
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
           
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
             <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
@@ -620,7 +672,7 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <SalesLog 
-                sales={filteredAndSortedSales}
+                sales={filteredAndSortedQuotes}
                 onDeleteSale={handleDeleteSale}
                 filterProduct={filterProduct}
                 sortSales={sortSales}
