@@ -1938,9 +1938,13 @@ function App() {
       if (line.device) {
         if (line.paymentType === 'installment') {
           const deviceMonthly = parseFloat(line.device.monthlyPayment.replace('$', '').replace('/mo', ''));
-          const deviceDown = parseFloat(line.device.downPayment.replace('$', ''));
           totalMonthly += deviceMonthly;
-          totalOneTime += deviceDown;
+          
+          // Only add down payment if it exists and is greater than $0
+          if (line.device.downPayment && parseFloat(line.device.downPayment.replace('$', '')) > 0) {
+            const deviceDown = parseFloat(line.device.downPayment.replace('$', ''));
+            totalOneTime += deviceDown;
+          }
         } else if (line.paymentType === 'full-price') {
           const devicePrice = parseFloat(line.device.price.replace('$', '').replace(',', ''));
           totalOneTime += devicePrice;
@@ -2842,9 +2846,9 @@ function App() {
                   {/* One-Time Cost Breakdown */}
                   <div className="space-y-2">
                     {/* Device Down Payments */}
-                    {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').length > 0 && (
+                    {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment' && line.device.downPayment && parseFloat(line.device.downPayment.replace('$', '')) > 0).length > 0 && (
                       <div className="space-y-1 text-sm">
-                        {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').map((line, index) => (
+                        {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment' && line.device.downPayment && parseFloat(line.device.downPayment.replace('$', '')) > 0).map((line, index) => (
                           <div key={line.id} className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Down Payment (Line {index + 1}):</span>
                             <span className="text-slate-800 dark:text-white">{line.device.downPayment}</span>
@@ -3124,8 +3128,8 @@ function App() {
                     {selectedDeviceType && selectedDeviceType !== 'existing-device' && selectedDeviceType !== 'custom-device' && (
                       <div>
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">2. Select Device</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.devices).map(([deviceName, deviceData]) => (
                             <label 
                               key={deviceName} 
                               className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -3160,6 +3164,11 @@ function App() {
                               <div className="text-right">
                                 <div className="text-lg font-bold text-att-blue">{deviceData.price}</div>
                                 <div className="text-sm text-slate-500">{deviceData.monthlyPayment}/mo</div>
+                                {deviceData.downPayment && parseFloat(deviceData.downPayment.replace('$', '')) > 0 ? (
+                                  <div className="text-xs text-slate-400">{deviceData.downPayment} down</div>
+                                ) : (
+                                  <div className="text-xs text-green-600 dark:text-green-400">No down payment</div>
+                                )}
                               </div>
                             </label>
                           ))}
