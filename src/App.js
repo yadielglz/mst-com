@@ -2210,158 +2210,175 @@ function App() {
             </div>
 
             {isBuildingQuote ? (
-              /* Quote Building Interface */
+              /* Quote Building Interface - AT&T Style */
               <div className="space-y-6">
-                {/* Plan Selection */}
+                {/* Step 1: Plan Selection */}
                 <div>
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('plans')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Select Your Plan</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {currentQuote.plan ? '1 selected' : '0 selected'}
-                      </span>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        {collapsedSections.plans ? '▼' : '▲'}
-                      </button>
-                    </div>
+                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <h3 className="text-lg font-semibold">Plan</h3>
                   </div>
-                  {!collapsedSections.plans && (
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Plan</h4>
+                      <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
+                        <span className="w-4 h-4 bg-slate-300 rounded-full flex items-center justify-center text-xs">i</span>
+                        <span>Prices reflect discounts applied and total number of lines</span>
+                      </div>
+                    </div>
                     <div className="grid grid-cols-1 gap-3">
                       {Object.entries(PRODUCT_CATALOG.Mobile.plans).slice(0, 6).map(([planName, planData]) => (
-                        <div 
+                        <label 
                           key={planName} 
-                          className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
-                            currentQuote.plan?.name === planName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
+                            currentQuote.plan?.name === planName 
+                              ? 'border-att-blue bg-att-blue/5' 
+                              : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
                           }`}
-                          onClick={() => selectPlan(planName, planData)}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-slate-800 dark:text-white">{planName}</h4>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</p>
-                            </div>
-                            <div className="text-right">
-                              <div className="text-lg font-bold text-att-blue">{planData.price}</div>
-                              <div className="text-xs text-slate-500">per line</div>
-                            </div>
+                          <input
+                            type="radio"
+                            name="plan"
+                            value={planName}
+                            checked={currentQuote.plan?.name === planName}
+                            onChange={() => selectPlan(planName, planData)}
+                            className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
+                          />
+                          <div className="ml-3 flex-1">
+                            <div className="font-semibold text-slate-800 dark:text-white">{planName}</div>
+                            <div className="text-sm text-slate-600 dark:text-slate-400">{planData.description}</div>
                           </div>
-                        </div>
+                          <div className="text-right">
+                            <div className="text-lg font-bold text-att-blue">{planData.price}</div>
+                            <div className="text-xs text-slate-500">per phone line</div>
+                          </div>
+                        </label>
                       ))}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Device Selection */}
+                {/* Step 2: Device Selection */}
                 <div>
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('devices')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Choose Your Device</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {currentQuote.device ? '1 selected' : '0 selected'}
-                      </span>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        {collapsedSections.devices ? '▼' : '▲'}
-                      </button>
-                    </div>
+                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <h3 className="text-lg font-semibold">Device</h3>
                   </div>
-                  {!collapsedSections.devices && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
-                        <div 
-                          key={deviceName} 
-                          className={`bg-white dark:bg-slate-700 rounded-lg border p-4 hover:border-att-blue transition-colors cursor-pointer ${
-                            currentQuote.device?.name === deviceName ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
-                          }`}
-                          onClick={() => selectDevice(deviceName, deviceData)}
-                        >
-                          <div className="text-center">
-                            {deviceData.image ? (
-                              <img 
-                                src={deviceData.image} 
-                                alt={deviceName}
-                                className="w-16 h-16 mx-auto mb-2 object-contain rounded-lg"
-                              />
-                            ) : (
-                              <div className="text-3xl mb-2">📱</div>
-                            )}
-                            <h4 className="font-semibold text-slate-800 dark:text-white text-sm mb-1">{deviceName}</h4>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{deviceData.storage} • {deviceData.color}</p>
-                            <div className="space-y-1">
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
+                    {/* Device Group Name */}
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Device Group Name (optional) Max. 100 characters
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter device group name"
+                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white"
+                      />
+                    </div>
+
+                    {/* Device Type Selection */}
+                    <div className="mb-4">
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">What type of device?</h4>
+                      <div className="flex gap-3">
+                        <button className="px-4 py-2 bg-att-blue text-white rounded-lg font-medium">New Device</button>
+                        <button className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700">Existing Device</button>
+                        <button className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700">Custom Device</button>
+                      </div>
+                    </div>
+
+                    {/* Device Model Selection */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">Which model?</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
+                          <label 
+                            key={deviceName} 
+                            className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
+                              currentQuote.device?.name === deviceName 
+                                ? 'border-att-blue bg-att-blue/5' 
+                                : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="device"
+                              value={deviceName}
+                              checked={currentQuote.device?.name === deviceName}
+                              onChange={() => selectDevice(deviceName, deviceData)}
+                              className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
+                            />
+                            <div className="ml-3 flex-1">
+                              {deviceData.image ? (
+                                <img 
+                                  src={deviceData.image} 
+                                  alt={deviceName}
+                                  className="w-12 h-12 object-contain rounded-lg mb-2"
+                                />
+                              ) : (
+                                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center mb-2">
+                                  <span className="text-xl">📱</span>
+                                </div>
+                              )}
+                              <div className="font-semibold text-slate-800 dark:text-white text-sm">{deviceName}</div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">{deviceData.storage} • {deviceData.color}</div>
+                            </div>
+                            <div className="text-right">
                               <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
                               <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Add-ons */}
-                <div>
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('addOns')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Add Protection & Features</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {currentQuote.addOns.length} selected
-                      </span>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        {collapsedSections.addOns ? '▼' : '▲'}
-                      </button>
+                          </label>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  {!collapsedSections.addOns && (
+                </div>
+
+                {/* Step 3: Add-ons Selection */}
+                <div>
+                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <h3 className="text-lg font-semibold">Add-ons</h3>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
+                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">Protection & Features</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => {
                         const isSelected = currentQuote.addOns.some(addon => addon.name === addonName);
                         return (
-                          <div 
+                          <label 
                             key={addonName} 
-                            className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-att-blue transition-colors cursor-pointer ${
-                              isSelected ? 'border-att-blue bg-att-blue/5' : 'border-slate-200 dark:border-slate-600'
+                            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                              isSelected 
+                                ? 'border-att-blue bg-att-blue/5' 
+                                : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
                             }`}
-                            onClick={() => toggleAddOn(addonName, addonData)}
                           >
-                            <div className="flex items-center justify-between">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</h4>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</p>
-                              </div>
-                              <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={() => toggleAddOn(addonName, addonData)}
+                              className="w-4 h-4 text-att-blue border-slate-300 rounded focus:ring-att-blue"
+                            />
+                            <div className="ml-3 flex-1">
+                              <div className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</div>
                             </div>
-                          </div>
+                            <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
+                          </label>
                         );
                       })}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Discounts and Fees */}
+                {/* Step 4: Discounts & Fees */}
                 <div>
-                  <div 
-                    className="flex items-center justify-between mb-4 cursor-pointer"
-                    onClick={() => toggleSection('discounts')}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-800 dark:text-white">Discounts & Fees</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {currentQuote.discounts.length + currentQuote.fees.length} selected
-                      </span>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
-                        {collapsedSections.discounts ? '▼' : '▲'}
-                      </button>
-                    </div>
+                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                    <h3 className="text-lg font-semibold">Discounts & Fees</h3>
                   </div>
-                  {!collapsedSections.discounts && (
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
                     <div className="space-y-4">
                       {/* Discounts */}
                       <div>
@@ -2370,21 +2387,26 @@ function App() {
                           {Object.entries(PRODUCT_CATALOG.Mobile.discounts || {}).slice(0, 4).map(([discountName, discountData]) => {
                             const isSelected = currentQuote.discounts.some(discount => discount.name === discountName);
                             return (
-                              <div 
+                              <label 
                                 key={discountName} 
-                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-green-500 transition-colors cursor-pointer ${
-                                  isSelected ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-600'
+                                className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                                  isSelected 
+                                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20' 
+                                    : 'border-slate-200 dark:border-slate-600 hover:border-green-500'
                                 }`}
-                                onClick={() => toggleDiscount(discountName, discountData)}
                               >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{discountName}</h5>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">{discountData.description}</p>
-                                  </div>
-                                  <div className="text-sm font-bold text-green-600 dark:text-green-400">-{discountData.amount}</div>
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={() => toggleDiscount(discountName, discountData)}
+                                  className="w-4 h-4 text-green-600 border-slate-300 rounded focus:ring-green-500"
+                                />
+                                <div className="ml-3 flex-1">
+                                  <div className="font-medium text-slate-800 dark:text-white text-sm">{discountName}</div>
+                                  <div className="text-xs text-slate-500 dark:text-slate-400">{discountData.description}</div>
                                 </div>
-                              </div>
+                                <div className="text-sm font-bold text-green-600 dark:text-green-400">-{discountData.amount}</div>
+                              </label>
                             );
                           })}
                         </div>
@@ -2397,27 +2419,32 @@ function App() {
                           {Object.entries(PRODUCT_CATALOG.Mobile.fees || {}).slice(0, 4).map(([feeName, feeData]) => {
                             const isSelected = currentQuote.fees.some(fee => fee.name === feeName);
                             return (
-                              <div 
+                              <label 
                                 key={feeName} 
-                                className={`bg-white dark:bg-slate-700 rounded-lg border p-3 hover:border-red-500 transition-colors cursor-pointer ${
-                                  isSelected ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-600'
+                                className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                                  isSelected 
+                                    ? 'border-red-500 bg-red-50 dark:bg-red-900/20' 
+                                    : 'border-slate-200 dark:border-slate-600 hover:border-red-500'
                                 }`}
-                                onClick={() => toggleFee(feeName, feeData)}
                               >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h5 className="font-medium text-slate-800 dark:text-white text-sm">{feeName}</h5>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">{feeData.description}</p>
-                                  </div>
-                                  <div className="text-sm font-bold text-red-600 dark:text-red-400">+{feeData.amount}</div>
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={() => toggleFee(feeName, feeData)}
+                                  className="w-4 h-4 text-red-600 border-slate-300 rounded focus:ring-red-500"
+                                />
+                                <div className="ml-3 flex-1">
+                                  <div className="font-medium text-slate-800 dark:text-white text-sm">{feeName}</div>
+                                  <div className="text-xs text-slate-500 dark:text-slate-400">{feeData.description}</div>
                                 </div>
-                              </div>
+                                <div className="text-sm font-bold text-red-600 dark:text-red-400">+{feeData.amount}</div>
+                              </label>
                             );
                           })}
                         </div>
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             ) : (
@@ -2603,19 +2630,20 @@ function App() {
         <div className="w-full lg:w-1/2 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 overflow-y-auto">
           <div className="p-4">
             {/* Quote Summary Header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-slate-800 dark:text-white">Quote Summary</h2>
-              <div className="flex gap-2">
+            <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
+              <div className="w-6 h-6 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">$</div>
+              <h2 className="text-lg font-semibold">Cost Summary</h2>
+              <div className="ml-auto flex gap-2">
                 {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) && (
                   <button
                     onClick={clearQuote}
-                    className="px-3 py-1 bg-slate-500 text-white rounded-lg text-sm font-medium hover:bg-slate-600 transition-colors"
+                    className="px-3 py-1 bg-white/20 text-white rounded text-sm font-medium hover:bg-white/30 transition-colors"
                   >
                     Clear Quote
                   </button>
                 )}
                 {isBuildingQuote && currentQuote.plan && (
-                  <button className="px-3 py-1 bg-orange-500 text-white rounded-lg text-sm font-medium">
+                  <button className="px-3 py-1 bg-orange-500 text-white rounded text-sm font-medium hover:bg-orange-600 transition-colors">
                     Save Quote 💾
                   </button>
                 )}
@@ -2623,129 +2651,141 @@ function App() {
             </div>
 
             {/* Dynamic Quote Summary */}
-            <div className="space-y-4">
+            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
               {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) ? (
-                /* Live Quote Summary */
-                <>
-                  {/* Plan Summary */}
+                /* Live Quote Summary - AT&T Style */
+                <div className="space-y-4">
+                  {/* Plan Details */}
                   {currentQuote.plan && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.name}</h3>
-                        <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">▼</button>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Plan Cost</span>
-                          <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.plan.price}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                          <span className="text-sm text-slate-600 dark:text-slate-400">{currentQuote.plan.description}</span>
-                        </div>
-                      </div>
+                    <div>
+                      <div className="font-semibold text-slate-800 dark:text-white">Plan: {currentQuote.plan.name}</div>
+                      <div className="text-slate-600 dark:text-slate-400">Plan cost {currentQuote.plan.price}</div>
                     </div>
                   )}
 
-                  {/* Device Summary */}
+                  {/* Device Details */}
                   {currentQuote.device && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        {currentQuote.device.image ? (
-                          <img 
-                            src={currentQuote.device.image} 
-                            alt={currentQuote.device.name}
-                            className="w-12 h-12 object-contain rounded-lg"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center">
-                            <span className="text-xl">📱</span>
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <h4 className="font-medium text-slate-800 dark:text-white">{currentQuote.device.name}</h4>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">{currentQuote.device.storage} • {currentQuote.device.color}</p>
-                        </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400">1</span>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Device Payment</span>
-                          <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.device.monthlyPayment}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-slate-600 dark:text-slate-400">One-time Down Payment</span>
-                          <span className="font-semibold text-slate-800 dark:text-white">{currentQuote.device.downPayment}</span>
-                        </div>
+                      <div>
+                        <div className="font-semibold text-slate-800 dark:text-white">Device: {currentQuote.device.name}</div>
+                        <div className="text-slate-600 dark:text-slate-400">Device Price: ${parseFloat(currentQuote.device.price.replace('$', '').replace(',', ''))} each</div>
                       </div>
                     </div>
                   )}
 
-                  {/* Add-ons Summary */}
-                  {currentQuote.addOns.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Protection & Features</h4>
-                      <div className="space-y-2">
-                        {currentQuote.addOns.map((addon, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600 dark:text-slate-400">{addon.name}</span>
-                            <span className="font-semibold text-slate-800 dark:text-white">{addon.price}</span>
-                          </div>
-                        ))}
+                  {/* Monthly Costs Section */}
+                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
+                    <div className="font-semibold text-slate-800 dark:text-white text-sm">Monthly Costs</div>
+                  </div>
+
+                  {/* Installment Details */}
+                  {currentQuote.device && (
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Term:</span>
+                        <span className="text-slate-800 dark:text-white">36 months</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Estimated Payoff:</span>
+                        <span className="text-slate-800 dark:text-white">July 2028</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Promo Eligible:</span>
+                        <span className="text-slate-800 dark:text-white">July 2026 (12 mos./33% paid)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Upgrade Anytime*</span>
                       </div>
                     </div>
                   )}
+
+                  {/* Cost Breakdown */}
+                  <div className="space-y-2">
+                    {currentQuote.device && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">Device Installment:</span>
+                        <span className="text-slate-800 dark:text-white">{currentQuote.device.monthlyPayment} for 36 months</span>
+                      </div>
+                    )}
+                    {currentQuote.addOns.map((addon, index) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">{addon.name}:</span>
+                        <span className="text-slate-800 dark:text-white">{addon.price}</span>
+                      </div>
+                    ))}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">T-Mobile Protection:</span>
+                      <span className="text-slate-800 dark:text-white">$0.00</span>
+                    </div>
+                  </div>
+
+                  {/* Monthly Subtotal */}
+                  <div className="border-t border-slate-200 dark:border-slate-600 pt-2">
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-slate-800 dark:text-white">Monthly Subtotal</span>
+                      <span className="text-slate-800 dark:text-white">${calculateQuoteTotals().totalMonthly.toFixed(2)} for 36 months</span>
+                    </div>
+                  </div>
+
+                  {/* One-Time Costs Section */}
+                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
+                    <div className="font-semibold text-slate-800 dark:text-white text-sm">One-Time Costs</div>
+                  </div>
+
+                  {/* One-Time Cost Breakdown */}
+                  <div className="space-y-2">
+                    {currentQuote.device && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">Down Payment:</span>
+                        <span className="text-slate-800 dark:text-white">{currentQuote.device.downPayment}</span>
+                      </div>
+                    )}
+                    {currentQuote.fees.filter(fee => fee.type === 'one-time').map((fee, index) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">{fee.name}:</span>
+                        <span className="text-slate-800 dark:text-white">{fee.amount}</span>
+                      </div>
+                    ))}
+                    {currentQuote.discounts.filter(discount => discount.type === 'one-time').map((discount, index) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">{discount.name}:</span>
+                        <span className="text-green-600 dark:text-green-400">-{discount.amount}</span>
+                      </div>
+                    ))}
+                    {(!currentQuote.device && currentQuote.fees.filter(fee => fee.type === 'one-time').length === 0 && currentQuote.discounts.filter(discount => discount.type === 'one-time').length === 0) && (
+                      <div className="text-slate-500 dark:text-slate-400 text-sm">Not Applied</div>
+                    )}
+                  </div>
 
                   {/* Total Summary */}
                   <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-4 text-white">
-                    <h4 className="font-semibold mb-3">Monthly Total</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">Plan + Device + Add-ons</span>
-                        <span className="font-bold text-lg">${calculateQuoteTotals().totalMonthly.toFixed(2)}</span>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-semibold">T-Mobile TOTAL</span>
+                      <div className="text-right">
+                        <div className="text-sm opacity-90">Excludes taxes and other fees</div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">One-time Costs</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-sm opacity-90">Monthly Costs:</span>
+                        <span className="font-bold">${calculateQuoteTotals().totalMonthly.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm opacity-90">One-Time Costs:</span>
                         <span className="font-semibold">${calculateQuoteTotals().totalOneTime.toFixed(2)}</span>
-                      </div>
-                      <div className="border-t border-white border-opacity-20 pt-2 mt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold">First Month Total</span>
-                          <span className="font-bold text-xl">${calculateQuoteTotals().totalFirstMonth.toFixed(2)}</span>
-                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Discounts Summary */}
-                  {currentQuote.discounts.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Applied Discounts</h4>
-                      <div className="space-y-2">
-                        {currentQuote.discounts.map((discount, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600 dark:text-slate-400">{discount.name}</span>
-                            <span className="font-semibold text-green-600 dark:text-green-400">-{discount.amount}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Fees Summary */}
-                  {currentQuote.fees.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Additional Fees</h4>
-                      <div className="space-y-2">
-                        {currentQuote.fees.map((fee, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600 dark:text-slate-400">{fee.name}</span>
-                            <span className="font-semibold text-red-600 dark:text-red-400">+{fee.amount}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
+                  {/* Disclaimers */}
+                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                    <p>* Services, taxes, fees, and other charges additional. If service is canceled, installment plan balance is due. Upgrade dates shown are approximate.</p>
+                    <p>* Requires purchase of eligible smartphone on T-Mobile Installment plan with JUMP! feature, qualifying rate plan, and credit approval.</p>
+                  </div>
+                </div>
               ) : isBuildingQuote ? (
                 /* Empty State when Building Quote */
                 <div className="text-center py-8">
@@ -2756,142 +2796,115 @@ function App() {
                   </p>
                 </div>
               ) : (
-                /* Sample Quote */
-                <>
-                  {/* Plan Summary */}
-                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-semibold text-slate-800 dark:text-white">T-Mobile Go5G Plus</h3>
-                      <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">▼</button>
+                /* Sample Quote - AT&T Style */
+                <div className="space-y-4">
+                  {/* Plan Details */}
+                  <div>
+                    <div className="font-semibold text-slate-800 dark:text-white">Plan: T-Mobile Go5G Plus</div>
+                    <div className="text-slate-600 dark:text-slate-400">Plan cost $90.00</div>
+                  </div>
+
+                  {/* Device Details */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                      <span className="text-sm font-bold text-slate-600 dark:text-slate-400">1</span>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Plan Cost</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">$90.00</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                        <span className="text-sm text-slate-600 dark:text-slate-400">Unlimited talk, text & data with Netflix & Apple TV+</span>
-                      </div>
+                    <div>
+                      <div className="font-semibold text-slate-800 dark:text-white">Device: iPhone 16 Pro Max</div>
+                      <div className="text-slate-600 dark:text-slate-400">Device Price: $1,299.99 each</div>
                     </div>
                   </div>
 
-                  {/* Device Summary */}
-                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <img 
-                        src="https://i.ibb.co/HTzSdF1C/i-Phone16-Pro-Max.jpg" 
-                        alt="iPhone 16 Pro Max"
-                        className="w-12 h-12 object-contain rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-medium text-slate-800 dark:text-white">iPhone 16 Pro Max</h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">256GB • Natural Titanium</p>
-                      </div>
+                  {/* Monthly Costs Section */}
+                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
+                    <div className="font-semibold text-slate-800 dark:text-white text-sm">Monthly Costs</div>
+                  </div>
+
+                  {/* Installment Details */}
+                  <div className="space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-600 dark:text-slate-400">Term:</span>
+                      <span className="text-slate-800 dark:text-white">36 months</span>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">Monthly Device Payment</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">$45.83</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">One-time Down Payment</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">$199.99</span>
-                      </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600 dark:text-slate-400">Estimated Payoff:</span>
+                      <span className="text-slate-800 dark:text-white">July 2028</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600 dark:text-slate-400">Promo Eligible:</span>
+                      <span className="text-slate-800 dark:text-white">July 2026 (12 mos./33% paid)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-600 dark:text-slate-400">Upgrade Anytime*</span>
                     </div>
                   </div>
 
-                  {/* Add-ons Summary */}
-                  <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                    <h4 className="font-medium text-slate-800 dark:text-white mb-3">Protection & Features</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">T-Mobile Protection Plus</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">$11.00</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">T-Mobile JUMP!</span>
-                        <span className="font-semibold text-slate-800 dark:text-white">$12.00</span>
-                      </div>
+                  {/* Cost Breakdown */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Device Installment:</span>
+                      <span className="text-slate-800 dark:text-white">$45.83 for 36 months</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">T-Mobile JUMP!:</span>
+                      <span className="text-slate-800 dark:text-white">$12.00</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">T-Mobile Protection:</span>
+                      <span className="text-slate-800 dark:text-white">$0.00</span>
+                    </div>
+                  </div>
+
+                  {/* Monthly Subtotal */}
+                  <div className="border-t border-slate-200 dark:border-slate-600 pt-2">
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-slate-800 dark:text-white">Monthly Subtotal</span>
+                      <span className="text-slate-800 dark:text-white">$147.83 for 36 months</span>
+                    </div>
+                  </div>
+
+                  {/* One-Time Costs Section */}
+                  <div className="bg-slate-50 dark:bg-slate-700 px-3 py-2 rounded">
+                    <div className="font-semibold text-slate-800 dark:text-white text-sm">One-Time Costs</div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Down Payment:</span>
+                      <span className="text-slate-800 dark:text-white">$199.99</span>
                     </div>
                   </div>
 
                   {/* Total Summary */}
                   <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-4 text-white">
-                    <h4 className="font-semibold mb-3">Monthly Total</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">Plan + Device + Add-ons</span>
-                        <span className="font-bold text-lg">$158.83</span>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-semibold">T-Mobile TOTAL</span>
+                      <div className="text-right">
+                        <div className="text-sm opacity-90">Excludes taxes and other fees</div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">One-time Costs</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-sm opacity-90">Monthly Costs:</span>
+                        <span className="font-bold">$147.83</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm opacity-90">One-Time Costs:</span>
                         <span className="font-semibold">$199.99</span>
                       </div>
-                      <div className="border-t border-white border-opacity-20 pt-2 mt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold">First Month Total</span>
-                          <span className="font-bold text-xl">$358.82</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
-                  {/* Discounts Summary */}
-                  {currentQuote.discounts.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Applied Discounts</h4>
-                      <div className="space-y-2">
-                        {currentQuote.discounts.map((discount, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600 dark:text-slate-400">{discount.name}</span>
-                            <span className="font-semibold text-green-600 dark:text-green-400">-{discount.amount}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Fees Summary */}
-                  {currentQuote.fees.length > 0 && (
-                    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-                      <h4 className="font-medium text-slate-800 dark:text-white mb-3">Additional Fees</h4>
-                      <div className="space-y-2">
-                        {currentQuote.fees.map((fee, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600 dark:text-slate-400">{fee.name}</span>
-                            <span className="font-semibold text-red-600 dark:text-red-400">+{fee.amount}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Total Summary */}
-                  <div className="bg-gradient-to-r from-att-blue to-att-blue-light rounded-lg p-4 text-white">
-                    <h4 className="font-semibold mb-3">Monthly Total</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">Plan + Device + Add-ons</span>
-                        <span className="font-bold text-lg">${calculateQuoteTotals().totalMonthly.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm opacity-90">One-time Costs</span>
-                        <span className="font-semibold">${calculateQuoteTotals().totalOneTime.toFixed(2)}</span>
-                      </div>
-                      <div className="border-t border-white border-opacity-20 pt-2 mt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold">First Month Total</span>
-                          <span className="font-bold text-xl">${calculateQuoteTotals().totalFirstMonth.toFixed(2)}</span>
-                        </div>
-                      </div>
-                    </div>
+                  {/* Disclaimers */}
+                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                    <p>* Services, taxes, fees, and other charges additional. If service is canceled, installment plan balance is due. Upgrade dates shown are approximate.</p>
+                    <p>* Requires purchase of eligible smartphone on T-Mobile Installment plan with JUMP! feature, qualifying rate plan, and credit approval.</p>
                   </div>
-                </>
+                </div>
               )}
 
               {/* T-Mobile Benefits */}
-              <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
+              <div className="mt-4 bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
                 <h4 className="font-medium text-slate-800 dark:text-white mb-3">T-Mobile Benefits</h4>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
