@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, LogOut, Moon, Sun, History, Menu, X } from 'lucide-react';
+import { Settings, LogOut, Moon, Sun, Menu, X } from 'lucide-react';
 
 const Header = ({ 
   user, 
   onSignOut, 
   onToggleTheme, 
-  onShowSettings, 
-  onShowQuoteHistory 
+  onShowSettings
 }) => {
   const isDark = document.documentElement.classList.contains('dark');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -51,15 +50,6 @@ const Header = ({
 
           {/* Desktop Action Buttons */}
           <div className="hidden sm:flex items-center gap-3">
-            {/* Quote History Button */}
-            <button
-              onClick={onShowQuoteHistory}
-              className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-              <History className="w-4 h-4" />
-              <span>Quote History</span>
-            </button>
-
             {/* Theme Toggle */}
             <button
               onClick={onToggleTheme}
@@ -119,19 +109,6 @@ const Header = ({
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
             <div className="space-y-3">
-              {/* Quote History Button */}
-              <button
-                onClick={() => {
-                  console.log('Quote History clicked');
-                  onShowQuoteHistory();
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors duration-200 shadow-md"
-              >
-                <History className="w-5 h-5" />
-                <span>Quote History</span>
-              </button>
-
               {/* Settings Button */}
               <button
                 onClick={() => {

@@ -686,9 +686,22 @@ export const SettingsModal = ({
   onSignOut,
   user,
   onShowGoals,
-  onShowQuoteHistory
+  onShowQuoteHistory,
+  quotesWithPricing
 }) => {
   const isDark = document.documentElement.classList.contains('dark');
+
+  // Calculate sales analytics
+  const totalQuotes = quotesWithPricing?.length || 0;
+  const thisMonthQuotes = quotesWithPricing?.filter(quote => {
+    const quoteDate = new Date(quote.saleDate);
+    const now = new Date();
+    return quoteDate.getMonth() === now.getMonth() && quoteDate.getFullYear() === now.getFullYear();
+  }).length || 0;
+  const avgQuoteValue = totalQuotes > 0 
+    ? Math.round(quotesWithPricing?.reduce((sum, quote) => sum + quote.totalMonthly, 0) / totalQuotes)
+    : 0;
+  const totalMonthly = quotesWithPricing?.reduce((sum, quote) => sum + quote.totalMonthly, 0) || 0;
 
   return (
     <div className="modal-backdrop">
@@ -744,6 +757,29 @@ export const SettingsModal = ({
                 <div className="text-sm text-slate-500 dark:text-slate-400">View and manage all your quotes</div>
               </div>
             </button>
+          </div>
+
+          {/* Sales Analytics Section */}
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
+            <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4">Sales Analytics</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                <div className="text-sm text-slate-500 dark:text-slate-400">Total Quotes</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-white">{totalQuotes}</div>
+              </div>
+              <div className="bg-white dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                <div className="text-sm text-slate-500 dark:text-slate-400">This Month</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-white">{thisMonthQuotes}</div>
+              </div>
+              <div className="bg-white dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                <div className="text-sm text-slate-500 dark:text-slate-400">Avg Quote Value</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-white">${avgQuoteValue}/mo</div>
+              </div>
+              <div className="bg-white dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                <div className="text-sm text-slate-500 dark:text-slate-400">Total Monthly</div>
+                <div className="text-2xl font-bold text-slate-800 dark:text-white">${totalMonthly}</div>
+              </div>
+            </div>
           </div>
 
           {/* Appearance Section */}

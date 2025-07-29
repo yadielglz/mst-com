@@ -1730,7 +1730,6 @@ function App() {
           onSignOut={handleSignOut}
           onToggleTheme={toggleTheme}
           onShowSettings={() => setShowSettingsModal(true)}
-          onShowQuoteHistory={() => setShowQuoteHistory(true)}
         />
 
         {/* Main Content */}
@@ -1780,52 +1779,40 @@ function App() {
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Total Quotes</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{quotesWithPricing.length}</p>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Available Plans</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">15+</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">📊</div>
+                <div className="text-3xl sm:text-4xl">📋</div>
               </div>
             </div>
             
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">This Month</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
-                    {quotesWithPricing.filter(quote => {
-                      const quoteDate = new Date(quote.date);
-                      const now = new Date();
-                      return quoteDate.getMonth() === now.getMonth() && quoteDate.getFullYear() === now.getFullYear();
-                    }).length}
-                  </p>
-            </div>
-                <div className="text-3xl sm:text-4xl">📅</div>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Device Options</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">50+</p>
+                </div>
+                <div className="text-3xl sm:text-4xl">📱</div>
               </div>
             </div>
             
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
-            <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Avg Quote Value</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
-                    ${quotesWithPricing.length > 0 
-                      ? Math.round(quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0) / quotesWithPricing.length)
-                      : 0}/mo
-                  </p>
+                <div>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">5G Coverage</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">99%</p>
+                </div>
+                <div className="text-3xl sm:text-4xl">📶</div>
+              </div>
             </div>
-                <div className="text-3xl sm:text-4xl">💰</div>
-          </div>
-        </div>
             
             <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Total Monthly</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">
-                    ${quotesWithPricing.reduce((sum, quote) => sum + quote.totalMonthly, 0).toLocaleString()}
-                  </p>
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">Customer Support</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">24/7</p>
                 </div>
-                <div className="text-3xl sm:text-4xl">📈</div>
+                <div className="text-3xl sm:text-4xl">🛟</div>
               </div>
             </div>
           </div>
@@ -1983,7 +1970,11 @@ function App() {
             onSignOut={handleSignOut}
             user={user}
             onShowGoals={() => setShowGoalsModal(true)}
-            onShowQuoteHistory={() => setShowQuoteHistory(true)}
+            onShowQuoteHistory={() => {
+              setShowSettingsModal(false);
+              setShowQuoteHistory(true);
+            }}
+            quotesWithPricing={quotesWithPricing}
           />
         )}
 
