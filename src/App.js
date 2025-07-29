@@ -134,7 +134,7 @@ const PRODUCT_CATALOG = {
 };
 
 function App() {
-  console.log('App: Component rendering...');
+  console.log('App: Component rendering... - UI Overhaul v2.0');
   
   // Authentication state
   const [user, setUser] = useState(null);
