@@ -1271,8 +1271,7 @@ function App() {
   const [isBuildingQuote, setIsBuildingQuote] = useState(false);
   const [currentQuote, setCurrentQuote] = useState({
     plan: null,
-    device: null,
-    addOns: [],
+    lines: [],
     discounts: [],
     fees: [],
     customerInfo: {}
@@ -1283,6 +1282,17 @@ function App() {
     addOns: false,
     discounts: false
   });
+  const [currentLine, setCurrentLine] = useState({
+    id: null,
+    deviceType: null,
+    device: null,
+    paymentType: null,
+    addOns: [],
+    tradeIn: null,
+    customPromotion: null
+  });
+  const [showDeviceModal, setShowDeviceModal] = useState(false);
+  const [selectedDeviceType, setSelectedDeviceType] = useState(null);
 
   // Mobile detection and responsive handling
   useEffect(() => {
@@ -1853,8 +1863,7 @@ function App() {
     setIsBuildingQuote(true);
     setCurrentQuote({
       plan: null,
-      device: null,
-      addOns: [],
+      lines: [],
       discounts: [],
       fees: [],
       customerInfo: {}
@@ -1906,8 +1915,7 @@ function App() {
       setIsBuildingQuote(false);
       setCurrentQuote({
         plan: null,
-        device: null,
-        addOns: [],
+        lines: [],
         discounts: [],
         fees: [],
         customerInfo: {}
@@ -1922,21 +1930,44 @@ function App() {
     // Add plan cost
     if (currentQuote.plan) {
       const planPrice = parseFloat(currentQuote.plan.price.replace('$', '').replace('/mo', ''));
-      totalMonthly += planPrice;
+      totalMonthly += planPrice * Math.max(1, currentQuote.lines.length);
     }
 
-    // Add device cost
-    if (currentQuote.device) {
-      const deviceMonthly = parseFloat(currentQuote.device.monthlyPayment.replace('$', '').replace('/mo', ''));
-      const deviceDown = parseFloat(currentQuote.device.downPayment.replace('$', ''));
-      totalMonthly += deviceMonthly;
-      totalOneTime += deviceDown;
-    }
+    // Add device costs for each line
+    currentQuote.lines.forEach(line => {
+      if (line.device) {
+        if (line.paymentType === 'installment') {
+          const deviceMonthly = parseFloat(line.device.monthlyPayment.replace('$', '').replace('/mo', ''));
+          const deviceDown = parseFloat(line.device.downPayment.replace('$', ''));
+          totalMonthly += deviceMonthly;
+          totalOneTime += deviceDown;
+        } else if (line.paymentType === 'full-price') {
+          const devicePrice = parseFloat(line.device.price.replace('$', '').replace(',', ''));
+          totalOneTime += devicePrice;
+        }
+      }
 
-    // Add add-ons
-    currentQuote.addOns.forEach(addon => {
-      const addonPrice = parseFloat(addon.price.replace('$', '').replace('/mo', ''));
-      totalMonthly += addonPrice;
+      // Add add-ons for this line
+      line.addOns.forEach(addon => {
+        const addonPrice = parseFloat(addon.price.replace('$', '').replace('/mo', ''));
+        totalMonthly += addonPrice;
+      });
+
+      // Add trade-in value (reduces one-time cost)
+      if (line.tradeIn && line.tradeIn.value) {
+        const tradeInValue = parseFloat(line.tradeIn.value.replace('$', ''));
+        totalOneTime -= tradeInValue;
+      }
+
+      // Add custom promotion (reduces monthly or one-time cost)
+      if (line.customPromotion) {
+        const promoValue = parseFloat(line.customPromotion.value.replace('$', ''));
+        if (line.customPromotion.type === 'monthly') {
+          totalMonthly -= promoValue;
+        } else {
+          totalOneTime -= promoValue;
+        }
+      }
     });
 
     // Add fees
@@ -1970,8 +2001,7 @@ function App() {
     setIsBuildingQuote(false);
     setCurrentQuote({
       plan: null,
-      device: null,
-      addOns: [],
+      lines: [],
       discounts: [],
       fees: [],
       customerInfo: {}
@@ -1981,8 +2011,7 @@ function App() {
   const clearQuote = () => {
     setCurrentQuote({
       plan: null,
-      device: null,
-      addOns: [],
+      lines: [],
       discounts: [],
       fees: [],
       customerInfo: {}
@@ -2028,6 +2057,74 @@ function App() {
         };
       }
     });
+  };
+
+  const addLine = () => {
+    const newLine = {
+      id: Date.now(),
+      deviceType: null,
+      device: null,
+      paymentType: null,
+      addOns: [],
+      tradeIn: null,
+      customPromotion: null
+    };
+    setCurrentQuote(prev => ({
+      ...prev,
+      lines: [...prev.lines, newLine]
+    }));
+    setCurrentLine(newLine);
+    setShowDeviceModal(true);
+  };
+
+  const updateLine = (lineId, updates) => {
+    setCurrentQuote(prev => ({
+      ...prev,
+      lines: prev.lines.map(line => 
+        line.id === lineId ? { ...line, ...updates } : line
+      )
+    }));
+    setCurrentLine(prev => prev.id === lineId ? { ...prev, ...updates } : prev);
+  };
+
+  const removeLine = (lineId) => {
+    setCurrentQuote(prev => ({
+      ...prev,
+      lines: prev.lines.filter(line => line.id !== lineId)
+    }));
+  };
+
+  const selectDeviceType = (deviceType) => {
+    setSelectedDeviceType(deviceType);
+    updateLine(currentLine.id, { deviceType });
+  };
+
+  const selectPaymentType = (paymentType) => {
+    updateLine(currentLine.id, { paymentType });
+  };
+
+  const addTradeIn = (tradeInData) => {
+    updateLine(currentLine.id, { tradeIn: tradeInData });
+  };
+
+  const addCustomPromotion = (promotionData) => {
+    updateLine(currentLine.id, { customPromotion: promotionData });
+  };
+
+  const addLineToSummary = () => {
+    if (currentLine.device && currentLine.paymentType) {
+      setShowDeviceModal(false);
+      setCurrentLine({
+        id: null,
+        deviceType: null,
+        device: null,
+        paymentType: null,
+        addOns: [],
+        tradeIn: null,
+        customPromotion: null
+      });
+      setSelectedDeviceType(null);
+    }
   };
 
   // Show loading screen
@@ -2210,7 +2307,7 @@ function App() {
             </div>
 
             {isBuildingQuote ? (
-              /* Quote Building Interface - AT&T Style */
+              /* Quote Building Interface - Multi-Line AT&T Style */
               <div className="space-y-6">
                 {/* Step 1: Plan Selection */}
                 <div>
@@ -2258,124 +2355,98 @@ function App() {
                   </div>
                 </div>
 
-                {/* Step 2: Device Selection */}
+                {/* Step 2: Lines Management */}
                 <div>
                   <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
                     <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                    <h3 className="text-lg font-semibold">Device</h3>
+                    <h3 className="text-lg font-semibold">Lines & Devices</h3>
                   </div>
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
-                    {/* Device Group Name */}
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                        Device Group Name (optional) Max. 100 characters
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter device group name"
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white"
-                      />
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Phone Lines</h4>
+                      <button
+                        onClick={addLine}
+                        className="px-4 py-2 bg-att-blue text-white rounded-lg font-medium hover:bg-att-blue/90 transition-colors"
+                      >
+                        + Add Line
+                      </button>
                     </div>
 
-                    {/* Device Type Selection */}
-                    <div className="mb-4">
-                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">What type of device?</h4>
-                      <div className="flex gap-3">
-                        <button className="px-4 py-2 bg-att-blue text-white rounded-lg font-medium">New Device</button>
-                        <button className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700">Existing Device</button>
-                        <button className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700">Custom Device</button>
-                      </div>
-                    </div>
-
-                    {/* Device Model Selection */}
-                    <div>
-                      <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">Which model?</h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
-                          <label 
-                            key={deviceName} 
-                            className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
-                              currentQuote.device?.name === deviceName 
-                                ? 'border-att-blue bg-att-blue/5' 
-                                : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="device"
-                              value={deviceName}
-                              checked={currentQuote.device?.name === deviceName}
-                              onChange={() => selectDevice(deviceName, deviceData)}
-                              className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
-                            />
-                            <div className="ml-3 flex-1">
-                              {deviceData.image ? (
-                                <img 
-                                  src={deviceData.image} 
-                                  alt={deviceName}
-                                  className="w-12 h-12 object-contain rounded-lg mb-2"
-                                />
-                              ) : (
-                                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center mb-2">
-                                  <span className="text-xl">📱</span>
+                    {/* Existing Lines */}
+                    {currentQuote.lines.length > 0 ? (
+                      <div className="space-y-3">
+                        {currentQuote.lines.map((line, index) => (
+                          <div key={line.id} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
+                            <div className="flex items-center justify-between mb-3">
+                              <h5 className="font-semibold text-slate-800 dark:text-white">Line {index + 1}</h5>
+                              <button
+                                onClick={() => removeLine(line.id)}
+                                className="text-red-500 hover:text-red-700 text-sm"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                            
+                            {/* Line Details */}
+                            <div className="space-y-2 text-sm">
+                              {line.deviceType && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Device Type:</span>
+                                  <span className="text-slate-800 dark:text-white capitalize">{line.deviceType}</span>
                                 </div>
                               )}
-                              <div className="font-semibold text-slate-800 dark:text-white text-sm">{deviceName}</div>
-                              <div className="text-xs text-slate-500 dark:text-slate-400">{deviceData.storage} • {deviceData.color}</div>
+                              {line.device && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Device:</span>
+                                  <span className="text-slate-800 dark:text-white">{line.device.name}</span>
+                                </div>
+                              )}
+                              {line.paymentType && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Payment:</span>
+                                  <span className="text-slate-800 dark:text-white capitalize">{line.paymentType.replace('-', ' ')}</span>
+                                </div>
+                              )}
+                              {line.tradeIn && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Trade-In:</span>
+                                  <span className="text-green-600 dark:text-green-400">-{line.tradeIn.value}</span>
+                                </div>
+                              )}
+                              {line.addOns.length > 0 && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Add-ons:</span>
+                                  <span className="text-slate-800 dark:text-white">{line.addOns.length} selected</span>
+                                </div>
+                              )}
                             </div>
-                            <div className="text-right">
-                              <div className="text-sm font-bold text-att-blue">{deviceData.monthlyPayment}/mo</div>
-                              <div className="text-xs text-slate-500">${parseFloat(deviceData.downPayment.replace('$', ''))} down</div>
-                            </div>
-                          </label>
+
+                            {/* Edit Line Button */}
+                            <button
+                              onClick={() => {
+                                setCurrentLine(line);
+                                setShowDeviceModal(true);
+                              }}
+                              className="mt-3 px-3 py-1 border border-att-blue text-att-blue rounded text-sm hover:bg-att-blue hover:text-white transition-colors"
+                            >
+                              Edit Line
+                            </button>
+                          </div>
                         ))}
                       </div>
-                    </div>
+                    ) : (
+                      <div className="text-center py-8 text-slate-500 dark:text-slate-400">
+                        <div className="text-4xl mb-2">📱</div>
+                        <p>No lines added yet. Click "Add Line" to get started.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Step 3: Add-ons Selection */}
+                {/* Step 3: Discounts & Fees */}
                 <div>
                   <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
                     <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">3</div>
-                    <h3 className="text-lg font-semibold">Add-ons</h3>
-                  </div>
-                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
-                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3">Protection & Features</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => {
-                        const isSelected = currentQuote.addOns.some(addon => addon.name === addonName);
-                        return (
-                          <label 
-                            key={addonName} 
-                            className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
-                              isSelected 
-                                ? 'border-att-blue bg-att-blue/5' 
-                                : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
-                            }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={isSelected}
-                              onChange={() => toggleAddOn(addonName, addonData)}
-                              className="w-4 h-4 text-att-blue border-slate-300 rounded focus:ring-att-blue"
-                            />
-                            <div className="ml-3 flex-1">
-                              <div className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</div>
-                              <div className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</div>
-                            </div>
-                            <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Step 4: Discounts & Fees */}
-                <div>
-                  <div className="bg-att-blue text-white px-4 py-3 rounded-t-lg flex items-center gap-3">
-                    <div className="w-8 h-8 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">4</div>
                     <h3 className="text-lg font-semibold">Discounts & Fees</h3>
                   </div>
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
@@ -2634,7 +2705,7 @@ function App() {
               <div className="w-6 h-6 bg-white text-att-blue rounded-full flex items-center justify-center font-bold text-sm">$</div>
               <h2 className="text-lg font-semibold">Cost Summary</h2>
               <div className="ml-auto flex gap-2">
-                {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) && (
+                {isBuildingQuote && (currentQuote.plan || currentQuote.lines.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) && (
                   <button
                     onClick={clearQuote}
                     className="px-3 py-1 bg-white/20 text-white rounded text-sm font-medium hover:bg-white/30 transition-colors"
@@ -2652,27 +2723,65 @@ function App() {
 
             {/* Dynamic Quote Summary */}
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-b-lg p-4">
-              {isBuildingQuote && (currentQuote.plan || currentQuote.device || currentQuote.addOns.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) ? (
-                /* Live Quote Summary - AT&T Style */
+              {isBuildingQuote && (currentQuote.plan || currentQuote.lines.length > 0 || currentQuote.discounts.length > 0 || currentQuote.fees.length > 0) ? (
+                /* Live Quote Summary - Multi-Line AT&T Style */
                 <div className="space-y-4">
                   {/* Plan Details */}
                   {currentQuote.plan && (
                     <div>
                       <div className="font-semibold text-slate-800 dark:text-white">Plan: {currentQuote.plan.name}</div>
-                      <div className="text-slate-600 dark:text-slate-400">Plan cost {currentQuote.plan.price}</div>
+                      <div className="text-slate-600 dark:text-slate-400">Plan cost {currentQuote.plan.price} × {Math.max(1, currentQuote.lines.length)} lines</div>
                     </div>
                   )}
 
-                  {/* Device Details */}
-                  {currentQuote.device && (
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-bold text-slate-600 dark:text-slate-400">1</span>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-slate-800 dark:text-white">Device: {currentQuote.device.name}</div>
-                        <div className="text-slate-600 dark:text-slate-400">Device Price: ${parseFloat(currentQuote.device.price.replace('$', '').replace(',', ''))} each</div>
-                      </div>
+                  {/* Lines Summary */}
+                  {currentQuote.lines.length > 0 && (
+                    <div className="space-y-3">
+                      {currentQuote.lines.map((line, index) => (
+                        <div key={line.id} className="border border-slate-200 dark:border-slate-600 rounded-lg p-3">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-6 h-6 bg-slate-100 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                              <span className="text-xs font-bold text-slate-600 dark:text-slate-400">{index + 1}</span>
+                            </div>
+                            <div className="flex-1">
+                              <div className="font-semibold text-slate-800 dark:text-white text-sm">
+                                {line.deviceType ? line.deviceType.replace('-', ' ').toUpperCase() : 'Line'} {index + 1}
+                              </div>
+                              {line.device && (
+                                <div className="text-xs text-slate-500 dark:text-slate-400">{line.device.name}</div>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {/* Line Details */}
+                          <div className="space-y-1 text-xs">
+                            {line.device && (
+                              <div className="flex justify-between">
+                                <span className="text-slate-600 dark:text-slate-400">Device:</span>
+                                <span className="text-slate-800 dark:text-white">{line.device.name}</span>
+                              </div>
+                            )}
+                            {line.paymentType && (
+                              <div className="flex justify-between">
+                                <span className="text-slate-600 dark:text-slate-400">Payment:</span>
+                                <span className="text-slate-800 dark:text-white capitalize">{line.paymentType.replace('-', ' ')}</span>
+                              </div>
+                            )}
+                            {line.tradeIn && line.tradeIn.value && (
+                              <div className="flex justify-between">
+                                <span className="text-slate-600 dark:text-slate-400">Trade-In:</span>
+                                <span className="text-green-600 dark:text-green-400">-{line.tradeIn.value}</span>
+                              </div>
+                            )}
+                            {line.addOns.length > 0 && (
+                              <div className="flex justify-between">
+                                <span className="text-slate-600 dark:text-slate-400">Add-ons:</span>
+                                <span className="text-slate-800 dark:text-white">{line.addOns.length} selected</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
 
@@ -2681,52 +2790,47 @@ function App() {
                     <div className="font-semibold text-slate-800 dark:text-white text-sm">Monthly Costs</div>
                   </div>
 
-                  {/* Installment Details */}
-                  {currentQuote.device && (
+                  {/* Plan Cost Breakdown */}
+                  {currentQuote.plan && (
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-slate-600 dark:text-slate-400">Term:</span>
-                        <span className="text-slate-800 dark:text-white">36 months</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600 dark:text-slate-400">Estimated Payoff:</span>
-                        <span className="text-slate-800 dark:text-white">July 2028</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600 dark:text-slate-400">Promo Eligible:</span>
-                        <span className="text-slate-800 dark:text-white">July 2026 (12 mos./33% paid)</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600 dark:text-slate-400">Upgrade Anytime*</span>
+                        <span className="text-slate-600 dark:text-slate-400">Plan Cost:</span>
+                        <span className="text-slate-800 dark:text-white">{currentQuote.plan.price} × {Math.max(1, currentQuote.lines.length)}</span>
                       </div>
                     </div>
                   )}
 
-                  {/* Cost Breakdown */}
-                  <div className="space-y-2">
-                    {currentQuote.device && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600 dark:text-slate-400">Device Installment:</span>
-                        <span className="text-slate-800 dark:text-white">{currentQuote.device.monthlyPayment} for 36 months</span>
-                      </div>
-                    )}
-                    {currentQuote.addOns.map((addon, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="text-slate-600 dark:text-slate-400">{addon.name}:</span>
-                        <span className="text-slate-800 dark:text-white">{addon.price}</span>
-                      </div>
-                    ))}
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">T-Mobile Protection:</span>
-                      <span className="text-slate-800 dark:text-white">$0.00</span>
+                  {/* Device Installments */}
+                  {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').length > 0 && (
+                    <div className="space-y-1 text-sm">
+                      {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').map((line, index) => (
+                        <div key={line.id} className="flex justify-between">
+                          <span className="text-slate-600 dark:text-slate-400">Device Installment (Line {index + 1}):</span>
+                          <span className="text-slate-800 dark:text-white">{line.device.monthlyPayment} for 36 months</span>
+                        </div>
+                      ))}
                     </div>
-                  </div>
+                  )}
+
+                  {/* Add-ons */}
+                  {currentQuote.lines.some(line => line.addOns.length > 0) && (
+                    <div className="space-y-1 text-sm">
+                      {currentQuote.lines.flatMap((line, lineIndex) => 
+                        line.addOns.map((addon, addonIndex) => (
+                          <div key={`${line.id}-${addonIndex}`} className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">{addon.name} (Line {lineIndex + 1}):</span>
+                            <span className="text-slate-800 dark:text-white">{addon.price}</span>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  )}
 
                   {/* Monthly Subtotal */}
                   <div className="border-t border-slate-200 dark:border-slate-600 pt-2">
                     <div className="flex justify-between font-semibold">
                       <span className="text-slate-800 dark:text-white">Monthly Subtotal</span>
-                      <span className="text-slate-800 dark:text-white">${calculateQuoteTotals().totalMonthly.toFixed(2)} for 36 months</span>
+                      <span className="text-slate-800 dark:text-white">${calculateQuoteTotals().totalMonthly.toFixed(2)}</span>
                     </div>
                   </div>
 
@@ -2737,25 +2841,59 @@ function App() {
 
                   {/* One-Time Cost Breakdown */}
                   <div className="space-y-2">
-                    {currentQuote.device && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600 dark:text-slate-400">Down Payment:</span>
-                        <span className="text-slate-800 dark:text-white">{currentQuote.device.downPayment}</span>
+                    {/* Device Down Payments */}
+                    {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').length > 0 && (
+                      <div className="space-y-1 text-sm">
+                        {currentQuote.lines.filter(line => line.device && line.paymentType === 'installment').map((line, index) => (
+                          <div key={line.id} className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">Down Payment (Line {index + 1}):</span>
+                            <span className="text-slate-800 dark:text-white">{line.device.downPayment}</span>
+                          </div>
+                        ))}
                       </div>
                     )}
+
+                    {/* Full Price Devices */}
+                    {currentQuote.lines.filter(line => line.device && line.paymentType === 'full-price').length > 0 && (
+                      <div className="space-y-1 text-sm">
+                        {currentQuote.lines.filter(line => line.device && line.paymentType === 'full-price').map((line, index) => (
+                          <div key={line.id} className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">Full Price (Line {index + 1}):</span>
+                            <span className="text-slate-800 dark:text-white">{line.device.price}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Trade-In Values */}
+                    {currentQuote.lines.filter(line => line.tradeIn && line.tradeIn.value).length > 0 && (
+                      <div className="space-y-1 text-sm">
+                        {currentQuote.lines.filter(line => line.tradeIn && line.tradeIn.value).map((line, index) => (
+                          <div key={line.id} className="flex justify-between">
+                            <span className="text-slate-600 dark:text-slate-400">Trade-In Credit (Line {index + 1}):</span>
+                            <span className="text-green-600 dark:text-green-400">-{line.tradeIn.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Fees */}
                     {currentQuote.fees.filter(fee => fee.type === 'one-time').map((fee, index) => (
                       <div key={index} className="flex justify-between text-sm">
                         <span className="text-slate-600 dark:text-slate-400">{fee.name}:</span>
                         <span className="text-slate-800 dark:text-white">{fee.amount}</span>
                       </div>
                     ))}
+
+                    {/* Discounts */}
                     {currentQuote.discounts.filter(discount => discount.type === 'one-time').map((discount, index) => (
                       <div key={index} className="flex justify-between text-sm">
                         <span className="text-slate-600 dark:text-slate-400">{discount.name}:</span>
                         <span className="text-green-600 dark:text-green-400">-{discount.amount}</span>
                       </div>
                     ))}
-                    {(!currentQuote.device && currentQuote.fees.filter(fee => fee.type === 'one-time').length === 0 && currentQuote.discounts.filter(discount => discount.type === 'one-time').length === 0) && (
+
+                    {(!currentQuote.lines.some(line => line.device) && currentQuote.fees.filter(fee => fee.type === 'one-time').length === 0 && currentQuote.discounts.filter(discount => discount.type === 'one-time').length === 0) && (
                       <div className="text-slate-500 dark:text-slate-400 text-sm">Not Applied</div>
                     )}
                   </div>
@@ -2926,6 +3064,286 @@ function App() {
                 </div>
               </div>
             </div>
+
+            {/* Device Configuration Modal */}
+            {showDeviceModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                  {/* Modal Header */}
+                  <div className="bg-att-blue text-white px-6 py-4 rounded-t-lg flex items-center justify-between">
+                    <h2 className="text-xl font-semibold">Configure Line {currentQuote.lines.findIndex(line => line.id === currentLine.id) + 1}</h2>
+                    <button
+                      onClick={() => setShowDeviceModal(false)}
+                      className="text-white hover:text-gray-200"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  {/* Modal Content */}
+                  <div className="p-6 space-y-6">
+                    {/* Step 1: Device Type Selection */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">1. Select Device Type</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {['smartphone', 'tablet', 'watch', 'hotspot', 'existing-device', 'custom-device'].map((deviceType) => (
+                          <button
+                            key={deviceType}
+                            onClick={() => selectDeviceType(deviceType)}
+                            className={`p-4 border rounded-lg text-left transition-colors ${
+                              selectedDeviceType === deviceType
+                                ? 'border-att-blue bg-att-blue/5'
+                                : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                            }`}
+                          >
+                            <div className="text-2xl mb-2">
+                              {deviceType === 'smartphone' && '📱'}
+                              {deviceType === 'tablet' && '📱'}
+                              {deviceType === 'watch' && '⌚'}
+                              {deviceType === 'hotspot' && '📶'}
+                              {deviceType === 'existing-device' && '📱'}
+                              {deviceType === 'custom-device' && '⚙️'}
+                            </div>
+                            <div className="font-medium text-slate-800 dark:text-white capitalize">
+                              {deviceType.replace('-', ' ')}
+                            </div>
+                            <div className="text-sm text-slate-500 dark:text-slate-400">
+                              {deviceType === 'smartphone' && 'iPhone, Samsung, etc.'}
+                              {deviceType === 'tablet' && 'iPad, Galaxy Tab, etc.'}
+                              {deviceType === 'watch' && 'Apple Watch, Galaxy Watch'}
+                              {deviceType === 'hotspot' && 'Mobile hotspot device'}
+                              {deviceType === 'existing-device' && 'Bring your own device'}
+                              {deviceType === 'custom-device' && 'Custom device configuration'}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Step 2: Device Selection (if device type selected) */}
+                    {selectedDeviceType && selectedDeviceType !== 'existing-device' && selectedDeviceType !== 'custom-device' && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">2. Select Device</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.devices).slice(0, 8).map(([deviceName, deviceData]) => (
+                            <label 
+                              key={deviceName} 
+                              className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
+                                currentLine.device?.name === deviceName 
+                                  ? 'border-att-blue bg-att-blue/5' 
+                                  : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="device"
+                                value={deviceName}
+                                checked={currentLine.device?.name === deviceName}
+                                onChange={() => updateLine(currentLine.id, { device: { name: deviceName, ...deviceData } })}
+                                className="w-4 h-4 text-att-blue border-slate-300 focus:ring-att-blue"
+                              />
+                              <div className="ml-3 flex-1">
+                                {deviceData.image ? (
+                                  <img 
+                                    src={deviceData.image} 
+                                    alt={deviceName}
+                                    className="w-16 h-16 object-contain rounded-lg mb-2"
+                                  />
+                                ) : (
+                                  <div className="w-16 h-16 bg-slate-100 dark:bg-slate-600 rounded-lg flex items-center justify-center mb-2">
+                                    <span className="text-2xl">📱</span>
+                                  </div>
+                                )}
+                                <div className="font-semibold text-slate-800 dark:text-white">{deviceName}</div>
+                                <div className="text-sm text-slate-500 dark:text-slate-400">{deviceData.storage} • {deviceData.color}</div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-lg font-bold text-att-blue">{deviceData.price}</div>
+                                <div className="text-sm text-slate-500">{deviceData.monthlyPayment}/mo</div>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 3: Payment Type Selection (if device selected) */}
+                    {currentLine.device && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">3. Select Payment Option</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          {[
+                            { type: 'full-price', label: 'Full Price', desc: 'Pay full retail price upfront' },
+                            { type: 'installment', label: 'Installment', desc: 'Pay monthly over 36 months' },
+                            { type: 'special-promotion', label: 'Special Promotion', desc: 'Apply special offers or custom promotion' }
+                          ].map((option) => (
+                            <button
+                              key={option.type}
+                              onClick={() => selectPaymentType(option.type)}
+                              className={`p-4 border rounded-lg text-left transition-colors ${
+                                currentLine.paymentType === option.type
+                                  ? 'border-att-blue bg-att-blue/5'
+                                  : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                              }`}
+                            >
+                              <div className="font-medium text-slate-800 dark:text-white">{option.label}</div>
+                              <div className="text-sm text-slate-500 dark:text-slate-400">{option.desc}</div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 4: Trade-In Section */}
+                    {currentLine.paymentType && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">4. Trade-In (Optional)</h3>
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                Trade-In Device
+                              </label>
+                              <select className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white">
+                                <option>Select device to trade in</option>
+                                <option>iPhone 12</option>
+                                <option>iPhone 13</option>
+                                <option>iPhone 14</option>
+                                <option>Samsung Galaxy S21</option>
+                                <option>Samsung Galaxy S22</option>
+                                <option>Other</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                Estimated Trade-In Value
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="$0.00"
+                                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white"
+                                onChange={(e) => addTradeIn({ value: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 5: Add-ons Selection */}
+                    {currentLine.paymentType && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">5. Add-ons (Optional)</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {Object.entries(PRODUCT_CATALOG.Mobile.addOns).slice(0, 6).map(([addonName, addonData]) => {
+                            const isSelected = currentLine.addOns.some(addon => addon.name === addonName);
+                            return (
+                              <label 
+                                key={addonName} 
+                                className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                                  isSelected 
+                                    ? 'border-att-blue bg-att-blue/5' 
+                                    : 'border-slate-200 dark:border-slate-600 hover:border-att-blue'
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={() => {
+                                    if (isSelected) {
+                                      updateLine(currentLine.id, {
+                                        addOns: currentLine.addOns.filter(addon => addon.name !== addonName)
+                                      });
+                                    } else {
+                                      updateLine(currentLine.id, {
+                                        addOns: [...currentLine.addOns, { name: addonName, ...addonData }]
+                                      });
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-att-blue border-slate-300 rounded focus:ring-att-blue"
+                                />
+                                <div className="ml-3 flex-1">
+                                  <div className="font-medium text-slate-800 dark:text-white text-sm">{addonName}</div>
+                                  <div className="text-xs text-slate-500 dark:text-slate-400">{addonData.description}</div>
+                                </div>
+                                <div className="text-sm font-bold text-att-blue">{addonData.price}</div>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Custom Promotion Section */}
+                    {currentLine.paymentType === 'special-promotion' && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-4">6. Custom Promotion</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                              Promotion Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="e.g., Employee Discount"
+                              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                              Discount Amount
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="$0.00"
+                              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                              Discount Type
+                            </label>
+                            <select className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-att-blue focus:border-transparent dark:bg-slate-700 dark:text-white">
+                              <option>Monthly</option>
+                              <option>One-time</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="bg-slate-50 dark:bg-slate-700 px-6 py-4 rounded-b-lg flex items-center justify-between">
+                    <button
+                      onClick={() => setShowDeviceModal(false)}
+                      className="px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={addLineToSummary}
+                        disabled={!currentLine.device || !currentLine.paymentType}
+                        className="px-4 py-2 bg-att-blue text-white rounded-lg font-medium hover:bg-att-blue/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Add to Summary
+                      </button>
+                      <button
+                        onClick={() => {
+                          addLineToSummary();
+                          addLine(); // Add another line
+                        }}
+                        disabled={!currentLine.device || !currentLine.paymentType}
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Add & Add Another
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
