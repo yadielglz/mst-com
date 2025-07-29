@@ -78,22 +78,39 @@ A modern React-based web application for T-Mobile sales representatives to track
 
 ## 🎨 Product Catalog
 
-The app includes a comprehensive T-Mobile product catalog with manual commission entry:
+The app includes a comprehensive T-Mobile product catalog with current plans, pricing, and equipment:
 
 ### Mobile Services
-- T-Mobile Unlimited Plans (Essentials, Magenta, Magenta MAX)
-- T-Mobile Go5G Plans (Go5G, Go5G Plus, Go5G Next)
-- BYOD Plans
-- Device Upgrades
-- Add-ons (Protection, JUMP!, Plus)
+- **Unlimited Plans**: Essentials ($60/mo), Magenta ($70/mo), Magenta MAX ($85/mo)
+- **Go5G Plans**: Go5G ($75/mo), Go5G Plus ($90/mo), Go5G Next ($95/mo)
+- **Special Plans**: Military ($55/mo), 55+ ($55/mo), Prepaid ($40-50/mo)
+- **BYOD Plans**: Available for all unlimited plans
+- **Device Upgrades**: Various pricing options
+
+### Mobile Devices
+- **iPhone Series**: iPhone 15 Pro Max ($1199.99), iPhone 15 Pro ($999.99), iPhone 15 ($799.99)
+- **Samsung Series**: Galaxy S24 Ultra ($1299.99), Galaxy S24+ ($999.99), Galaxy S24 ($799.99)
+- **Google Series**: Pixel 8 Pro ($999.99), Pixel 8 ($699.99)
+- **Other Brands**: OnePlus 12 ($799.99)
+
+### Mobile Add-ons
+- **Protection**: Basic ($7/mo), Plus ($11/mo), Premium ($15/mo)
+- **JUMP!**: JUMP! ($12/mo), JUMP! On Demand ($10/mo)
+- **Plus Features**: Plus ($15/mo), Plus Up ($20/mo)
+- **International**: International ($15/mo), Global Plus ($50/mo)
+- **DIGITS**: Data with DIGITS ($10/mo)
 
 ### Internet Services
-- T-Mobile Home Internet Plans
-- T-Mobile 5G Home Internet
+- **Home Internet**: Basic ($50/mo), Plus ($70/mo), Lite ($30/mo)
+- **5G Home Internet**: $50/mo
+- **Business Internet**: $70/mo
+- **Equipment**: 5G Gateway, 4G LTE Gateway, Business Gateway (all $0)
 
 ### TV Services
-- T-Mobile TVision Plans
-- T-Mobile TVision LIVE TV
+- **TVision Plans**: Basic ($40/mo), VIBE ($10/mo)
+- **LIVE TV**: LIVE TV ($64.99/mo), LIVE TV+ ($84.99/mo)
+- **CHANNELS**: $29.99/mo
+- **Add-ons**: Premium ($9.99/mo), Sports ($9.99/mo), Entertainment ($9.99/mo)
 
 ## 🔧 Configuration
 

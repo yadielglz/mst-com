@@ -11,6 +11,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
   });
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedPlan, setSelectedPlan] = useState('');
+  const [selectedDevice, setSelectedDevice] = useState('');
   const [lines, setLines] = useState(1);
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [manualCommission, setManualCommission] = useState('');
@@ -23,6 +24,9 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
     const service = { 
       category: selectedCategory, 
       planName: selectedPlan, 
+      device: selectedDevice,
+      planPrice: planData.price,
+      devicePrice: selectedDevice ? categoryData.devices?.[selectedDevice]?.price : null,
       manualCommission: parseFloat(manualCommission) || 0,
       addOns: [], 
       lines: null 
@@ -37,6 +41,7 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
 
     setCurrentServices(prev => [...prev, service]);
     setSelectedPlan('');
+    setSelectedDevice('');
     setSelectedAddons([]);
     setLines(1);
     setManualCommission('');
@@ -128,10 +133,29 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                   >
                     <option value="">-- Select Plan --</option>
                     {Object.keys(productCatalog[selectedCategory].plans).map(planName => (
-                      <option key={planName} value={planName}>{planName}</option>
+                      <option key={planName} value={planName}>{planName} - {productCatalog[selectedCategory].plans[planName].price}</option>
                     ))}
                   </select>
                 </div>
+
+                {selectedCategory === 'Mobile' && selectedPlan && (
+                  <div>
+                    <label className="block text-sm font-medium mb-1">3. Select Device (Optional)</label>
+                    <select
+                      value={selectedDevice}
+                      onChange={(e) => setSelectedDevice(e.target.value)}
+                      className="form-input"
+                    >
+                      <option value="">-- No Device (BYOD) --</option>
+                      {Object.keys(productCatalog.Mobile.devices || {}).map(deviceName => (
+                        <option key={deviceName} value={deviceName}>
+                          {deviceName} - {productCatalog.Mobile.devices[deviceName].price} 
+                          (${productCatalog.Mobile.devices[deviceName].downPayment} down, ${productCatalog.Mobile.devices[deviceName].monthlyPayment}/mo)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 {selectedCategory === 'Mobile' && selectedPlan && productCatalog.Mobile.plans[selectedPlan]?.hasLines && (
                   <div>
@@ -209,23 +233,35 @@ export const SaleModal = ({ onClose, onSave, currentServices, setCurrentServices
                 <p className="text-sm text-center py-4">No services added yet.</p>
               ) : (
                 currentServices.map((service, index) => (
-                  <div key={index} className="bg-slate-100 dark:bg-slate-700/50 p-2 rounded-lg flex justify-between items-center">
-                    <div>
-                      <p className="font-semibold">
-                        {service.planName}
-                        {service.lines ? ` (${service.lines} lines)` : ''}
-                      </p>
-                      <p className="text-sm text-slate-500">{service.category}</p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium text-emerald-500">${(service.manualCommission || 0).toFixed(2)}</span>
-                      <button
-                        type="button"
-                        onClick={() => removeService(index)}
-                        className="p-1 text-red-500 hover:text-red-700"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                  <div key={index} className="bg-slate-100 dark:bg-slate-700/50 p-3 rounded-lg">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <p className="font-semibold text-slate-800 dark:text-slate-100">
+                          {service.planName} - {service.planPrice}
+                          {service.lines ? ` (${service.lines} lines)` : ''}
+                        </p>
+                        {service.device && (
+                          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                            📱 {service.device} - {service.devicePrice}
+                          </p>
+                        )}
+                        <p className="text-sm text-slate-500 dark:text-slate-400">{service.category}</p>
+                        {service.addOns && service.addOns.length > 0 && (
+                          <p className="text-xs text-slate-400 mt-1">
+                            Add-ons: {service.addOns.join(', ')}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="font-medium text-emerald-500">${(service.manualCommission || 0).toFixed(2)}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeService(index)}
+                          className="p-1 text-red-500 hover:text-red-700"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
