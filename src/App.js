@@ -979,117 +979,117 @@ function App() {
       />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
         {/* Welcome Section */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-slate-800 dark:text-white mb-2">
+        <div className="mb-6 sm:mb-8 text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">
             Welcome to T-Mobile Sales Quote Tool! 🚀
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 px-2">
             Create amazing quotes for your customers with our fun and easy interface
           </p>
         </div>
 
-        {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Quick Actions Grid - Mobile Optimized */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Create New Quote */}
           <button
             onClick={() => setShowSaleModal(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
           >
             <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
             <div className="relative z-10">
-              <div className="text-4xl mb-4">✨</div>
-              <h3 className="text-xl font-bold mb-2">Create New Quote</h3>
-              <p className="text-att-blue-100">Build a professional quote with our fun interface</p>
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">✨</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-2">Create New Quote</h3>
+              <p className="text-sm sm:text-base text-att-blue-100">Build a professional quote with our fun interface</p>
             </div>
           </button>
 
           {/* Quote History */}
           <button
             onClick={() => setShowQuoteHistory(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
           >
             <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
             <div className="relative z-10">
-              <div className="text-4xl mb-4">📋</div>
-              <h3 className="text-xl font-bold mb-2">Quote History</h3>
-              <p className="text-emerald-100">View and manage all your previous quotes</p>
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📋</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-2">Quote History</h3>
+              <p className="text-sm sm:text-base text-emerald-100">View and manage all your previous quotes</p>
             </div>
           </button>
 
           {/* Settings */}
           <button
             onClick={() => setShowSettingsModal(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
           >
             <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
             <div className="relative z-10">
-              <div className="text-4xl mb-4">⚙️</div>
-              <h3 className="text-xl font-bold mb-2">Settings</h3>
-              <p className="text-purple-100">Customize your experience and manage goals</p>
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚙️</div>
+              <h3 className="text-lg sm:text-xl font-bold mb-2">Settings</h3>
+              <p className="text-sm sm:text-base text-purple-100">Customize your experience and manage goals</p>
             </div>
           </button>
         </div>
 
-        {/* Dashboard Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+        {/* Dashboard Stats - Mobile Optimized */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
-                <p className="text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
+                <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
               </div>
-              <div className="text-3xl">📊</div>
+              <div className="text-2xl sm:text-3xl">📊</div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
-                <p className="text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
               </div>
-              <div className="text-3xl">💰</div>
+              <div className="text-2xl sm:text-3xl">💰</div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg sm:col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
-                <p className="text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
               </div>
-              <div className="text-3xl">🎯</div>
+              <div className="text-2xl sm:text-3xl">🎯</div>
             </div>
           </div>
         </div>
 
-        {/* Recent Quotes Preview */}
+        {/* Recent Quotes Preview - Mobile Optimized */}
         {filteredAndSortedQuotes.length > 0 && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
               <button
                 onClick={() => setShowQuoteHistory(true)}
-                className="text-att-blue hover:text-att-blue-light font-medium"
+                className="text-att-blue hover:text-att-blue-light font-medium text-sm sm:text-base"
               >
                 View All →
               </button>
             </div>
             <div className="space-y-3">
               {filteredAndSortedQuotes.slice(0, 3).map((quote) => (
-                <div key={quote.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                  <div>
-                    <p className="font-medium text-slate-800 dark:text-white">{quote.customerName}</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                <div key={quote.id} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-800 dark:text-white text-sm sm:text-base truncate">{quote.customerName}</p>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                       {format(new Date(quote.saleDate), 'MMM dd, yyyy')}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-emerald-600">${quote.totalMonthly.toFixed(2)}/mo</p>
+                  <div className="text-right ml-3">
+                    <p className="font-bold text-emerald-600 text-sm sm:text-base">${quote.totalMonthly.toFixed(2)}/mo</p>
                     {quote.totalOneTime > 0 && (
-                      <p className="text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
+                      <p className="text-xs sm:text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
                     )}
                   </div>
                 </div>
