@@ -512,27 +512,6 @@ const PRODUCT_CATALOG = {
 };
 
 function App() {
-  // Add debugging for mobile view
-  useEffect(() => {
-    console.log('App: Component rendering...');
-    console.log('App: User state:', user);
-    console.log('App: Show auth modal:', showAuthModal);
-    console.log('App: Show splash:', showSplash);
-    console.log('App: Show OOBE:', showOOBE);
-    console.log('App: Show pin modal:', showPinModal);
-    console.log('App: Window width:', window.innerWidth);
-    console.log('App: Is mobile view:', window.innerWidth < 640);
-    
-    // Force mobile view detection
-    const handleResize = () => {
-      console.log('App: Window resized to:', window.innerWidth);
-      console.log('App: Is mobile view:', window.innerWidth < 640);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [user, showAuthModal, showSplash, showOOBE, showPinModal]);
-  
   // Authentication state
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -569,6 +548,27 @@ function App() {
   const [lastDeletedSale, setLastDeletedSale] = useState(null);
   const [undoTimeout, setUndoTimeout] = useState(null);
 
+  // Add debugging for mobile view - MOVED AFTER STATE DECLARATIONS
+  useEffect(() => {
+    console.log('App: Component rendering...');
+    console.log('App: User state:', user);
+    console.log('App: Show auth modal:', showAuthModal);
+    console.log('App: Show splash:', showSplash);
+    console.log('App: Show OOBE:', showOOBE);
+    console.log('App: Show pin modal:', showPinModal);
+    console.log('App: Window width:', window.innerWidth);
+    console.log('App: Is mobile view:', window.innerWidth < 640);
+    
+    // Force mobile view detection
+    const handleResize = () => {
+      console.log('App: Window resized to:', window.innerWidth);
+      console.log('App: Is mobile view:', window.innerWidth < 640);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [user, showAuthModal, showSplash, showOOBE, showPinModal]);
+  
   // Firebase authentication listener
   useEffect(() => {
     console.log('App: Initializing Firebase auth listener...');
@@ -1044,273 +1044,294 @@ function App() {
     );
   }
 
-  if (showSplash) {
-    return (
-      <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
-        <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
-          <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
-          
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-            <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
-            <p className="text-sm text-blue-700 dark:text-blue-300 text-left leading-relaxed">
-              <strong>This is an assistant tool for tracking purposes only.</strong>
-            </p>
-            <ul className="text-sm text-blue-700 dark:text-blue-300 text-left mt-3 space-y-1">
-              <li>• Your data is stored securely in the cloud and synced across devices</li>
-              <li>• This tool is for personal use and tracking only</li>
-              <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
-              <li>• This is not an official T-Mobile application</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-3">
-            <button 
-              onClick={() => setShowSplash(false)}
-              className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
-            >
-              I Understand and Agree
-            </button>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              By clicking "I Understand and Agree", you acknowledge that you have read and understood this disclaimer.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (showOOBE) {
-    return <OOBEScreen onComplete={handleOOBEComplete} />;
-  }
-
-  if (showPinModal) {
-    return <PinModal onUnlock={() => setShowPinModal(false)} pinLock={pinLock} />;
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <Toaster position="top-right" />
-      
-      {/* Header */}
-      <Header 
-        user={user} 
-        onSignOut={handleSignOut}
-        onToggleTheme={toggleTheme}
-        onShowSettings={() => setShowSettingsModal(true)}
-        onShowQuoteHistory={() => setShowQuoteHistory(true)}
-      />
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        {/* Welcome Section */}
-        <div className="mb-6 sm:mb-8 text-center">
-          <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">
-            Welcome to T-Mobile Sales Quote Tool! 🚀
-          </h1>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 px-2">
-            Create amazing quotes for your customers with our fun and easy interface
-          </p>
-        </div>
-
-        {/* Quick Actions Grid - Mobile Optimized */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Create New Quote */}
-          <button
-            onClick={() => setShowSaleModal(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
-          >
-            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-            <div className="relative z-10">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">✨</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2">Create New Quote</h3>
-              <p className="text-sm sm:text-base text-att-blue-100">Build a professional quote with our fun interface</p>
+  // Fallback UI - Always show something
+  try {
+    if (showSplash) {
+      return (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4">
+          <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl text-center">
+            <img src="https://i.ibb.co/HLTSpVvP/T-Mobile-logo-2022-svg.png" alt="T-Mobile Emblem" className="h-12 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">T-Mobile Sales Quote Tool</h1>
+            
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+              <h2 className="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-3">Important Disclaimer</h2>
+              <p className="text-sm text-blue-700 dark:text-blue-300 text-left leading-relaxed">
+                <strong>This is an assistant tool for tracking purposes only.</strong>
+              </p>
+              <ul className="text-sm text-blue-700 dark:text-blue-300 text-left mt-3 space-y-1">
+                <li>• Your data is stored securely in the cloud and synced across devices</li>
+                <li>• This tool is for personal use and tracking only</li>
+                <li>• Any discrepancies in official commission calculations must be handled with HR or your direct supervisor</li>
+                <li>• This is not an official T-Mobile application</li>
+              </ul>
             </div>
-          </button>
-
-          {/* Quote History */}
-          <button
-            onClick={() => setShowQuoteHistory(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
-          >
-            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-            <div className="relative z-10">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📋</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2">Quote History</h3>
-              <p className="text-sm sm:text-base text-emerald-100">View and manage all your previous quotes</p>
-            </div>
-          </button>
-
-          {/* Settings */}
-          <button
-            onClick={() => setShowSettingsModal(true)}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
-          >
-            <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
-            <div className="relative z-10">
-              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚙️</div>
-              <h3 className="text-lg sm:text-xl font-bold mb-2">Settings</h3>
-              <p className="text-sm sm:text-base text-purple-100">Customize your experience and manage goals</p>
-            </div>
-          </button>
-        </div>
-
-        {/* Dashboard Stats - Mobile Optimized */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
-                <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
-              </div>
-              <div className="text-2xl sm:text-3xl">📊</div>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
-                <p className="text-2xl sm:text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
-              </div>
-              <div className="text-2xl sm:text-3xl">💰</div>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
-                <p className="text-2xl sm:text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
-              </div>
-              <div className="text-2xl sm:text-3xl">🎯</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Quotes Preview - Mobile Optimized */}
-        {filteredAndSortedQuotes.length > 0 && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
-              <button
-                onClick={() => setShowQuoteHistory(true)}
-                className="text-att-blue hover:text-att-blue-light font-medium text-sm sm:text-base"
-              >
-                View All →
-              </button>
-            </div>
+            
             <div className="space-y-3">
-              {filteredAndSortedQuotes.slice(0, 3).map((quote) => (
-                <div key={quote.id} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-800 dark:text-white text-sm sm:text-base truncate">{quote.customerName}</p>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                      {format(new Date(quote.saleDate), 'MMM dd, yyyy')}
-                    </p>
-                  </div>
-                  <div className="text-right ml-3">
-                    <p className="font-bold text-emerald-600 text-sm sm:text-base">${quote.totalMonthly.toFixed(2)}/mo</p>
-                    {quote.totalOneTime > 0 && (
-                      <p className="text-xs sm:text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
-                    )}
-                  </div>
+              <button 
+                onClick={() => setShowSplash(false)}
+                className="w-full bg-att-blue text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-300 text-lg"
+              >
+                I Understand and Agree
+              </button>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                By clicking "I Understand and Agree", you acknowledge that you have read and understood this disclaimer.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (showOOBE) {
+      return <OOBEScreen onComplete={handleOOBEComplete} />;
+    }
+
+    if (showPinModal) {
+      return <PinModal onUnlock={() => setShowPinModal(false)} pinLock={pinLock} />;
+    }
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+        <Toaster position="top-right" />
+        
+        {/* Header */}
+        <Header 
+          user={user} 
+          onSignOut={handleSignOut}
+          onToggleTheme={toggleTheme}
+          onShowSettings={() => setShowSettingsModal(true)}
+          onShowQuoteHistory={() => setShowQuoteHistory(true)}
+        />
+
+        {/* Main Content */}
+        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
+          {/* Welcome Section */}
+          <div className="mb-6 sm:mb-8 text-center">
+            <h1 className="text-2xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-2">
+              Welcome to T-Mobile Sales Quote Tool! 🚀
+            </h1>
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 px-2">
+              Create amazing quotes for your customers with our fun and easy interface
+            </p>
+          </div>
+
+          {/* Quick Actions Grid - Mobile Optimized */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            {/* Create New Quote */}
+            <button
+              onClick={() => setShowSaleModal(true)}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-att-blue to-att-blue-light p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
+            >
+              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+              <div className="relative z-10">
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">✨</div>
+                <h3 className="text-lg sm:text-xl font-bold mb-2">Create New Quote</h3>
+                <p className="text-sm sm:text-base text-att-blue-100">Build a professional quote with our fun interface</p>
+              </div>
+            </button>
+
+            {/* Quote History */}
+            <button
+              onClick={() => setShowQuoteHistory(true)}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation"
+            >
+              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+              <div className="relative z-10">
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">📋</div>
+                <h3 className="text-lg sm:text-xl font-bold mb-2">Quote History</h3>
+                <p className="text-sm sm:text-base text-emerald-100">View and manage all your previous quotes</p>
+              </div>
+            </button>
+
+            {/* Settings */}
+            <button
+              onClick={() => setShowSettingsModal(true)}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-purple-600 p-6 sm:p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 touch-manipulation sm:col-span-2 lg:col-span-1"
+            >
+              <div className="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-colors duration-300"></div>
+              <div className="relative z-10">
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚙️</div>
+                <h3 className="text-lg sm:text-xl font-bold mb-2">Settings</h3>
+                <p className="text-sm sm:text-base text-purple-100">Customize your experience and manage goals</p>
+              </div>
+            </button>
+          </div>
+
+          {/* Dashboard Stats - Mobile Optimized */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Total Quotes</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">{dashboardMetrics.totalQuotes}</p>
                 </div>
-              ))}
+                <div className="text-2xl sm:text-3xl">📊</div>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Monthly Revenue</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-emerald-600">${dashboardMetrics.totalMonthlyRevenue.toFixed(0)}</p>
+                </div>
+                <div className="text-2xl sm:text-3xl">💰</div>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">One-Time Revenue</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-600">${dashboardMetrics.totalOneTimeRevenue.toFixed(0)}</p>
+                </div>
+                <div className="text-2xl sm:text-3xl">🎯</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Quotes Preview - Mobile Optimized */}
+          {filteredAndSortedQuotes.length > 0 && (
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Recent Quotes</h2>
+                <button
+                  onClick={() => setShowQuoteHistory(true)}
+                  className="text-att-blue hover:text-att-blue-light font-medium text-sm sm:text-base"
+                >
+                  View All →
+                </button>
+              </div>
+              <div className="space-y-3">
+                {filteredAndSortedQuotes.slice(0, 3).map((quote) => (
+                  <div key={quote.id} className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-800 dark:text-white text-sm sm:text-base truncate">{quote.customerName}</p>
+                      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                        {format(new Date(quote.saleDate), 'MMM dd, yyyy')}
+                      </p>
+                    </div>
+                    <div className="text-right ml-3">
+                      <p className="font-bold text-emerald-600 text-sm sm:text-base">${quote.totalMonthly.toFixed(2)}/mo</p>
+                      {quote.totalOneTime > 0 && (
+                        <p className="text-xs sm:text-sm text-slate-500">+${quote.totalOneTime.toFixed(2)} one-time</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modals */}
+        {showSaleModal && (
+          <MultiStepQuoteModal
+            onClose={() => setShowSaleModal(false)}
+            onSave={handleAddSale}
+            currentServices={currentSaleServices}
+            setCurrentServices={setCurrentSaleServices}
+            productCatalog={PRODUCT_CATALOG}
+          />
+        )}
+
+        {showQuoteHistory && (
+          <QuoteHistoryModal
+            onClose={() => setShowQuoteHistory(false)}
+            quotes={filteredAndSortedQuotes}
+            onDeleteSale={handleDeleteSale}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            filterProduct={filterProduct}
+            onFilterChange={setFilterProduct}
+            sortSales={sortSales}
+            onSortChange={setSortSales}
+          />
+        )}
+
+        {showSettingsModal && (
+          <SettingsModal
+            isOpen={showSettingsModal}
+            onClose={() => setShowSettingsModal(false)}
+            onSetProfile={() => setShowProfileModal(true)}
+            onToggleTheme={toggleTheme}
+            onToggleTempUnit={toggleTempUnit}
+            onSignOut={handleSignOut}
+            user={user}
+            onShowGoals={() => setShowGoalsModal(true)}
+          />
+        )}
+
+        {showGoalsModal && (
+          <GoalsModal
+            goals={currentGoals}
+            onSave={handleSaveGoals}
+            onClose={() => setShowGoalsModal(false)}
+          />
+        )}
+
+        {showProfileModal && (
+          <ProfileModal
+            name={userSettings.name}
+            onSave={handleSaveProfile}
+            onClose={() => setShowProfileModal(false)}
+          />
+        )}
+
+        {showPinModal && (
+          <PinModal
+            onUnlock={handlePinUnlock}
+            pinLock={pinLock}
+          />
+        )}
+
+        {showSearchPopout && (
+          <SearchPopout
+            query={searchQuery}
+            onQueryChange={setSearchQuery}
+            onClose={() => setShowSearchPopout(false)}
+          />
+        )}
+
+        {showOOBE && (
+          <OOBEScreen onComplete={handleOOBEComplete} />
+        )}
+
+        {/* Undo Toast */}
+        {lastDeletedSale && (
+          <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
+            <div className="flex items-center gap-2">
+              <span>Quote deleted</span>
+              <button
+                onClick={handleUndoDelete}
+                className="text-att-blue hover:text-att-blue-light font-medium"
+              >
+                Undo
+              </button>
             </div>
           </div>
         )}
       </div>
-
-      {/* Modals */}
-      {showSaleModal && (
-        <MultiStepQuoteModal
-          onClose={() => setShowSaleModal(false)}
-          onSave={handleAddSale}
-          currentServices={currentSaleServices}
-          setCurrentServices={setCurrentSaleServices}
-          productCatalog={PRODUCT_CATALOG}
-        />
-      )}
-
-      {showQuoteHistory && (
-        <QuoteHistoryModal
-          onClose={() => setShowQuoteHistory(false)}
-          quotes={filteredAndSortedQuotes}
-          onDeleteSale={handleDeleteSale}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          filterProduct={filterProduct}
-          onFilterChange={setFilterProduct}
-          sortSales={sortSales}
-          onSortChange={setSortSales}
-        />
-      )}
-
-      {showSettingsModal && (
-        <SettingsModal
-          isOpen={showSettingsModal}
-          onClose={() => setShowSettingsModal(false)}
-          onSetProfile={() => setShowProfileModal(true)}
-          onToggleTheme={toggleTheme}
-          onToggleTempUnit={toggleTempUnit}
-          onSignOut={handleSignOut}
-          user={user}
-          onShowGoals={() => setShowGoalsModal(true)}
-        />
-      )}
-
-      {showGoalsModal && (
-        <GoalsModal
-          goals={currentGoals}
-          onSave={handleSaveGoals}
-          onClose={() => setShowGoalsModal(false)}
-        />
-      )}
-
-      {showProfileModal && (
-        <ProfileModal
-          name={userSettings.name}
-          onSave={handleSaveProfile}
-          onClose={() => setShowProfileModal(false)}
-        />
-      )}
-
-      {showPinModal && (
-        <PinModal
-          onUnlock={handlePinUnlock}
-          pinLock={pinLock}
-        />
-      )}
-
-      {showSearchPopout && (
-        <SearchPopout
-          query={searchQuery}
-          onQueryChange={setSearchQuery}
-          onClose={() => setShowSearchPopout(false)}
-        />
-      )}
-
-      {showOOBE && (
-        <OOBEScreen onComplete={handleOOBEComplete} />
-      )}
-
-      {/* Undo Toast */}
-      {lastDeletedSale && (
-        <div className="fixed bottom-4 right-4 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg">
-          <div className="flex items-center gap-2">
-            <span>Quote deleted</span>
-            <button
-              onClick={handleUndoDelete}
-              className="text-att-blue hover:text-att-blue-light font-medium"
-            >
-              Undo
-            </button>
-          </div>
+    );
+  } catch (error) {
+    console.error('App: Error rendering main content:', error);
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center p-6 bg-white dark:bg-slate-800 rounded-lg shadow-xl">
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Error</h1>
+          <p className="text-slate-600 dark:text-slate-300 mb-4">
+            An unexpected error occurred. Please try refreshing the page or contact support.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-att-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors duration-300"
+          >
+            Refresh Page
+          </button>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App; 
